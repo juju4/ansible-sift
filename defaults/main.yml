@@ -139,7 +139,7 @@ sift_packages:
     - netwox
     - nfdump
     - ngrep
-    - nikto
+#    - nikto
 #    - ntopng
     - okular
     - open-iscsi
