@@ -1,0 +1,17 @@
+---
+galaxy_info:
+  author: juju4
+  description: SANS Investigative Forensic Toolkit (SIFT) Workstation Ansible role for Ubuntu-based system
+  license: BSD
+  min_ansible_version: 1.9
+  platforms:
+  - name: Ubuntu
+    versions:
+    - trusty
+  categories:
+  - system
+  - security
+
+dependencies:
+  - geerlingguy.java
+

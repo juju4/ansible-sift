@@ -1,0 +1,61 @@
+---
+
+- fail: msg="This role is currently only compatible with Ubuntu trusty"
+  when: ansible_distribution != 'Ubuntu' or ansible_distribution_version != '14.04'
+
+- name: Include version-specific variables for Ubuntu.
+  include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
+  when: ansible_distribution == 'Ubuntu'
+
+- name: set hostname
+  hostname: name={{ sift_hostname }}
+  when: sift_hostname is defined
+- name: Add new hostname in /etc/hosts (local resolv)
+  replace:
+    "dest='/etc/hosts' regexp='^127.0.0.1       localhost' replace='127.0.0.1       localhost {{ sift_hostname }}'"
+  when: sift_hostname is defined
+
+- name: Restrict sshd config
+  lineinfile: dest=/etc/ssh/sshd_config regexp="{{ item.regexp }}" line="{{ item.line }}" backup=yes
+  with_items:
+    - { regexp: '^PasswordAuthentication', line: 'PasswordAuthentication no' }
+    - { regexp: '^PermitRootLogin', line: 'PermitRootLogin without-password' }
+
+#- name: Include version-specific variables for Ubuntu.
+#  include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
+#  when: ansible_distribution == 'Ubuntu'
+
+- stat: path=/home/{{ sift_user }}/.gem/specs
+  register: usergemspecs
+- name: check user gem specs dir permissions
+  file: "dest=/home/{{ sift_user }}/.gem/specs state=directory mode=0755 owner={{ sift_user }}"
+  when: usergemspecs is defined and usergemspecs.stat.exists
+
+- command: dpkg --print-foreign-architectures
+  register: archi
+  changed_when: False
+  when: ansible_architecture == 'x86_64'
+- name: Ensure both i386/x86_64 architecture support for packages
+  shell: dpkg --add-architecture i386
+  when: ansible_architecture == 'x86_64' and archi.stdout.find('i386') == -1
+
+## https://github.com/sans-dfir/sift-bootstrap/
+- include: sift.yml
+  tags:
+    - sift
+
+- include: x11.yml
+  when: sift_do_x11 is defined and sift_do_x11
+  tags:
+    - sift
+
+- name: Review some limits
+  lineinfile: dest=/etc/security/limits.d/openfiles regexp="^{{ sift_user }}\t\thard\tnofiles\t\t2048" line="{{ sift_user }}\t\thard\tnofiles\t\t2048" state=present create=yes
+
+- name: disable GUI upgrade prompt
+  replace: dest=/etc/update-manager/release-upgrades regexp='^Prompt=.*' replace='Prompt=never'
+
+- include: "languages-additional.yml lang={{ outer_item }}"
+  with_items: "{{ sift_extra_languages }}"
+  loop_control:
+    loop_var: outer_item

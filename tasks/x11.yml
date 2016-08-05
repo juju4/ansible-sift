@@ -1,0 +1,19 @@
+---
+
+- name: Debian | x11 packages install
+  apt: name={{item}} state=present
+  with_items:
+    - xinit
+
+- name: Debian | SIFT x11 packages install (unity)
+  apt: name={{item}} state=present
+  with_items:
+    - xinit
+    - ubuntu-desktop
+    - ubuntu-session
+  when: sift_x11_env is defined and sift_x11_env
+
+- file: dest=/home/{{ sift_user }}/.local/share/desktop-directories mode=0700 owner={{ sift_user }} state=directory
+- name: adding sift directory
+  copy: src=sift.directory dest=/home/{{ sift_user }}/.local/share/desktop-directories/sift.directory mode=0644 owner={{ sift_user }}
+

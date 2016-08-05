@@ -1,0 +1,13 @@
+---
+
+- name: get necessary package list for lang {{ lang }}
+  command: "check-language-support -l {{ lang }}"
+  register: pkglist
+  changed_when: false
+- debug: var=pkglist
+- block:
+    - name: install languages package for {{ lang }}
+      apt: name={{ item }} state=present
+      with_items: "{{ pkglist.stdout.split(' ') }}"
+  when: pkglist.stdout is defined and pkglist.stdout != ''
+
