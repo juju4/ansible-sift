@@ -13,6 +13,9 @@ sift_webserver: nginx
 sift_user: sansforensics
 #sift_pass: forensics
 sift_pass: '$6$ZofRtF3WJ$A/nw3WXtXsCsbMa/QID0xIkOsfo/pZ6kjMs2.3yjWswTVKXSB1Vhjd2qOhtMvK4rAaT29Mwqs4OJiOdfNyhyv1'
+## want ssh keys?
+#sift_public_keys:
+#    - dummykey.pub
 
 sift_extra_languages:
     - fr

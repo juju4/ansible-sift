@@ -7,6 +7,13 @@
   include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
   when: ansible_distribution == 'Ubuntu'
 
+- name: Add authorized keys for {{ sift_user }} user
+  authorized_key:
+    "user='{{ sift_user }}' key='{{ item }}'"
+  with_file: "{{ sift_public_keys }}"
+  when: sift_public_keys is defined and sift_public_keys != ""
+  become: yes
+
 - name: set hostname
   hostname: name={{ sift_hostname }}
   when: sift_hostname is defined
