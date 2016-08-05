@@ -4,5 +4,5 @@
   vars:
     sift_user: travis
   roles:
-    - siftrem
+    - sift
 
