@@ -20,8 +20,6 @@
 - name: adding Docker repository
   apt_repository: repo='deb https://apt.dockerproject.org/repo ubuntu-{{ ansible_distribution_release }} main' state=present
 
-- include: elasticsearch.yml
-
 # These repositories are needed, but are disabled on some Ubuntu 14.04 base builds, so enable them.
 - name: Enabling Universe repository
   apt_repository: repo='deb http://archive.ubuntu.com/ubuntu trusty universe' state=present
@@ -83,7 +81,11 @@
   with_items:
     - Net::Wigle
 
-- include: kibana.yml
+- block:
+    - include: elasticsearch.yml
+    - include: kibana.yml
+  when: sift_elastic1 is defined and sift_elastic1
+
 
 - name: Install SIFT files
   git: repo=https://github.com/sans-dfir/sift-files

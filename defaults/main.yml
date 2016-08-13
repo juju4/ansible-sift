@@ -5,6 +5,8 @@ sift_hostname: siftworkstation
 sift_do_x11: true
 sift_x11_background: true
 sift_x11_env: true
+## Included Elasticsearch/kibana is pretty old. Might use one include or other role
+sift_elastic1: true
 
 #sift_webserver: apache2
 sift_webserver: nginx
@@ -242,7 +244,8 @@ sift_pip_packages:
     - argparse
     - unicodecsv
     - stix
-    - stix-validator
+## FIXME! build issue
+#    - stix-validator
     - timesketch
     - lxml
     - ioc_writer

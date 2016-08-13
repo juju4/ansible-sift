@@ -7,8 +7,11 @@
   service: name=nmbd state=restarted
 - name: update timezone
   command: dpkg-reconfigure --frontend noninteractive tzdata
+## packer digitalocean: FAILED! => {"changed": true, "cmd": ["freshclam", "--quiet"], "delta": "0:01:04.718911", "end": "2016-08-11 17:10:03.752850", "failed": true, "invocation": {"module_args": {"_raw_params": "freshclam --quiet", "_uses_shell": false, "chdir": null, "creates": null, "executable": null, "removes": null, "warn": true}, "module_name": "command"}, "rc": 55, "start": "2016-08-11 17:08:59.033939", "stderr": "ERROR: Database load killed by signal 9\nERROR: Failed to load new database", "stdout": "", "stdout_lines": [], "warnings": []}
+## https://bugs.launchpad.net/ubuntu/+source/clamav/+bug/820896 ?
 - name: Updating ClamAV Signatures
   command: freshclam --quiet
+  ignore_errors: true
 - name: run ldconfig
   command: ldconfig
 
