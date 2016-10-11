@@ -8,12 +8,15 @@
 
 - name: adding SIFT repository
   apt_repository: repo='ppa:sift/stable' state=present
+  when: ansible_distribution_release == 'trusty'
 
 - name: adding Ubuntu Tweak repository
   apt_repository: repo='ppa:tualatrix/ppa' state=present
+  when: ansible_distribution_release == 'trusty'
 
 - name: adding Gift stable repository
   apt_repository: repo='ppa:gift/stable' state=present
+  when: ansible_distribution_release == 'trusty'
 
 - name: Docker apt repository key
   apt_key: keyserver=hkp://p80.pool.sks-keyservers.net:80 id=58118E89F3A912897C070ADBF76221572C52609D
@@ -135,13 +138,13 @@
   file: src="{{ item.src }}" path="{{ item.path }}" state=link
   with_items:
     - { src: '/usr/bin/vol.py', path: '/usr/bin/vol' }
-    - { src: '/usr/bin/log2timeline_legacy', path: '/usr/bin/log2timeline' }
+#    - { src: '/usr/bin/log2timeline_legacy', path: '/usr/bin/log2timeline' }
     - { src: '/usr/bin/gedit', path: '/usr/bin/kedit' }
     - { src: '/usr/bin/ewfmount', path: '/usr/bin/mount_ewf.py' }
 # Fix for https://github.com/sans-dfir/sift/issues/10
     - { src: '/usr/bin/icat', path: '/usr/bin/icat-sleuthkit' }
 # Fix for https://github.com/sans-dfir/sift/issues/23
-    - { src: '/usr/bin/l2t_process_old.pl', path: '/usr/local/bin/l2t_process' }
+#    - { src: '/usr/bin/l2t_process_old.pl', path: '/usr/local/bin/l2t_process' }
     - { src: '/etc/foremost.conf', path: '/usr/local/etc/foremost.conf' }
 # Fix for https://github.com/sans-dfir/sift/issues/41
     - { src: '/usr/bin/mactime', path: '/usr/local/bin/mactime-sleuthkit' }
@@ -242,7 +245,7 @@
   become_user: "{{ sift_user }}"
   when: sift_x11_background is defined and sift_x11_background
 - command: gsettings set com.canonical.unity-greeter background file:///usr/share/sift/images/forensics_blue.jpg
-  when: ansible_distribution_version == '12.04' and sift_x11_background is defined and sift_x11_background 
+  when: ansible_distribution_version == '12.04' and sift_x11_background is defined and sift_x11_background
 
 - name: SIFT Configuration Function
   command: "{{ item }}"

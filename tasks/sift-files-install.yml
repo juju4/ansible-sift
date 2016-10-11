@@ -3,13 +3,18 @@
   register: rsync_result
   changed_when: 'rsync_result.stdout != ""'
 
-- command: "rsync -ci {{ item }} /usr/share/tsk/sorter/"
+- stat: path=/usr/share/tsk/sorter
+  register: tsksorter
+- name: copy sift tsk sorter files to package location
+  command: "rsync -ci {{ item }} /usr/share/tsk/sorter/"
   with_fileglob:
     - /tmp/sift-files/sorter/*
   register: rsync_result
   changed_when: 'rsync_result.stdout != ""'
+  when: tsksorter.stat.exists
 
-- command: "rsync -ci {{ item }} /etc/samba/"
+- name: copy sift samba files
+  command: "rsync -ci {{ item }} /etc/samba/"
   with_fileglob:
     - /tmp/sift-files/samba/*
   register: rsync_result
@@ -29,18 +34,24 @@
   register: rsync_result
   changed_when: 'rsync_result.stdout != ""'
 
-- command: "rsync -ci {{ item }} /usr/lib/python2.7/dist-packages/volatility/plugins/"
-  with_fileglob:
-    - /tmp/sift-files/volatility/*.py
-  register: rsync_result
-  changed_when: 'rsync_result.stdout != ""'
+- stat: path=/usr/lib/python2.7/dist-packages/volatility
+  register: vol
+- block:
+    - name: copy sift volatility files
+      command: "rsync -ci {{ item }} /usr/lib/python2.7/dist-packages/volatility/plugins/"
+      with_fileglob:
+        - /tmp/sift-files/volatility/*.py
+      register: rsync_result
+      changed_when: 'rsync_result.stdout != ""'
 
-- file: dest=/usr/lib/python2.7/dist-packages/volatility/plugins/javarat.py state=absent
+    - file: dest=/usr/lib/python2.7/dist-packages/volatility/plugins/javarat.py state=absent
 
-- file: dest={{ item }} mode=0644
-  with_fileglob:
-    - /usr/lib/python2.7/dist-packages/volatility/plugins/*.py
-  ignore_errors: true
+    - name: check volatility plugins permissions
+      file: dest={{ item }} mode=0644
+      with_fileglob:
+        - /usr/lib/python2.7/dist-packages/volatility/plugins/*.py
+      ignore_errors: true
+  when: vol.stat.exists
 
 - file: dest={{ item }} state=directory
   with_items:
@@ -53,7 +64,8 @@
 
 ## 201511 FIXME! fileglob issue? sources exist but skipping (1.9.4-1ppa~trusty). worked before
 ##      is fileglob just local/on controlling machine?  No. working for volatility
-- command: "rsync -ci {{ item }} /usr/share/sift/resources/"
+- name: copy sift resources files
+  command: "rsync -ci {{ item }} /usr/share/sift/resources/"
   with_fileglob:
     - /tmp/sift-files/sift/resources/*
   register: rsync_result
@@ -105,6 +117,7 @@
     remote_src=True
   ignore_errors: true
 
-- command: bash fixubuntu.sh chdir=/tmp/sift-files
+- name: sift fixubuntu.sh
+  command: bash fixubuntu.sh chdir=/tmp/sift-files
   ignore_errors: true
 

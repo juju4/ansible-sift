@@ -1,7 +1,7 @@
 ---
 
 - fail: msg="This role is currently only compatible with Ubuntu trusty"
-  when: ansible_distribution != 'Ubuntu' or ansible_distribution_version != '14.04'
+  when: ansible_distribution != 'Ubuntu' or (ansible_distribution_version != '14.04' and ansible_distribution_version != '16.04')
 
 - name: Include version-specific variables for Ubuntu.
   include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
