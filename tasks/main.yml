@@ -66,3 +66,7 @@
   with_items: "{{ sift_extra_languages }}"
   loop_control:
     loop_var: outer_item
+
+- include: trusty-bugs.yml
+  when: ansible_distribution_release == 'trusty'
+

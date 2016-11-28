@@ -14,15 +14,6 @@
   apt_repository: repo='ppa:tualatrix/ppa' state=present
   when: ansible_distribution_release == 'trusty'
 
-- name: adding Gift stable repository
-  apt_repository: repo='ppa:gift/stable' state=present
-  when: ansible_distribution_release == 'trusty'
-
-- name: Docker apt repository key
-  apt_key: keyserver=hkp://p80.pool.sks-keyservers.net:80 id=58118E89F3A912897C070ADBF76221572C52609D
-- name: adding Docker repository
-  apt_repository: repo='deb https://apt.dockerproject.org/repo ubuntu-{{ ansible_distribution_release }} main' state=present
-
 # These repositories are needed, but are disabled on some Ubuntu 14.04 base builds, so enable them.
 - name: Enabling Universe repository
   apt_repository: repo='deb http://archive.ubuntu.com/ubuntu trusty universe' state=present

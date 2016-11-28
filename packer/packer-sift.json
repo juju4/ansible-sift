@@ -22,7 +22,7 @@
       "type": "ansible-local",
       "playbook_file": "../test/integration/default/default.yml",
       "role_paths": [
-        "/etc/ansible/roles/sift"
+        "/etc/ansible/roles/juju4.sift"
       ],
       "extra_arguments": [ "--become" ]
     },
@@ -65,7 +65,7 @@
       "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
       "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
       "virtualbox_version_file": ".vbox_version",
-      "vm_name": "packer-ubuntu-14.04-amd64",
+      "vm_name": "packer-sift-ubuntu-14.04-amd64",
       "vboxmanage": [
         [
           "modifyvm",
