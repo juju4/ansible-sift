@@ -20,7 +20,8 @@
   register: rsync_result
   changed_when: 'rsync_result.stdout != ""'
 
-- command: "rsync -ci {{ item }} /usr/local/bin/"
+- name: copy sift files for various tools
+  command: "rsync -ci {{ item }} /usr/local/bin/"
   with_fileglob:
     - /tmp/sift-files/wbtools/*
     - /tmp/sift-files/pdf-tools/*
@@ -53,7 +54,8 @@
       ignore_errors: true
   when: vol.stat.exists
 
-- file: dest={{ item }} state=directory
+- name: ensure directories exist
+  file: dest={{ item }} state=directory
   with_items:
     - /usr/share/sift/resources
     - /usr/share/sift/images

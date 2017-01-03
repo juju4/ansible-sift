@@ -66,6 +66,15 @@
 #  replace: dest='/etc/lxdm/lxdm.conf' regexp='^#\ autologin=dgod' replace="autologin={{ sift_user }}"
 #- replace: dest='/etc/lxdm/lxdm.conf' regexp='^disable=0$' replace='disable=1'
 
+- name: check current pip version
+  command: "pip --version"
+  changed_when: false
+  register: pipv
+## does not seem to be handled well by ansible pip module
+- name: upgrade pip to latest
+  command: pip install --upgrade pip
+  when: pipv.stdout.find("9.0.1") == -1
+
 - name: Install pip packages
   pip: name={{item}} state=present
   with_items: "{{ sift_pip_packages }}"
@@ -128,29 +137,14 @@
 - name: setting symlinks
   file: src="{{ item.src }}" path="{{ item.path }}" state=link
   with_items:
-    - { src: '/usr/bin/vol.py', path: '/usr/bin/vol' }
-#    - { src: '/usr/bin/log2timeline_legacy', path: '/usr/bin/log2timeline' }
     - { src: '/usr/bin/gedit', path: '/usr/bin/kedit' }
-    - { src: '/usr/bin/ewfmount', path: '/usr/bin/mount_ewf.py' }
-# Fix for https://github.com/sans-dfir/sift/issues/10
-    - { src: '/usr/bin/icat', path: '/usr/bin/icat-sleuthkit' }
-# Fix for https://github.com/sans-dfir/sift/issues/23
-#    - { src: '/usr/bin/l2t_process_old.pl', path: '/usr/local/bin/l2t_process' }
     - { src: '/etc/foremost.conf', path: '/usr/local/etc/foremost.conf' }
-# Fix for https://github.com/sans-dfir/sift/issues/41
-    - { src: '/usr/bin/mactime', path: '/usr/local/bin/mactime-sleuthkit' }
-    - { src: '/usr/bin/iscsiadm', path: '/sbin/iscsiadm' }
-    - { src: '/usr/share/regripper/rip.pl', path: '/usr/local/bin/rip.pl' }
+#    - { src: '/usr/bin/iscsiadm', path: '/sbin/iscsiadm' }
+    - "{{ gift_ppa_symlinks }}"
+    - "{{ sift_ppa_symlinks }}"
 
 - name: disable automated package update
   lineinfile: dest=/etc/apt/apt.conf.d/10periodic regexp='^APT::Periodic::Update-Package-Lists' line='APT::Periodic::Update-Package-Lists "0";'
-
-- hostname: name={{ sift_hostname }}
-  when: sift_hostname is defined
-- name: Add new hostname in /etc/hosts (local resolv)
-  replace:
-    "dest='/etc/hosts' regexp='^127.0.0.1       localhost' replace='127.0.0.1       localhost {{ sift_hostname }}'"
-  when: sift_hostname is defined
 
 - name: ensure current user is used for samba
   replace: dest=/etc/samba/smb.conf regexp='SIFT_USER' replace="{{ sift_user }}"
@@ -163,24 +157,8 @@
   notify:
     - update timezone
 
-- stat: path=/root/.dos2unix_regripper
-  register: d2u_rr
-- name: Fixing Regripper Files
-  shell: "dos2unix -ascii /usr/share/regripper/*"
-  when: not d2u_rr.stat.exists
-- file: path=/root/.dos2unix_regripper state=touch
-  when: not d2u_rr.stat.exists
-- stat: path=/usr/share/regripper/plugins/usrclass-all
-  register: rrusr
-- stat: path=/usr/share/regripper/plugins/ntuser-all
-  register: rrnt
-- command: mv /usr/share/regripper/plugins/usrclass-all /usr/share/regripper/plugins/usrclass
-  when: rrusr.stat.exists
-- command: mv /usr/share/regripper/plugins/ntuser-all /usr/share/regripper/plugins/ntuser
-  when: rrnt.stat.exists
-- file: path="/usr/share/regripper/rip.pl" mode=0775
-#- command: chmod -R 755 /usr/share/regripper/plugins
-- file: dest=/usr/share/regripper/plugins state=directory mode=0755 recurse=yes
+- include: sift-ppa.yml
+  when: ansible_distribution_release == 'trusty'
 
 - name: Setting noclobber for {{ sift_user }} and root
   lineinfile: dest="{{ item }}" regexp='^set -o noclobber' line='set -o noclobber'

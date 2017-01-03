@@ -234,3 +234,17 @@ sift_pip_packages:
     - usnparser
     - windowsprefetch
 
+gift_ppa_symlinks:
+    - { src: '/usr/bin/ewfmount', path: '/usr/bin/mount_ewf.py' }
+
+sift_ppa_symlinks:
+    - { src: '/usr/bin/vol.py', path: '/usr/bin/vol' }
+#    - { src: '/usr/bin/log2timeline_legacy', path: '/usr/bin/log2timeline' }
+# Fix for https://github.com/sans-dfir/sift/issues/10
+    - { src: '/usr/bin/icat', path: '/usr/bin/icat-sleuthkit' }
+# Fix for https://github.com/sans-dfir/sift/issues/23
+#    - { src: '/usr/bin/l2t_process_old.pl', path: '/usr/local/bin/l2t_process' }
+# Fix for https://github.com/sans-dfir/sift/issues/41
+    - { src: '/usr/bin/mactime', path: '/usr/local/bin/mactime-sleuthkit' }
+    - { src: '/usr/share/regripper/rip.pl', path: '/usr/local/bin/rip.pl' }
+

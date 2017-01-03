@@ -1,5 +1,57 @@
 ---
 
+gift_ppa_packages:
+    - libbde
+    - libbde-tools
+    - libesedb
+    - libesedb-tools
+    - libevt
+    - libevt-tools
+    - libevtx
+    - libevtx-tools
+    - libewf
+    - libewf-dev
+    - libewf-python
+    - libewf-tools
+    - libffi-dev
+    - libfuse-dev
+    - libfvde
+    - libfvde-tools
+    - libmsiecf
+    - libnet1
+    - libolecf
+    - libparse-win32registry-perl
+#    - libpff
+#    - libpff-dev
+#    - libpff-python
+#    - libpff-tools
+    - libregf
+    - libregf-dev
+    - libregf-python
+    - libregf-tools
+    - libssl-dev
+    - libtext-csv-perl
+    - libvshadow
+    - libvshadow-dev
+    - libvshadow-python
+    - libvshadow-tools
+    - python-dfvfs
+    - python-efilter
+    - python-pytsk3
+    - python-plaso
+
+## Not available for xenial currently
+sift_ppa_packages:
+    - afterglow
+    - autopsy
+    - regripper
+    - mantaray
+    - sift-scripts
+    - mac-robber
+    - windows-perl
+    - sleuthkit
+# more...
+
 sift_packages:
     - python-software-properties
     - dos2unix
@@ -122,7 +174,7 @@ sift_packages:
     - netwox
     - nfdump
     - ngrep
-#    - nikto
+    - nikto
 #    - ntopng
     - okular
     - open-iscsi
@@ -206,6 +258,7 @@ sift_packages:
     - libglib2.0-bin
     - unity-greeter
     - ubuntu-wallpapers
+    - "{{ gift_ppa_packages }}"
 
 sift_pip_packages:
     - python-dateutil==2.4.2
@@ -236,4 +289,9 @@ sift_pip_packages:
 
 ## xenial: random issue w avahi-daemon, dependency of libnss-mdns
 ##	https://forum.proxmox.com/threads/ubuntu-16-04-template-for-proxmox-4-1.27034/
+
+gift_ppa_symlinks:
+    - { src: '/usr/bin/ewfmount', path: '/usr/bin/mount_ewf.py' }
+
+sift_ppa_symlinks: []
 

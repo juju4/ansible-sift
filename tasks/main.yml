@@ -14,9 +14,12 @@
   when: sift_public_keys is defined and sift_public_keys != ""
   become: yes
 
+## fails under lxd+systemd, https://github.com/ansible/ansible-modules-core/issues/5582
 - name: set hostname
   hostname: name={{ sift_hostname }}
   when: sift_hostname is defined
+  ignore_errors: true
+
 - name: Add new hostname in /etc/hosts (local resolv)
   replace:
     "dest='/etc/hosts' regexp='^127.0.0.1       localhost' replace='127.0.0.1       localhost {{ sift_hostname }}'"
@@ -68,5 +71,4 @@
     loop_var: outer_item
 
 - include: trusty-bugs.yml
-  when: ansible_distribution_release == 'trusty'
 
