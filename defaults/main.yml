@@ -9,6 +9,9 @@ sift_x11_env: true
 sift_elastic1: true
 sift_kibana_v: 4.6.1
 
+## if you want to fully disable docker install, remove 'ernestas-poskus.docker' from meta/main.yml
+sift_docker: true
+
 #sift_webserver: apache2
 sift_webserver: nginx
 

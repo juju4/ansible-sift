@@ -78,7 +78,6 @@ sift_packages:
     - cryptsetup
     - dc3dd
     - dconf-tools
-    - docker-engine
     - driftnet
     - dsniff
 #    - dumbpig
@@ -259,6 +258,9 @@ sift_packages:
     - unity-greeter
     - ubuntu-wallpapers
     - "{{ gift_ppa_packages }}"
+
+sift_docker_pkg:
+    - docker-engine
 
 sift_pip_packages:
     - python-dateutil==2.4.2

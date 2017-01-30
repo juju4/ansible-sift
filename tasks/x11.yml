@@ -1,5 +1,9 @@
 ---
 
+#to avoid error at install. unity only?
+#bluez package
+#systemctl disable bluetooth.service
+
 - name: Trusty | SIFT x11 packages install (unity)
   apt:
     name: "{{item}}"

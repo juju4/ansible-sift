@@ -26,7 +26,6 @@ sift_packages:
     - cryptsetup
     - dc3dd
     - dconf-tools
-    - docker-engine
     - driftnet
     - dsniff
     - dumbpig
@@ -233,6 +232,9 @@ sift_pip_packages:
     - colorama
     - usnparser
     - windowsprefetch
+
+sift_docker_pkg:
+    - docker-engine
 
 gift_ppa_symlinks:
     - { src: '/usr/bin/ewfmount', path: '/usr/bin/mount_ewf.py' }

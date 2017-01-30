@@ -41,6 +41,11 @@
     - apache2
   when: sift_webserver is defined and sift_webserver == 'apache2'
 
+- name: SIFT | docker packages install
+  apt: name={{item}} state=present
+  with_items: "{{ sift_docker_pkg }}"
+  when: sift_docker
+
 ## missing dependencies in some case?
 - name: Debian | gedit install
   apt: name={{item}} state=present
