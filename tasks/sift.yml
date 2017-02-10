@@ -71,15 +71,11 @@
 #  replace: dest='/etc/lxdm/lxdm.conf' regexp='^#\ autologin=dgod' replace="autologin={{ sift_user }}"
 #- replace: dest='/etc/lxdm/lxdm.conf' regexp='^disable=0$' replace='disable=1'
 
-- name: check current pip version
-  command: "pip --version"
-  changed_when: false
-  register: pipv
-## does not seem to be handled well by ansible pip module
-- name: upgrade pip to latest
-  command: pip install --upgrade pip
-  when: pipv.stdout.find("9.0.1") == -1
+- include: pip-upgrade.yml
 
+- name: Install pip packages dependencies
+  package: name={{item}} state=present
+  with_items: "{{ sift_pip_packages_deps }}"
 - name: Install pip packages
   pip: name={{item}} state=present
   with_items: "{{ sift_pip_packages }}"

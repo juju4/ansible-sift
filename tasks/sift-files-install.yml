@@ -1,58 +1,78 @@
 ---
-- command: "rsync -ci /tmp/sift-files/foremost/foremost.conf /etc/foremost.conf"
+
+- name: copy sift foremost conf to /etc
+  command: "rsync -ci /tmp/sift-files/foremost/foremost.conf /etc/foremost.conf"
   register: rsync_result
   changed_when: 'rsync_result.stdout != ""'
 
 - stat: path=/usr/share/tsk/sorter
   register: tsksorter
+- name: list sift tsk sorter files
+  command: find /tmp/sift-files/sorter/ -type f
+  register: sorter
+  changed_when: false
+  ignore_errors: true
 - name: copy sift tsk sorter files to package location
   command: "rsync -ci {{ item }} /usr/share/tsk/sorter/"
-  with_fileglob:
-    - /tmp/sift-files/sorter/*
+# [WARNING]: Unable to find '/tmp/sift-files/sorter' in expected paths. = executed on host only
+#  with_fileglob:
+#    - "/tmp/sift-files/sorter/*.sort"
+  with_items: "{{ sorter.stdout_lines }}"
   register: rsync_result
   changed_when: 'rsync_result.stdout != ""'
   when: tsksorter.stat.exists
 
 - name: copy sift samba files
   command: "rsync -ci {{ item }} /etc/samba/"
-  with_fileglob:
-    - /tmp/sift-files/samba/*
+  with_items:
+    - /tmp/sift-files/samba/smb.conf
   register: rsync_result
   changed_when: 'rsync_result.stdout != ""'
 
+## FIXME! upstream: some files are there twice in both wbtools and scripts: extract_mft_record_slack.py, ShellItems.py, shellbags.py
+- name: list sift various tools files
+  command: find /tmp/sift-files/wbtools/ /tmp/sift-files/pdf-tools/ /tmp/sift-files/scripts/ /tmp/sift-files/densityscout/densityscout /tmp/sift-files/sift/scripts/ -type f
+  register: misctools
+  changed_when: false
+  ignore_errors: true
 - name: copy sift files for various tools
   command: "rsync -ci {{ item }} /usr/local/bin/"
-  with_fileglob:
-    - /tmp/sift-files/wbtools/*
-    - /tmp/sift-files/pdf-tools/*
-    - /tmp/sift-files/scripts/*
-    - /tmp/sift-files/densityscout/densityscout
+#  with_fileglob:
+#    - /tmp/sift-files/wbtools/*
+#    - /tmp/sift-files/pdf-tools/*
+#    - /tmp/sift-files/scripts/*
+#    - /tmp/sift-files/densityscout/densityscout
 ## FIXME! submodule missing...
-#    - /tmp/sift-files/pe_carver/*.py
-    - /tmp/sift-files/page_brute/*.py
+##    - /tmp/sift-files/pe_carver/*.py
+##    - /tmp/sift-files/page_brute/*.py     # empty?
 #    - /tmp/sift-files/java_idx_parser/*.py
-    - /tmp/sift-files/sift/scripts/*
+#    - /tmp/sift-files/sift/scripts/*
+  with_items: "{{ misctools.stdout_lines }}"
   register: rsync_result
   changed_when: 'rsync_result.stdout != ""'
 
 - stat: path=/usr/lib/python2.7/dist-packages/volatility
   register: vol
+## outside of block to ensure volplugins is defined...
+- name: list sift volatility plugins files
+  command: find /tmp/sift-files/volatility/ -type f
+  register: volplugins
+  changed_when: false
+  ignore_errors: true
 - block:
     - name: copy sift volatility files
-      command: "rsync -ci {{ item }} /usr/lib/python2.7/dist-packages/volatility/plugins/"
-      with_fileglob:
-        - /tmp/sift-files/volatility/*.py
+      command: "rsync -ci --chmod 0644 {{ item }} /usr/lib/python2.7/dist-packages/volatility/plugins/"
+#      with_fileglob:
+#        - /tmp/sift-files/volatility/*.py
+      with_items: "{{ volplugins.stdout_lines }}"
       register: rsync_result
       changed_when: 'rsync_result.stdout != ""'
 
-    - file: dest=/usr/lib/python2.7/dist-packages/volatility/plugins/javarat.py state=absent
+## why? https://github.com/sans-dfir/sift-files/blob/master/install.sh
+    - name: remove volatility javarat plugins
+      file: dest=/usr/lib/python2.7/dist-packages/volatility/plugins/javarat.py state=absent
 
-    - name: check volatility plugins permissions
-      file: dest={{ item }} mode=0644
-      with_fileglob:
-        - /usr/lib/python2.7/dist-packages/volatility/plugins/*.py
-      ignore_errors: true
-  when: vol.stat.exists
+  when: vol.stat.exists and sift_include_volplugins
 
 - name: ensure directories exist
   file: dest={{ item }} state=directory
@@ -64,35 +84,8 @@
     - /usr/share/sift/scripts
     - /usr/share/regripper
 
-## 201511 FIXME! fileglob issue? sources exist but skipping (1.9.4-1ppa~trusty). worked before
-##      is fileglob just local/on controlling machine?  No. working for volatility
-- name: copy sift resources files
-  command: "rsync -ci {{ item }} /usr/share/sift/resources/"
-  with_fileglob:
-    - /tmp/sift-files/sift/resources/*
-  register: rsync_result
-  changed_when: 'rsync_result.stdout != ""'
-
-- command: "rsync -ci {{ item }} /usr/share/sift/images/"
-  with_fileglob:
-    - /tmp/sift-files/sift/images/*
-  register: rsync_result
-  changed_when: 'rsync_result.stdout != ""'
-
-- command: "rsync -ci {{ item }} /usr/share/sift/audio/"
-  with_fileglob:
-    - /tmp/sift-files/sift/audio/*
-  register: rsync_result
-  changed_when: 'rsync_result.stdout != ""'
-
-- command: "rsync -ci {{ item }} /usr/share/sift/other/"
-  with_fileglob:
-    - /tmp/sift-files/sift/other/*
-  register: rsync_result
-  changed_when: 'rsync_result.stdout != ""'
-
-## temporary fix for above issue
-- command: "rsync -cir {{ item }} /usr/share/sift/"
+- name: copy sift tools directories to /usr/share/sift
+  command: "rsync -cir {{ item }} /usr/share/sift/"
   with_items:
     - /tmp/sift-files/sift/scripts
     - /tmp/sift-files/sift/other
@@ -102,13 +95,16 @@
   register: rsync_result
   changed_when: 'rsync_result.stdout != ""'
 
-- command: "rsync -ci {{ item }} /usr/share/regripper/"
-  with_fileglob:
-    - /tmp/sift-files/regripper/*
+- name: copy regripper files to /usr/share/regripper
+  command: "rsync -ci {{ item }} /usr/share/regripper/"
+  with_items:
+    - /tmp/sift-files/regripper/rip.pl
+    - /tmp/sift-files/regripper/plugins
   register: rsync_result
   changed_when: 'rsync_result.stdout != ""'
 
-- file: dest=/usr/local/bin/id state=absent
+- name: ensure /usr/local/bin/id absent
+  file: dest=/usr/local/bin/id state=absent
 
 # Install rc.local patch for more loopback devices
 # fixes https://github.com/sans-dfir/sift/issues/22

@@ -11,6 +11,8 @@ sift_kibana_v: 4.6.1
 
 ## if you want to fully disable docker install, remove 'ernestas-poskus.docker' from meta/main.yml
 sift_docker: true
+## if you want to use additional volatility plugins grouped by sift or from external role
+sift_include_volplugins: true
 
 #sift_webserver: apache2
 sift_webserver: nginx

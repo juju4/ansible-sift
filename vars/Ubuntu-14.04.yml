@@ -206,6 +206,17 @@ sift_packages:
     - unity-greeter
     - ubuntu-wallpapers
 
+sift_docker_pkg:
+    - docker-engine
+
+sift_pip_packages_deps:
+## for stix
+  - libxml2-dev
+  - libxslt1-dev
+  - python-dev
+  - libffi-dev
+  - lib32z1-dev
+
 sift_pip_packages:
     - python-dateutil==2.4.2
     - distorm3
