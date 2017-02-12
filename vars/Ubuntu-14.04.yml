@@ -244,9 +244,6 @@ sift_pip_packages:
     - usnparser
     - windowsprefetch
 
-sift_docker_pkg:
-    - docker-engine
-
 gift_ppa_symlinks:
     - { src: '/usr/bin/ewfmount', path: '/usr/bin/mount_ewf.py' }
 

@@ -41,3 +41,7 @@ describe file('/usr/share/regripper/rip.pl') do
   it { should be_executable }
 end
 
+describe file('/etc/hosts') do
+  its(:content) { should match /siftworkstation/ }
+end
+
