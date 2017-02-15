@@ -113,7 +113,7 @@
       "ssh_username": "vagrant",
       "ssh_wait_timeout": "10000s",
       "tools_upload_flavor": "linux",
-      "vm_name": "packer-ubuntu-14.04-amd64",
+      "vm_name": "packer-sift-ubuntu-14.04-amd64",
       "vmx_data": {
         "cpuid.coresPerSocket": "1",
         "memsize": "512",

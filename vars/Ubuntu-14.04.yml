@@ -1,6 +1,7 @@
 ---
 
 sift_packages:
+    - openssh-server
     - python-software-properties
     - dos2unix
 # l.200 https://github.com/sans-dfir/sift-bootstrap/blob/0d1bd146377050f9217b8187837516659e361060/bootstrap.sh

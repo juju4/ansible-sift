@@ -6,9 +6,13 @@
 - name: Creating sansforensics generic account
   user: name={{ sift_user }} password={{ sift_pass }} groups={{ sift_user }},sudo append=yes
 
-- name: adding SIFT repository
+- name: adding SIFT repository - stable
   apt_repository: repo='ppa:sift/stable' state=present
   when: ansible_distribution_release == 'trusty'
+
+- name: adding SIFT repository - dev
+  apt_repository: repo='ppa:sift/dev' state=present
+  when: ansible_distribution_release == 'xenial'
 
 - name: adding Ubuntu Tweak repository
   apt_repository: repo='ppa:tualatrix/ppa' state=present

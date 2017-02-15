@@ -40,19 +40,27 @@ gift_ppa_packages:
     - python-pytsk3
     - python-plaso
 
-## Not available for xenial currently
+## https://launchpad.net/~sift/+archive/ubuntu/dev?field.series_filter=xenial WIP
 sift_ppa_packages:
     - afterglow
-    - autopsy
-    - regripper
-    - mantaray
-    - sift-scripts
+#    - autopsy
+#    - mantaray
+#    - sift-scripts
+    - bulkextractor
+    - flowgrep
     - mac-robber
-    - windows-perl
+    - maltegoce
+    - ntdsxtract
+    - passivedns
+    - pdf-tools
+    - pyelftools
+    - regripper
     - sleuthkit
+    - windows-perl
 # more...
 
 sift_packages:
+    - openssh-server
     - python-software-properties
     - dos2unix
 # l.200 https://github.com/sans-dfir/sift-bootstrap/blob/0d1bd146377050f9217b8187837516659e361060/bootstrap.sh
@@ -258,6 +266,7 @@ sift_packages:
     - unity-greeter
     - ubuntu-wallpapers
     - "{{ gift_ppa_packages }}"
+    - "{{ sift_ppa_packages }}"
 
 sift_docker_pkg:
     - docker-engine

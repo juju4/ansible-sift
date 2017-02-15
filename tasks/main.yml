@@ -28,12 +28,6 @@
     backup: yes
   when: sift_hostname is defined
 
-- name: Restrict sshd config
-  lineinfile: dest=/etc/ssh/sshd_config regexp="{{ item.regexp }}" line="{{ item.line }}" backup=yes
-  with_items:
-    - { regexp: '^PasswordAuthentication', line: 'PasswordAuthentication no' }
-    - { regexp: '^PermitRootLogin', line: 'PermitRootLogin without-password' }
-
 #- name: Include version-specific variables for Ubuntu.
 #  include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
 #  when: ansible_distribution == 'Ubuntu'
@@ -56,6 +50,12 @@
 - include: sift.yml
   tags:
     - sift
+
+- name: Restrict sshd config
+  lineinfile: dest=/etc/ssh/sshd_config regexp="{{ item.regexp }}" line="{{ item.line }}" backup=yes
+  with_items:
+    - { regexp: '^PasswordAuthentication', line: 'PasswordAuthentication no' }
+    - { regexp: '^PermitRootLogin', line: 'PermitRootLogin without-password' }
 
 - include: x11.yml
   when: sift_do_x11 is defined and sift_do_x11
