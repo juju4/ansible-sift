@@ -47,7 +47,7 @@ sift_ppa_packages:
 #    - mantaray
 #    - sift-scripts
     - bulk-extractor
-    - flowgrep
+#    - flowgrep
     - mac-robber
     - maltegoce
     - ntdsxtract

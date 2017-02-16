@@ -14,8 +14,9 @@ galaxy_info:
 
 dependencies:
   - geerlingguy.java
-## use external role for docker-engine repository
-  - ernestas-poskus.docker
+## use external role for docker-engine repository.
+## CI test impact: docker in docker + ulimit
+#  - ernestas-poskus.docker
   - juju4.gift
 ## sift ppa volatility or separate role
   - juju4.volatility

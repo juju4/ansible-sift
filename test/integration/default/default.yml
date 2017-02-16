@@ -1,6 +1,8 @@
 ---
 
 - hosts: all
+  vars:
+    - sift_docker: false
   roles:
     - juju4.sift
 
