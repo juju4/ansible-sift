@@ -128,7 +128,7 @@ sift_packages:
     - kpartx
     - lft
 #    - libafflib-dev
-    - libafflib0
+    - libafflib0v5
 #    - libbde
 #    - libbde-tools
 #    - libesedb

@@ -27,7 +27,7 @@
 - name: Enabling Multiverse repository
   replace:
     dest: /etc/apt/sources.list
-    regexp: '^#(\.*)multiverse$'
+    regexp: '^# (.*)multiverse$'
     replace: '\1multiverse'
     backup: yes
 - name: check sources.list
