@@ -46,7 +46,7 @@ sift_ppa_packages:
 #    - autopsy
 #    - mantaray
 #    - sift-scripts
-    - bulkextractor
+    - bulk-extractor
     - flowgrep
     - mac-robber
     - maltegoce
