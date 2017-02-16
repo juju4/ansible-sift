@@ -20,8 +20,20 @@
 
 # These repositories are needed, but are disabled on some Ubuntu 14.04 base builds, so enable them.
 - name: Enabling Universe repository
-  apt_repository: repo='deb http://archive.ubuntu.com/ubuntu trusty universe' state=present
-- replace: dest=/etc/apt/sources.list regexp='^#(\.*)multiverse$' replace='\1multiverse' backup=yes
+#  apt_repository: repo='deb http://archive.ubuntu.com/ubuntu trusty universe' state=present
+  apt_repository:
+    repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release | lower }} universe"
+    state: present
+- name: Enabling Multiverse repository
+  replace:
+    dest: /etc/apt/sources.list
+    regexp: '^#(\.*)multiverse$'
+    replace: '\1multiverse'
+    backup: yes
+- name: check sources.list
+  command: cat /etc/apt/sources.list
+  register: sources
+- debug: var=sources.stdout
 # Some 64-bit systems are not configured to support i386 packages. Let's make sure they are enabled. (done in main.yml)
 #- name: Ensure both i386/x86_64 architecture support for packages
 #  command: dpkg --add-architecture i386
@@ -163,7 +175,7 @@
     - update timezone
 
 - include: sift-ppa.yml
-  when: ansible_distribution_release == 'trusty'
+  when: ansible_distribution_release == 'trusty' or  ansible_distribution_release == 'xenial'
 
 - name: Setting noclobber for {{ sift_user }} and root
   lineinfile: dest="{{ item }}" regexp='^set -o noclobber' line='set -o noclobber'
