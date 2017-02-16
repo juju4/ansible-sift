@@ -25,6 +25,10 @@
     repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release | lower }} universe"
     state: present
 - name: Enabling Multiverse repository
+  apt_repository:
+    repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release | lower }} multiverse"
+    state: present
+- name: Enabling Multiverse security updates
   replace:
     dest: /etc/apt/sources.list
     regexp: '^# (.*)multiverse$'
