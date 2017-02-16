@@ -259,16 +259,7 @@
   register: rsync_result
   changed_when: 'rsync_result.stdout != ""'
   when: gtd.stat.exists
-- stat: path=/usr/share/unity-greeter/logo.png.ubuntu
-  register: logoubuntu
-- command: "rsync -ci --chown={{ sift_user }} /usr/share/unity-greeter/logo.png /usr/share/unity-greeter/logo.png.ubuntu"
-  register: rsync_result
-  changed_when: 'rsync_result.stdout != ""'
-  when: not logoubuntu.stat.exists
-- command: "rsync -ci --chown={{ sift_user }} /usr/share/sift/images/login_logo.png /usr/share/unity-greeter/logo.png"
-  register: rsync_result
-  changed_when: 'rsync_result.stdout != ""'
-  when: not logoubuntu.stat.exists
+
 - file: src=/usr/share/sift/images/forensics_blue.jpg dest=/usr/share/backgrounds/warty-final-ubuntu.png mode=0644 state=link force=yes
   when: sift_x11_background is defined and sift_x11_background
 
