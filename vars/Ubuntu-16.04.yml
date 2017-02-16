@@ -218,7 +218,7 @@ sift_packages:
     - qemu-utils
 ## note: radare and radare-gtk conflict each other...
 #    - radare
-    - radare-gtk
+#    - radare-gtk       ## only precise+trusty
 ## l.350 https://github.com/sans-dfir/sift-bootstrap/blob/0d1bd146377050f9217b8187837516659e361060/bootstrap.sh
     - radare2
 #    - rar
