@@ -46,14 +46,15 @@ sift_ppa_packages:
 #    - autopsy
 #    - mantaray
 #    - sift-scripts
-    - bulk-extractor
+## bulk-extractor : Depends: openjdk-7-jdk but it is not installable
+#    - bulk-extractor
 #    - flowgrep
     - mac-robber
     - maltegoce
-    - ntdsxtract
+#    - ntdsxtract
     - passivedns
-    - pdf-tools
-    - pyelftools
+#    - pdf-tools
+#    - pyelftools
     - regripper
     - sleuthkit
     - windows-perl

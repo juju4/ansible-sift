@@ -1,8 +1,15 @@
 ---
 
-#to avoid error at install. unity only?
+#to avoid error at install. unity only? (bluez* gnome-bluetooth* gnome-user-share* indicator-bluetooth* unity-control-center* unity-control-center-signon*)
 #bluez package
 #systemctl disable bluetooth.service
+- name: bluez package install
+  apt:
+    name: bluez
+    state: present
+  ignore_errors: true
+- name: disable bluetooth service
+  service: name=bluetooth state=stopped enabled=no
 
 - name: Trusty | SIFT x11 packages install (unity)
   apt:
@@ -12,6 +19,7 @@
     - xinit
     - ubuntu-desktop
     - ubuntu-session
+    - unity-greeter
 ## conflicts file /usr/bin/vba_extract.py between python-xlsxwriter (required by plaso, python-plaso) and python3-xlsxwriter (required by ubuntu-desktop chain)
   when: sift_x11_env is defined and sift_x11_env and ansible_distribution_release == 'trusty'
 

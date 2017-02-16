@@ -204,7 +204,7 @@ sift_packages:
     - xmount
 ## gsettings
     - libglib2.0-bin
-    - unity-greeter
+#    - unity-greeter
     - ubuntu-wallpapers
 
 sift_docker_pkg:
