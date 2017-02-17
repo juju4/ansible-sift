@@ -12,7 +12,7 @@
 - name: Updating ClamAV Signatures
   command: freshclam --quiet
   ignore_errors: true
-## mostly for travis...
+## mostly for travis to avoid stalling "No output has been received in the last 10m0s"...
   async: 600
   poll: 15
 - name: run ldconfig

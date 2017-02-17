@@ -32,13 +32,19 @@
     - lxde
     - lxdm
   when: sift_x11_env is defined and sift_x11_env and ansible_distribution_release == 'xenial'
+## mostly for travis to avoid stalling "No output has been received in the last 10m0s"...
+  async: 600
+  poll: 15
 
 - name: x11 ensure desktop-directories exists
   file: dest=/home/{{ sift_user }}/.local/share/desktop-directories mode=0700 owner={{ sift_user }} state=directory
 - name: adding sift directory shortcut
   copy: src=sift.directory dest=/home/{{ sift_user }}/.local/share/desktop-directories/sift.directory mode=0644 owner={{ sift_user }}
+
 - name: disable GUI upgrade prompt
   replace: dest=/etc/update-manager/release-upgrades regexp='^Prompt=.*' replace='Prompt=never'
+  when: ansible_distribution_release == 'trusty'
+
 - stat: path=/usr/share/unity-greeter/logo.png.ubuntu
   register: logoubuntu
 - name: backup ubuntu unity greeter logo
