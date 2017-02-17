@@ -70,5 +70,3 @@
   loop_control:
     loop_var: outer_item
 
-- include: trusty-bugs.yml
-  when: ansible_distribution_release == 'trusty'

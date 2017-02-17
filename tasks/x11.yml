@@ -52,3 +52,6 @@
   changed_when: 'rsync_result.stdout != ""'
   when: not logoubuntu.stat.exists
 
+- include: trusty-bugs.yml
+  when: ansible_distribution_release == 'trusty'
+
