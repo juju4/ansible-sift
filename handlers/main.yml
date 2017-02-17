@@ -12,6 +12,9 @@
 - name: Updating ClamAV Signatures
   command: freshclam --quiet
   ignore_errors: true
+## mostly for travis...
+  async: 600
+  poll: 15
 - name: run ldconfig
   command: ldconfig
 
