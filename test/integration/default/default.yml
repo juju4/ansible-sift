@@ -4,7 +4,7 @@
   vars:
     - sift_docker: false
 ## xenial on container has issue to install bluez which is required for unity
-    - sift_do_x11: false
+#    - sift_do_x11: false
   roles:
     - juju4.sift
 
