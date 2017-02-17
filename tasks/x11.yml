@@ -22,6 +22,9 @@
     - unity-greeter
 ## conflicts file /usr/bin/vba_extract.py between python-xlsxwriter (required by plaso, python-plaso) and python3-xlsxwriter (required by ubuntu-desktop chain)
   when: sift_x11_env is defined and sift_x11_env and ansible_distribution_release == 'trusty'
+## mostly for travis to avoid stalling "No output has been received in the last 10m0s"...
+  async: 600
+  poll: 15
 
 - name: Xenial | SIFT x11 packages install (lxde)
   apt:
@@ -45,18 +48,22 @@
   replace: dest=/etc/update-manager/release-upgrades regexp='^Prompt=.*' replace='Prompt=never'
   when: ansible_distribution_release == 'trusty'
 
+- name: ensure unity-greeter directory exists
+  file: dest=/usr/share/unity-greeter state=directory mode=0755
+- stat: path=/usr/share/unity-greeter/logo.png
+  register: logoubuntu1
 - stat: path=/usr/share/unity-greeter/logo.png.ubuntu
-  register: logoubuntu
+  register: logoubuntu2
 - name: backup ubuntu unity greeter logo
   command: "rsync -ci --chown={{ sift_user }} /usr/share/unity-greeter/logo.png /usr/share/unity-greeter/logo.png.ubuntu"
   register: rsync_result
   changed_when: 'rsync_result.stdout != ""'
-  when: not logoubuntu.stat.exists
+  when: not logoubuntu2.stat.exists and logoubuntu1.stat.exists
 - name: copy sift unity greeter logo
   command: "rsync -ci --chown={{ sift_user }} /usr/share/sift/images/login_logo.png /usr/share/unity-greeter/logo.png"
   register: rsync_result
   changed_when: 'rsync_result.stdout != ""'
-  when: not logoubuntu.stat.exists
+  when: not logoubuntu1.stat.exists
 
 - include: trusty-bugs.yml
   when: ansible_distribution_release == 'trusty'
