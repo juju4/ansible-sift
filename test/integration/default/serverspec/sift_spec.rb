@@ -30,6 +30,14 @@ describe file('/usr/local/bin/update-sift') do
   it { should be_file }
   it { should be_executable }
 end
+describe file('/usr/bin/java') do
+  it { should be_file }
+  it { should be_executable }
+end
+describe file('/usr/bin/bulk_extractor') do
+  it { should be_file }
+  it { should be_executable }
+end
 describe file('/usr/lib/python2.7/dist-packages/volatility/plugins/autoruns.py') do
   it { should be_file }
 end

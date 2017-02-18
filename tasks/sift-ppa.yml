@@ -20,3 +20,10 @@
 #- command: chmod -R 755 /usr/share/regripper/plugins
 - file: dest=/usr/share/regripper/plugins state=directory mode=0755 recurse=yes
 
+- name: Xenial | force-depends bulk-extractor install
+  apt:
+    name: bulk-extractor
+    state: present
+    dpkg_options: '--force-depends'
+  when: ansible_distribution_release == 'xenial'
+

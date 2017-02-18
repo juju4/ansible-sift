@@ -46,9 +46,10 @@ sift_ppa_packages:
 #    - autopsy
 #    - mantaray
 #    - sift-scripts
-## bulk-extractor : Depends: openjdk-7-jdk but it is not installable
+## bulk-extractor : Depends: openjdk-7-jdk but it is not installable = but fine w openjdk-8-jdk. separate install
 #    - bulk-extractor
 #    - flowgrep
+    - liblightgrep
     - mac-robber
     - maltegoce
 #    - ntdsxtract
@@ -186,7 +187,6 @@ sift_packages:
 #    - ntopng
     - okular
     - open-iscsi
-#    - openjdk-6-jdk
     - ophcrack
     - ophcrack-cli
     - outguess
