@@ -10,9 +10,5 @@ RUN apt-get install -y ansible python-pip
 COPY initctl_faker .
 RUN chmod +x initctl_faker && rm -fr /sbin/initctl && ln -s /initctl_faker /sbin/initctl
 
-# Travis marker
-#RUN echo "TRAVIS=true" > /etc/environment
-RUN echo "export TRAVIS=true" >> /etc/profile
-
 # Install Ansible inventory file
 RUN echo "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts
