@@ -34,9 +34,6 @@ script:
 
   - 'sudo docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible --version'
 
-  # inside docker, we lose this information else
-  - 'echo TRAVIS=true | sudo docker exec --tty "$(cat ${container_id})" tee -a /etc/environment'
-
   # Ansible syntax check.
   - 'sudo docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/juju4.sift/test/integration/default/default.yml --syntax-check'
 
