@@ -26,4 +26,5 @@
     state: present
     dpkg_options: '--force-depends'
   when: ansible_distribution_release == 'xenial'
+  ignore_errors: true
 
