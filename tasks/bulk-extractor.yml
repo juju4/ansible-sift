@@ -1,0 +1,21 @@
+---
+
+- name: download bulk-extractor
+  get_url:
+    url: http://digitalcorpora.org/downloads/bulk_extractor/bulk_extractor-1.5.5.tar.gz
+    dest: /root/bulk_extractor-1.5.5.tar.gz
+    checksum: 'sha256:297a57808c12b81b8e0d82222cf57245ad988804ab467eb0a70cf8669594e8ed'
+    mode: '0644'
+
+- name: uncompress bulk-extractor
+  uncompress:
+    src: /root/bulk_extractor-1.5.5.tar.gz
+    dest: /root
+
+- name: build bulk-extractor
+  command: "{{ item.c }} chdir=/root/bulk_extractor-1.5.5 creates={{ item.f }}"
+  with_items:
+    - { c: './configure --prefix=/usr/local', f: '/root/bulk_extractor-1.5.5/Makefile' }
+    - { c: make, f: '/root/bulk_extractor-1.5.5/src/bulk_extractor' }
+    - { c: 'make install', f: '/usr/local/bin/bulk_extractor' }
+

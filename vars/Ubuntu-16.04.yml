@@ -46,7 +46,8 @@ sift_ppa_packages:
 #    - autopsy
 #    - mantaray
 #    - sift-scripts
-## bulk-extractor : Depends: openjdk-7-jdk but it is not installable = but fine w openjdk-8-jdk. separate install
+## bulk-extractor : Depends: openjdk-7-jdk but it is not installable = but fine w openjdk-8-jdk.
+##  => package not maintained. source install
 #    - bulk-extractor
 #    - flowgrep
     - liblightgrep
