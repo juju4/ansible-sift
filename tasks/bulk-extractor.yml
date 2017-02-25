@@ -8,7 +8,7 @@
     mode: '0644'
 
 - name: uncompress bulk-extractor
-  uncompress:
+  unarchive:
     src: /root/bulk_extractor-1.5.5.tar.gz
     dest: /root
 

@@ -17,7 +17,8 @@ It was tested on the following versions:
 
 ### Operating systems
 
-Tested with vagrant and kitchen on Ubuntu 14.04. Note that there are some ppa dependencies.
+Tested with vagrant and kitchen on Ubuntu 14.04 and 16.04. Note that there are some ppa dependencies.
+Support of Xenial is preliminary depending on sift and gift ppa repository.
 
 ## Example Playbook
 
@@ -85,7 +86,7 @@ $ vagrant provision sift
 [OK]
 ```
 * menu entries are not available be it for sift (unity-based?)
-* travis fails because whole role take more than maximum time limit (50min)
+* travis may fail because role play takes more than maximum time limit (50min)
 * test/vagrant on 'ubuntu/xenial64' have unusual reactions. Please avoid (and not compatible currently, notably missing python2 and sift ppa)
 "Vagrant assumes that this means the command failed!
 hostname -f"
