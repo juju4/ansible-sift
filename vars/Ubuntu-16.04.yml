@@ -187,7 +187,8 @@ sift_packages:
     - nikto
 #    - ntopng
     - okular
-    - open-iscsi
+## https://bugs.launchpad.net/ubuntu/+source/open-iscsi/+bug/1651497
+#    - open-iscsi
     - ophcrack
     - ophcrack-cli
     - outguess
