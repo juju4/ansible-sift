@@ -17,10 +17,8 @@ sift_include_volplugins: true
 #sift_webserver: apache2
 sift_webserver: nginx
 
-#sift_user: vagrant
-sift_user: sansforensics
-#sift_pass: forensics
-sift_pass: '$6$ZofRtF3WJ$A/nw3WXtXsCsbMa/QID0xIkOsfo/pZ6kjMs2.3yjWswTVKXSB1Vhjd2qOhtMvK4rAaT29Mwqs4OJiOdfNyhyv1'
+sift_user: 'sansforensics'
+sift_pass: 'forensics'
 ## want ssh keys?
 sift_public_keys: []
 #sift_public_keys:

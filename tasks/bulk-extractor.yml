@@ -11,6 +11,7 @@
   unarchive:
     src: /root/bulk_extractor-1.5.5.tar.gz
     dest: /root
+    remote_src: True
 
 - name: build bulk-extractor
   command: "{{ item.c }} chdir=/root/bulk_extractor-1.5.5 creates={{ item.f }}"
