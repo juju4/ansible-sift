@@ -1,22 +1,50 @@
 ---
 
-- name: download bulk-extractor
-  get_url:
-    url: http://digitalcorpora.org/downloads/bulk_extractor/bulk_extractor-1.5.5.tar.gz
-    dest: /root/bulk_extractor-1.5.5.tar.gz
-    checksum: 'sha256:297a57808c12b81b8e0d82222cf57245ad988804ab467eb0a70cf8669594e8ed'
-    mode: '0644'
+- set_fact:
+## website seems down. using github. https://github.com/simsong/bulk_extractor/issues/84
+#    be_url: http://downloads.digitalcorpora.org/downloads/bulk_extractor/bulk_extractor-1.5.5.tar.gz
+#    be_hash: 'sha256:297a57808c12b81b8e0d82222cf57245ad988804ab467eb0a70cf8669594e8ed'
+#    be_path: /root/bulk_extractor-1.5.5
+    be_path: /root/bulk_extractor
 
-- name: uncompress bulk-extractor
-  unarchive:
-    src: /root/bulk_extractor-1.5.5.tar.gz
-    dest: /root
-    remote_src: True
+#- name: download bulk-extractor
+#  get_url:
+#    url: "{{ be_url }}"
+#    dest: "/root/bulk_extractor-{{ be_url | basename }}"
+#    checksum: "{{ be_hash }}"
+#    mode: '0644'
+
+#- name: uncompress bulk-extractor
+#  unarchive:
+#    src: "/root/bulk_extractor-{{ be_url | basename }}"
+#    dest: /root
+#    remote_src: True
+
+- name: git clone bulk extractor
+  git:
+    repo: https://github.com/simsong/bulk_extractor.git
+    dest: "{{ be_path }}"
+    version: HEAD
+
+- name: ensure development tools are present
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - build-essential
+    - libtool
+    - autotools-dev
+    - automake
+    - autoconf
 
 - name: build bulk-extractor
-  command: "{{ item.c }} chdir=/root/bulk_extractor-1.5.5 creates={{ item.f }}"
+  command: "{{ item.c }}"
+  args:
+    chdir: "{{ be_path }}"
+    creates: "{{ item.f }}"
   with_items:
-    - { c: './configure --prefix=/usr/local', f: '/root/bulk_extractor-1.5.5/Makefile' }
-    - { c: make, f: '/root/bulk_extractor-1.5.5/src/bulk_extractor' }
+    - { c: 'sh bootstrap.sh', f: "{{ be_path }}/configure" }
+    - { c: './configure --prefix=/usr/local', f: "{{ be_path }}/Makefile" }
+    - { c: make, f: "{{ be_path }}/src/bulk_extractor" }
     - { c: 'make install', f: '/usr/local/bin/bulk_extractor' }
 
