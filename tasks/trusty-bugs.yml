@@ -5,6 +5,8 @@
   command: "find /home/ -iname .Xauthority"
   register: xauthfiles
   changed_when: false
+  ignore_errors: true
+  become: yes
 - block:
     - name: clean .Xauthority files
       file: dest={{ item }} state=absent

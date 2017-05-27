@@ -58,6 +58,7 @@
     - { regexp: '^PasswordAuthentication', line: 'PasswordAuthentication no' }
     - { regexp: '^PermitRootLogin', line: 'PermitRootLogin without-password' }
 
+- debug: var=sift_do_x11
 - include: x11.yml
   when: sift_do_x11 is defined and sift_do_x11
   tags:
