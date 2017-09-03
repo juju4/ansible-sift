@@ -2,5 +2,5 @@
 
 - hosts: all
   roles:
-    - sift
+    - juju4.sift
 
