@@ -206,8 +206,8 @@ sift_packages:
 #    - unity-greeter
     - ubuntu-wallpapers
 
-sift_docker_pkg:
-    - docker-engine
+# moved to separate role
+sift_docker_pkg: []
 
 sift_pip_packages_deps:
 ## for stix
