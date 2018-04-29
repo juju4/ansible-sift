@@ -1,9 +1,9 @@
 ---
 
 - name: copy sift foremost conf to /etc
-  command: "rsync -ci /tmp/sift-files/foremost/foremost.conf /etc/foremost.conf"
-  register: rsync_result
-  changed_when: 'rsync_result.stdout != ""'
+  copy:
+    src: /tmp/sift-files/foremost/foremost.conf
+    dest: /etc/foremost.conf
 
 - stat: path=/usr/share/tsk/sorter
   register: tsksorter
@@ -13,60 +13,44 @@
   changed_when: false
   ignore_errors: true
 - name: copy sift tsk sorter files to package location
-  command: "rsync -ci {{ item }} /usr/share/tsk/sorter/"
-# [WARNING]: Unable to find '/tmp/sift-files/sorter' in expected paths. = executed on host only
-#  with_fileglob:
-#    - "/tmp/sift-files/sorter/*.sort"
-  with_items: "{{ sorter.stdout_lines }}"
-  register: rsync_result
-  changed_when: 'rsync_result.stdout != ""'
+  copy:
+    src: "{{ item }}"
+    dest: /usr/share/tsk/sorter/
+  with_fileglob:
+    - "/tmp/sift-files/sorter/*.sort"
   when: tsksorter.stat.exists
 
 - name: copy sift samba files
-  command: "rsync -ci {{ item }} /etc/samba/"
-  with_items:
-    - /tmp/sift-files/samba/smb.conf
-  register: rsync_result
-  changed_when: 'rsync_result.stdout != ""'
+  copy:
+    src: /tmp/sift-files/samba/smb.conf
+    dest: /etc/samba/smb.conf
 
 ## FIXME! upstream: some files are there twice in both wbtools and scripts: extract_mft_record_slack.py, ShellItems.py, shellbags.py
-- name: list sift various tools files
-  command: find /tmp/sift-files/wbtools/ /tmp/sift-files/pdf-tools/ /tmp/sift-files/scripts/ /tmp/sift-files/densityscout/densityscout /tmp/sift-files/sift/scripts/ -type f
-  register: misctools
-  changed_when: false
-  ignore_errors: true
 - name: copy sift files for various tools
-  command: "rsync -ci {{ item }} /usr/local/bin/"
-#  with_fileglob:
-#    - /tmp/sift-files/wbtools/*
-#    - /tmp/sift-files/pdf-tools/*
-#    - /tmp/sift-files/scripts/*
-#    - /tmp/sift-files/densityscout/densityscout
+  copy:
+    src: "{{ item }}"
+    dest: /usr/local/bin/
+  with_fileglob:
+    - /tmp/sift-files/wbtools/*
+    - /tmp/sift-files/pdf-tools/*
+    - /tmp/sift-files/scripts/*
+    - /tmp/sift-files/densityscout/densityscout
 ## FIXME! submodule missing...
 ##    - /tmp/sift-files/pe_carver/*.py
 ##    - /tmp/sift-files/page_brute/*.py     # empty?
-#    - /tmp/sift-files/java_idx_parser/*.py
-#    - /tmp/sift-files/sift/scripts/*
-  with_items: "{{ misctools.stdout_lines }}"
-  register: rsync_result
-  changed_when: 'rsync_result.stdout != ""'
+    - /tmp/sift-files/java_idx_parser/*.py
+    - /tmp/sift-files/sift/scripts/*
 
 - stat: path=/usr/lib/python2.7/dist-packages/volatility
   register: vol
-## outside of block to ensure volplugins is defined...
-- name: list sift volatility plugins files
-  command: find /tmp/sift-files/volatility/ -type f
-  register: volplugins
-  changed_when: false
-  ignore_errors: true
 - block:
     - name: copy sift volatility files
-      command: "rsync -ci --chmod 0644 {{ item }} /usr/lib/python2.7/dist-packages/volatility/plugins/"
-#      with_fileglob:
-#        - /tmp/sift-files/volatility/*.py
-      with_items: "{{ volplugins.stdout_lines }}"
-      register: rsync_result
-      changed_when: 'rsync_result.stdout != ""'
+      copy:
+        src: "{{ item }}"
+        dest: /usr/lib/python2.7/dist-packages/volatility/plugins/
+        mode: '0644'
+      with_fileglob:
+        - /tmp/sift-files/volatility/*.py
 
 ## why? https://github.com/sans-dfir/sift-files/blob/master/install.sh
     - name: remove volatility javarat plugins
@@ -85,23 +69,23 @@
     - /usr/share/regripper
 
 - name: copy sift tools directories to /usr/share/sift
-  command: "rsync -cir {{ item }} /usr/share/sift/"
+  copy:
+    src: "{{ item }}"
+    dest: /usr/share/sift/
   with_items:
     - /tmp/sift-files/sift/scripts
     - /tmp/sift-files/sift/other
     - /tmp/sift-files/sift/images
     - /tmp/sift-files/sift/audio
     - /tmp/sift-files/sift/resources
-  register: rsync_result
-  changed_when: 'rsync_result.stdout != ""'
 
 - name: copy regripper files to /usr/share/regripper
-  command: "rsync -ci {{ item }} /usr/share/regripper/"
+  copy:
+    src: "{{ item }}"
+    dest: /usr/share/regripper/
   with_items:
     - /tmp/sift-files/regripper/rip.pl
     - /tmp/sift-files/regripper/plugins
-  register: rsync_result
-  changed_when: 'rsync_result.stdout != ""'
 
 - name: ensure /usr/local/bin/id absent
   file: dest=/usr/local/bin/id state=absent
