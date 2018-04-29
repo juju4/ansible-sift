@@ -64,7 +64,6 @@ sift_ppa_packages:
 
 sift_packages:
     - openssh-server
-    - python-software-properties
     - dos2unix
 # l.200 https://github.com/sans-dfir/sift-bootstrap/blob/0d1bd146377050f9217b8187837516659e361060/bootstrap.sh
     - aeskeyfind
@@ -72,10 +71,10 @@ sift_packages:
 #    - afterglow
     - aircrack-ng
     - arp-scan
-#    - autopsy
+    - autopsy
     - bcrypt
-    - bitpim
-    - bitpim-lib
+#    - bitpim
+#    - bitpim-lib
     - bkhive
     - bless
     - blt
@@ -194,7 +193,7 @@ sift_packages:
     - outguess
     - p0f
     - p7zip-full
-    - pdftk
+#    - pdftk    # artful but not bionic
     - pev
     - phonon
     - pv
@@ -208,31 +207,30 @@ sift_packages:
 #    - python-ntdsxtract
     - python-pefile
     - python-pip
-#    - python-plaso
+    - plaso
     - python-qt4
     - python-tk
-#    - python-volatility
     - python-yara
 ## mantaray : Depends: pytsk3 but it is not installable
 ## FIXME! pytsk3 available in https://launchpad.net/~gift/+archive/ubuntu/stable but not found? python-pytsk3 found in ppa:gift
 ##    - pytsk3
-#    - python-pytsk3
+    - python-tsk
+    - python3-tsk
     - qemu
     - qemu-utils
 ## note: radare and radare-gtk conflict each other...
 #    - radare
-#    - radare-gtk       ## only precise+trusty
 ## l.350 https://github.com/sans-dfir/sift-bootstrap/blob/0d1bd146377050f9217b8187837516659e361060/bootstrap.sh
     - radare2
 #    - rar
-    - readpst
+#    - readpst  # artful but not bionic
 #    - regripper
     - rsakeyfind
     - safecopy
     - samba
     - samdump2
     - scalpel
-#    - sleuthkit
+    - sleuthkit
     - socat
     - ssdeep
     - ssldump
@@ -250,8 +248,6 @@ sift_packages:
     - transmission
 #    - ubuntu-tweak
 #    - unity-control-center
-## msg: No package matching 'unrar' is available
-#   - unrar
     - unrar-free
     - upx-ucl
     - vbindiff
@@ -259,7 +255,7 @@ sift_packages:
     - virtuoso-minimal
     - vmfs-tools
     - winbind
-    - wine
+    - wine-stable
     - wireshark
     - xdot
     - xfsprogs
@@ -268,8 +264,9 @@ sift_packages:
     - libglib2.0-bin
 #    - unity-greeter
     - ubuntu-wallpapers
-    - "{{ gift_ppa_packages }}"
-    - "{{ sift_ppa_packages }}"
+## 201804 Currently bionic not supported
+#    - "{{ gift_ppa_packages }}"
+#    - "{{ sift_ppa_packages }}"
 
 # moved to separate role
 sift_docker_pkg: []
@@ -312,8 +309,8 @@ sift_pip_packages:
 ## xenial: random issue w avahi-daemon, dependency of libnss-mdns
 ##	https://forum.proxmox.com/threads/ubuntu-16-04-template-for-proxmox-4-1.27034/
 
-gift_ppa_symlinks:
-    - { src: '/usr/bin/ewfmount', path: '/usr/bin/mount_ewf.py' }
+gift_ppa_symlinks: []
+#    - { src: '/usr/bin/ewfmount', path: '/usr/bin/mount_ewf.py' }
 
 sift_ppa_symlinks: []
 
