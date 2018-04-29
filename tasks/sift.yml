@@ -164,8 +164,13 @@
     - "{{ gift_ppa_symlinks }}"
     - "{{ sift_ppa_symlinks }}"
 
+- name: Check if /etc/apt/apt.conf.d/10periodic exists
+  stat:
+    path: /etc/apt/apt.conf.d/10periodic
+  register: periodic
 - name: disable automated package update
   lineinfile: dest=/etc/apt/apt.conf.d/10periodic regexp='^APT::Periodic::Update-Package-Lists' line='APT::Periodic::Update-Package-Lists "0";'
+  when: periodic.stat.exists
 
 - name: ensure current user is used for samba
   replace: dest=/etc/samba/smb.conf regexp='SIFT_USER' replace="{{ sift_user }}"
@@ -224,7 +229,12 @@
     - windows-to-unix-cheatsheet.pdf
 
 - name: Add extra device loop backs
-  lineinfile: dest=/etc/rc.local regexp='seq 8 100' line='for i in `seq 8 100`; do mknod /dev/loop$i b 7 $i; done'
+  lineinfile:
+    dest: /etc/rc.local
+    regexp: 'seq 8 100'
+    line: 'for i in `seq 8 100`; do mknod /dev/loop$i b 7 $i; done'
+    backup: yes
+    create: yes
 
 ## Manual or alternative
 ## https://github.com/jistr/ansible-gsetting
