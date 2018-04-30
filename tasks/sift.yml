@@ -268,12 +268,13 @@
 
 - stat: path=/usr/share/sift/other/gnome-terminal.desktop
   register: gtd
-- command: "rsync -ci --chown={{ sift_user }} /usr/share/sift/other/gnome-terminal.desktop /home/{{ sift_user }}/.config/autostart/gnome-terminal.desktop"
-  register: rsync_result
-  changed_when: 'rsync_result.stdout != ""'
+- name: autostart sift gnome-terminal
+  copy:
+    src: /usr/share/sift/other/gnome-terminal.desktop
+    dest: "/home/{{ sift_user }}/.config/autostart/gnome-terminal.desktop"
+    owner: "{{ sift_user }}"
   when: gtd.stat.exists
 
-- file: src=/usr/share/sift/images/forensics_blue.jpg dest=/usr/share/backgrounds/warty-final-ubuntu.png mode=0644 state=link force=yes
+- name: symlink sift forensics background
+  file: src=/usr/share/sift/images/forensics_blue.jpg dest=/usr/share/backgrounds/warty-final-ubuntu.png mode=0644 state=link force=yes
   when: sift_x11_background is defined and sift_x11_background
-
-

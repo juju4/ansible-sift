@@ -55,14 +55,16 @@
 - stat: path=/usr/share/unity-greeter/logo.png.ubuntu
   register: logoubuntu2
 - name: backup ubuntu unity greeter logo
-  command: "rsync -ci --chown={{ sift_user }} /usr/share/unity-greeter/logo.png /usr/share/unity-greeter/logo.png.ubuntu"
-  register: rsync_result
-  changed_when: 'rsync_result.stdout != ""'
+  copy:
+    src: /usr/share/unity-greeter/logo.png
+    dest: /usr/share/unity-greeter/logo.png.ubuntu
+    owner: "{{ sift_user }}"
   when: not logoubuntu2.stat.exists and logoubuntu1.stat.exists
 - name: copy sift unity greeter logo
-  command: "rsync -ci --chown={{ sift_user }} /usr/share/sift/images/login_logo.png /usr/share/unity-greeter/logo.png"
-  register: rsync_result
-  changed_when: 'rsync_result.stdout != ""'
+  copy:
+    src: /usr/share/sift/images/login_logo.png
+    dest: /usr/share/unity-greeter/logo.png
+    owner: "{{ sift_user }}"
   when: not logoubuntu1.stat.exists
 
 - include: trusty-bugs.yml
