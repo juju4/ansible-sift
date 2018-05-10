@@ -14,11 +14,12 @@ It was tested on the following versions:
  * 1.9
  * 2.0
  * 2.2
+ * 2.5
 
 ### Operating systems
 
-Tested with vagrant and kitchen on Ubuntu 14.04 and 16.04. Note that there are some ppa dependencies.
-Support of Xenial is preliminary depending on sift and gift ppa repository.
+Tested with vagrant and kitchen on Ubuntu 14.04, 16.04 and 18.04. Note that there are some ppa dependencies.
+Support of Bionic is preliminary depending on sift and gift ppa repository.
 
 ## Example Playbook
 
