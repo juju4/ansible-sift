@@ -39,7 +39,7 @@
 ## FIXME! submodule missing...
 ##    - /tmp/sift-files/pe_carver/*.py
 ##    - /tmp/sift-files/page_brute/*.py     # empty?
-    - /tmp/sift-files/java_idx_parser/*.py
+#    - /tmp/sift-files/java_idx_parser/*.py
     - /tmp/sift-files/sift/scripts/*
 
 - stat: path=/usr/lib/python2.7/dist-packages/volatility
