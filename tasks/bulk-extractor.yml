@@ -5,6 +5,7 @@
 #    be_url: http://downloads.digitalcorpora.org/downloads/bulk_extractor/bulk_extractor-1.5.5.tar.gz
 #    be_hash: 'sha256:297a57808c12b81b8e0d82222cf57245ad988804ab467eb0a70cf8669594e8ed'
 #    be_path: /root/bulk_extractor-1.5.5
+    hashdb_path: /root/hashdb
     be_path: /root/bulk_extractor
 
 #- name: download bulk-extractor
@@ -19,6 +20,13 @@
 #    src: "/root/bulk_extractor-{{ be_url | basename }}"
 #    dest: /root
 #    remote_src: True
+
+- name: git clone hashdb
+  git:
+    repo: https://github.com/NPS-DEEP/hashdb.git
+    dest: "{{ hashdb_path }}"
+    version: HEAD
+    update: no
 
 - name: git clone bulk extractor
   git:
@@ -36,6 +44,40 @@
     - autotools-dev
     - automake
     - autoconf
+    - libssl-dev
+    - libtsk-dev
+# for hashdb
+    - libtool-bin
+    - python-dev
+    - swig
+    - libewf-dev
+    - libbz2-dev
+    - zlib1g-dev
+
+- name: ensure symlink for lib/tsk3
+  file:
+    src: /usr/include/tsk
+    dest: /usr/include/tsk3
+    state: link
+
+- name: patch hashdb - hashdb#6
+  replace:
+    dest: "{{ hashdb_path }}/configure.ac"
+    regexp: '^AC_CHECK_LIB\(\[ssl\],\[SSL_library_init\],\[\],\[AC_MSG_ERROR\(\[Could not find ssl library\]\)\]\)'
+    replace: 'AC_CHECK_LIB([ssl],[OPENSSL_init_ssl],[],[AC_MSG_ERROR([Could not find ssl library])])'
+    backup: yes
+  when: ansible_distribution_release == 'bionic'
+
+- name: build hashdb
+  command: "{{ item.c }}"
+  args:
+    chdir: "{{ be_path }}"
+    creates: "{{ item.f }}"
+  with_items:
+    - { c: 'sh bootstrap.sh', f: "{{ hashdb_path }}/configure" }
+    - { c: './configure --prefix=/usr/local', f: "{{ hashdb_path }}/Makefile" }
+    - { c: make, f: "{{ hashdb_path }}/src_libhashdb/libhashdb.o" }
+    - { c: 'make install', f: '/usr/local/lib/libhashdb.a' }
 
 - name: build bulk-extractor
   command: "{{ item.c }}"
