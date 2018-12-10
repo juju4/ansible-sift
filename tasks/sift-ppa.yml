@@ -13,21 +13,27 @@
 - name: Check if /usr/share/regripper/plugins/usrclass-all exists
   stat: path=/usr/share/regripper/plugins/usrclass-all
   register: rrusr
+- name: Check if /usr/share/regripper/plugins/usrclass exists
+  stat: path=/usr/share/regripper/plugins/usrclass
+  register: rrusr2
 - name: Check if /usr/share/regripper/plugins/ntuser-all exists
   stat: path=/usr/share/regripper/plugins/ntuser-all
   register: rrnt
+- name: Check if /usr/share/regripper/plugins/ntuser exists
+  stat: path=/usr/share/regripper/plugins/ntuser
+  register: rrnt2
 - name: Link regripper usrclass
   file:
     src: /usr/share/regripper/plugins/usrclass-all
     dest: /usr/share/regripper/plugins/usrclass
     state: link
-  when: rrusr.stat.exists
+  when: rrusr.stat.exists and not rrusr2.stat.exists
 - name: Link regripper ntuser
   file:
     src: /usr/share/regripper/plugins/ntuser-all
     dest: /usr/share/regripper/plugins/ntuser
     state: link
-  when: rrnt.stat.exists
+  when: rrnt.stat.exists and not rrnt2.stat.exists
 - name: Ensure rip.pl permissions
   file:
     path: "/usr/share/regripper/rip.pl"
