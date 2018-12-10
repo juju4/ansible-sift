@@ -316,4 +316,3 @@ gift_ppa_symlinks:
     - { src: '/usr/bin/ewfmount', path: '/usr/bin/mount_ewf.py' }
 
 sift_ppa_symlinks: []
-

@@ -10,7 +10,11 @@
     - elasticsearch
 
 - name: enable elasticsearch http.cors.enabled
-  lineinfile: "dest=/etc/elasticsearch/elasticsearch.yml regexp='^http.cors.enabled:' line='http.cors.enabled: true' create=yes"
+  lineinfile:
+    dest: /etc/elasticsearch/elasticsearch.yml
+    regexp: '^http.cors.enabled:'
+    line: 'http.cors.enabled: true'
+    create: yes
 
 #- stat: path=/etc/rc.d/elasticsearch
 #  register: rcd
@@ -20,4 +24,3 @@
 ## don't load it by default
 - name: don't load elasticsearch by default
   service: name=elasticsearch state=stopped enabled=no
-

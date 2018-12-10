@@ -1,6 +1,7 @@
 ---
 
-- set_fact:
+- name: Set fact for bulk_extractor
+  set_fact:
 ## website seems down. using github. https://github.com/simsong/bulk_extractor/issues/84
 #    be_url: http://downloads.digitalcorpora.org/downloads/bulk_extractor/bulk_extractor-1.5.5.tar.gz
 #    be_hash: 'sha256:297a57808c12b81b8e0d82222cf57245ad988804ab467eb0a70cf8669594e8ed'
@@ -89,4 +90,3 @@
     - { c: './configure --prefix=/usr/local', f: "{{ be_path }}/Makefile" }
     - { c: make, f: "{{ be_path }}/src/bulk_extractor" }
     - { c: 'make install', f: '/usr/local/bin/bulk_extractor' }
-

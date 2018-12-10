@@ -1,5 +1,6 @@
 ---
 galaxy_info:
+  role_name: sift
   author: juju4
   description: SANS Investigative Forensic Toolkit (SIFT) Workstation Ansible role for Ubuntu-based system
   license: BSD
@@ -13,7 +14,6 @@ galaxy_info:
   galaxy_tags:
   - system
   - security
-
 dependencies:
   - geerlingguy.java
 ## use external role for docker-engine repository.
@@ -23,4 +23,3 @@ dependencies:
 ## sift ppa volatility or separate role
   - juju4.volatility
   - juju4.rekall
-

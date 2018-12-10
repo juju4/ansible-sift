@@ -7,4 +7,3 @@
 #    - sift_do_x11: false
   roles:
     - juju4.sift
-

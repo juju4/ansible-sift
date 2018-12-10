@@ -19,5 +19,4 @@
     - name: install languages package for {{ lang }}
       apt: name={{ item }} state=present
       with_items: "{{ pkglist.stdout.split(' ') }}"
-  when: pkglist.stdout is defined and pkglist.stdout != ''
-
+  when: pkglist.stdout is defined and pkglist.stdout

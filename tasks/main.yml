@@ -1,8 +1,13 @@
 ---
 - debug: var=ansible_env
 
-- fail: msg="This role is currently only compatible with Ubuntu Trusty and Xenial. Trial for Bionic"
-  when: ansible_distribution != 'Ubuntu' or (ansible_distribution_version != '14.04' and ansible_distribution_version != '16.04' and ansible_distribution_version != '18.04')
+- name: FATAL
+  fail: msg="This role is currently only compatible with Ubuntu Trusty and Xenial. Trial for Bionic"
+  when: >
+    ansible_distribution != 'Ubuntu' or
+    (ansible_distribution_version != '14.04' and
+      ansible_distribution_version != '16.04' and ansible_distribution_version != '18.04'
+    )
 
 - name: Include version-specific variables for Ubuntu.
   include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
@@ -10,9 +15,10 @@
 
 - name: Add authorized keys for {{ sift_user }} user
   authorized_key:
-    "user='{{ sift_user }}' key='{{ item }}'"
+    user: "{{ sift_user }}"
+    key: "{{ item }}"
   with_file: "{{ sift_public_keys }}"
-  when: sift_public_keys is defined and sift_public_keys != ""
+  when: sift_public_keys is defined and sift_public_keys
   become: yes
 
 ## fails under lxd+systemd, https://github.com/ansible/ansible-modules-core/issues/5582
@@ -39,7 +45,8 @@
   file: "dest=/home/{{ sift_user }}/.gem/specs state=directory mode=0755 owner={{ sift_user }}"
   when: usergemspecs is defined and usergemspecs.stat.exists
 
-- command: dpkg --print-foreign-architectures
+- name: Check current dpkg foreign-architectures
+  command: dpkg --print-foreign-architectures
   register: archi
   changed_when: False
   when: ansible_architecture == 'x86_64'
@@ -53,7 +60,11 @@
     - sift
 
 - name: Restrict sshd config
-  lineinfile: dest=/etc/ssh/sshd_config regexp="{{ item.regexp }}" line="{{ item.line }}" backup=yes
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    backup: yes
   with_items:
     - { regexp: '^PasswordAuthentication', line: 'PasswordAuthentication no' }
     - { regexp: '^PermitRootLogin', line: 'PermitRootLogin without-password' }
@@ -65,10 +76,14 @@
     - sift
 
 - name: Review some limits
-  lineinfile: dest=/etc/security/limits.d/openfiles regexp="^{{ sift_user }}\t\thard\tnofiles\t\t2048" line="{{ sift_user }}\t\thard\tnofiles\t\t2048" state=present create=yes
+  lineinfile:
+    dest: /etc/security/limits.d/openfiles
+    regexp: "^{{ sift_user }}\t\thard\tnofiles\t\t2048"
+    line: "{{ sift_user }}\t\thard\tnofiles\t\t2048"
+    state: present
+    create: yes
 
 - include: "languages-additional.yml lang={{ outer_item }}"
   with_items: "{{ sift_extra_languages }}"
   loop_control:
     loop_var: outer_item
-

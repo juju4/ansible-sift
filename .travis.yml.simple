@@ -35,4 +35,3 @@ script:
 
 # serverspec tests
   - 'test/integration/default/serverspec/run-local-tests.sh'
-

@@ -25,7 +25,8 @@
     src: /tmp/sift-files/samba/smb.conf
     dest: /etc/samba/smb.conf
 
-## FIXME! upstream: some files are there twice in both wbtools and scripts: extract_mft_record_slack.py, ShellItems.py, shellbags.py
+## FIXME! upstream: some files are there twice in both wbtools and scripts:
+##      extract_mft_record_slack.py, ShellItems.py, shellbags.py
 - name: copy sift files for various tools
   copy:
     src: "{{ item }}"
@@ -104,4 +105,3 @@
 - name: sift fixubuntu.sh
   command: bash fixubuntu.sh chdir=/tmp/sift-files
   ignore_errors: true
-

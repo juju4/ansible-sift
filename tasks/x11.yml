@@ -1,6 +1,7 @@
 ---
 
-#to avoid error at install. unity only? (bluez* gnome-bluetooth* gnome-user-share* indicator-bluetooth* unity-control-center* unity-control-center-signon*)
+# to avoid error at install. unity only? (bluez* gnome-bluetooth* gnome-user-share* indicator-bluetooth*
+#       unity-control-center* unity-control-center-signon*)
 #bluez package
 #systemctl disable bluetooth.service
 - name: bluez package install
@@ -20,7 +21,8 @@
     - ubuntu-desktop
     - ubuntu-session
     - unity-greeter
-## conflicts file /usr/bin/vba_extract.py between python-xlsxwriter (required by plaso, python-plaso) and python3-xlsxwriter (required by ubuntu-desktop chain)
+## conflicts file /usr/bin/vba_extract.py between python-xlsxwriter (required by plaso, python-plaso) and
+##      python3-xlsxwriter (required by ubuntu-desktop chain)
   when: sift_x11_env is defined and sift_x11_env and ansible_distribution_release == 'trusty'
 ## mostly for travis to avoid stalling "No output has been received in the last 10m0s"...
   async: 1200
@@ -40,9 +42,17 @@
   poll: 15
 
 - name: x11 ensure desktop-directories exists
-  file: dest=/home/{{ sift_user }}/.local/share/desktop-directories mode=0700 owner={{ sift_user }} state=directory
+  file:
+    dest: "/home/{{ sift_user }}/.local/share/desktop-directories"
+    mode: '0700'
+    owner: "{{ sift_user }}"
+    state: directory
 - name: adding sift directory shortcut
-  copy: src=sift.directory dest=/home/{{ sift_user }}/.local/share/desktop-directories/sift.directory mode=0644 owner={{ sift_user }}
+  copy:
+    src: sift.directory
+    dest: "/home/{{ sift_user }}/.local/share/desktop-directories/sift.directory"
+    mode: '0644'
+    owner: "{{ sift_user }}"
 
 - name: disable GUI upgrade prompt
   replace: dest=/etc/update-manager/release-upgrades regexp='^Prompt=.*' replace='Prompt=never'
@@ -50,9 +60,11 @@
 
 - name: ensure unity-greeter directory exists
   file: dest=/usr/share/unity-greeter state=directory mode=0755
-- stat: path=/usr/share/unity-greeter/logo.png
+- name: Check if /usr/share/unity-greeter/logo.png exists
+  stat: path=/usr/share/unity-greeter/logo.png
   register: logoubuntu1
-- stat: path=/usr/share/unity-greeter/logo.png.ubuntu
+- name: Check if /usr/share/unity-greeter/logo.png.ubuntu exists
+  stat: path=/usr/share/unity-greeter/logo.png.ubuntu
   register: logoubuntu2
 - name: backup ubuntu unity greeter logo
   copy:
@@ -69,4 +81,3 @@
 
 - include: trusty-bugs.yml
   when: ansible_distribution_release == 'trusty'
-

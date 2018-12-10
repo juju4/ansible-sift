@@ -257,4 +257,3 @@ sift_ppa_symlinks:
 # Fix for https://github.com/sans-dfir/sift/issues/41
     - { src: '/usr/bin/mactime', path: '/usr/local/bin/mactime-sleuthkit' }
     - { src: '/usr/share/regripper/rip.pl', path: '/usr/local/bin/rip.pl' }
-
