@@ -8,6 +8,8 @@
   with_items:
     - locales
     - language-selector-common
+  register: pkg_result
+  until: pkg_result is success
 
 - name: get necessary package list for lang {{ lang }}
   command: "check-language-support -l {{ lang }}"
@@ -18,4 +20,6 @@
 - block:
     - name: install languages package for {{ lang }}
       apt: name={{ pkglist.stdout.split(' ') }} state=present
+      register: pkg_result
+      until: pkg_result is success
   when: pkglist.stdout is defined and pkglist.stdout

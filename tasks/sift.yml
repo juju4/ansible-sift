@@ -48,38 +48,40 @@
   debconf: name=ttf-mscorefonts-installer question='msttcorefonts/accepted-mscorefonts-eula' value=true vtype='select'
 
 - name: SIFT | packages install
-  apt: name={{item}} state=present update_cache=yes cache_valid_time=3600
-  with_items: "{{ sift_packages }}"
+  apt: name={{ sift_packages }} state=present update_cache=yes cache_valid_time=3600
   notify:
     - Updating ClamAV Signatures
   async: 7200
   poll: 300
+  register: pkg_result
+  until: pkg_result is success
 
 - name: SIFT | apache2 packages install
-  apt: name={{ item }} state=present
-  with_items:
-    - apache2
+  apt: name=apache2 state=present
   when: sift_webserver is defined and sift_webserver == 'apache2'
+  register: pkg_result
+  until: pkg_result is success
 
 - name: SIFT | docker packages install
-  apt: name={{ item }} state=present
-  with_items: "{{ sift_docker_pkg }}"
+  apt: name={{ sift_docker_pkg }} state=present
   when: sift_docker
+  register: pkg_result
+  until: pkg_result is success
 
 ## missing dependencies in some case?
 - name: Debian | gedit install
-  apt: name={{ item }} state=present
-  with_items:
-    - gedit
+  apt: name=gedit state=present
   ignore_errors: true
+  register: pkg_result
+  until: pkg_result is success
 
 - stat: path=/usr/bin/pescan
   register: rpev
 - name: Debian | pev install (only if not remnux-pev)
-  apt: name={{ item }} state=present
-  with_items:
-    - pev
+  apt: name=pev state=present
   when: not rpev.stat.exists
+  register: pkg_result
+  until: pkg_result is success
 
 ##- name: Setting up auto-login for user {{ sift_user }}
 ##- name: Setting up auto-login for user {{ sift_user }}
@@ -94,11 +96,13 @@
 - include: pip-upgrade.yml
 
 - name: Install pip packages dependencies
-  package: name={{ item }} state=present
-  with_items: "{{ sift_pip_packages_deps }}"
+  package: name={{ sift_pip_packages_deps }} state=present
+  register: pkg_result
+  until: pkg_result is success
 - name: Install pip packages
-  pip: name={{item}} state=present
-  with_items: "{{ sift_pip_packages }}"
+  pip: name={{ sift_pip_packages }} state=present
+  register: pkg_result
+  until: pkg_result is success
 
 - name: Install perl modules
   cpanm: name={{ item }}
@@ -243,7 +247,8 @@
 #- name: Cleaning up broken symlinks on Desktop
 #  command: "find -L /home/{{ sift_user }}/Desktop -type l -delete"
 
-- file: dest="/home/{{ sift_user }}/Desktop" state=directory mode=0755
+- name: Ensure user Desktop directory exists
+  file: dest="/home/{{ sift_user }}/Desktop" state=directory mode=0755
 - name: Adding all SIFT Resources to Desktop
   file:
     src: "/usr/share/sift/resources/{{ item }}"
@@ -280,7 +285,8 @@
   become: yes
   become_user: "{{ sift_user }}"
   when: sift_x11_background is defined and sift_x11_background
-- command: gsettings set com.canonical.unity-greeter background file:///usr/share/sift/images/forensics_blue.jpg
+- name: Set desktop background with gsettings
+  command: gsettings set com.canonical.unity-greeter background file:///usr/share/sift/images/forensics_blue.jpg
   when: ansible_distribution_version == '12.04' and sift_x11_background is defined and sift_x11_background
 
 - name: SIFT Configuration Function

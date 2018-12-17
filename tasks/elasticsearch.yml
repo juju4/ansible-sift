@@ -5,11 +5,15 @@
 
 - name: import Elasticsearch repository key
   apt_key: url=https://packages.elasticsearch.org/GPG-KEY-elasticsearch state=present
+  register: pkg_result
+  until: pkg_result is success
 
 - name: Debian | packages install
   apt: name={{item}} state=present update_cache=yes
   with_items:
     - elasticsearch
+  register: pkg_result
+  until: pkg_result is success
 
 - name: enable elasticsearch http.cors.enabled
   lineinfile:

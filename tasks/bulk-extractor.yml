@@ -54,6 +54,8 @@
     - libewf-dev
     - libbz2-dev
     - zlib1g-dev
+  register: pkg_result
+  until: pkg_result is success
 
 - name: ensure symlink for lib/tsk3
   file:
