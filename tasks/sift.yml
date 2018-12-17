@@ -37,6 +37,7 @@
 - name: check sources.list
   command: cat /etc/apt/sources.list
   register: sources
+  change_when: false
 - debug: var=sources.stdout_lines
 # Some 64-bit systems are not configured to support i386 packages. Let's make sure they are enabled. (done in main.yml)
 #- name: Ensure both i386/x86_64 architecture support for packages
@@ -76,7 +77,8 @@
   register: pkg_result
   until: pkg_result is success
 
-- stat: path=/usr/bin/pescan
+- name: Check if pescan is present
+  stat: path=/usr/bin/pescan
   register: rpev
 - name: Debian | pev install (only if not remnux-pev)
   apt: name=pev state=present
@@ -109,6 +111,8 @@
   cpanm: name={{ item }}
   with_items:
     - Net::Wigle
+  register: pkg_result
+  until: pkg_result is success
 
 - block:
     - include: elasticsearch.yml
@@ -117,10 +121,13 @@
 
 
 - name: Install SIFT files
-  git: repo=https://github.com/sans-dfir/sift-files
-       dest=/tmp/sift-files
-       recursive=no
-## FIXME! (if recursive=yes) Failed to init/update submodules: No submodule mapping found in .gitmodules for path 'Java_IDX_Parser'
+  git:
+    repo: https://github.com/sans-dfir/sift-files
+    dest: /tmp/sift-files
+    version: HEAD
+    recursive: no
+## FIXME! (if recursive=yes) Failed to init/update submodules: No submodule mapping found in .gitmodules
+##      for path 'Java_IDX_Parser'
 #- command: "bash install.sh chdir=/tmp/sift-files"
 #  ignore_errors: true
 - include: sift-files-install.yml
@@ -183,8 +190,8 @@
     - { src: '/usr/bin/gedit', path: '/usr/bin/kedit' }
     - { src: '/etc/foremost.conf', path: '/usr/local/etc/foremost.conf' }
 #    - { src: '/usr/bin/iscsiadm', path: '/sbin/iscsiadm' }
-    - "{{ gift_ppa_symlinks }}"
-    - "{{ sift_ppa_symlinks }}"
+    - "{{  gift_ppa_symlinks }}"
+    - "{{  sift_ppa_symlinks }}"
 
 - name: Check if /etc/apt/apt.conf.d/10periodic exists
   stat:

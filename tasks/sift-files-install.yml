@@ -44,7 +44,8 @@
 #    - /tmp/sift-files/java_idx_parser/*.py
     - /tmp/sift-files/sift/scripts/*
 
-- stat: path=/usr/lib/python2.7/dist-packages/volatility
+- name: Check if volatility is present
+  stat: path=/usr/lib/python2.7/dist-packages/volatility
   register: vol
 - block:
     - name: copy sift volatility files
@@ -104,5 +105,7 @@
   ignore_errors: true
 
 - name: sift fixubuntu.sh
-  command: bash fixubuntu.sh chdir=/tmp/sift-files
+  command: bash fixubuntu.sh
+  args:
+    chdir: /tmp/sift-files
   ignore_errors: true
