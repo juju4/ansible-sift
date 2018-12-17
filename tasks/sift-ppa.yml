@@ -39,6 +39,7 @@
     path: "/usr/share/regripper/rip.pl"
     mode: '0775'
 #- command: chmod -R 755 /usr/share/regripper/plugins
+
 - name: Ensure regripper plugins permissions
   file:
     dest: /usr/share/regripper/plugins

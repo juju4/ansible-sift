@@ -1,4 +1,5 @@
 ---
+
 - debug: var=ansible_env
 
 - name: FATAL
@@ -39,7 +40,8 @@
 #  include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
 #  when: ansible_distribution == 'Ubuntu'
 
-- stat: path=/home/{{ sift_user }}/.gem/specs
+- name: Check if user ~/.gem/specs exists
+  stat: path=/home/{{ sift_user }}/.gem/specs
   register: usergemspecs
 - name: check user gem specs dir permissions
   file: "dest=/home/{{ sift_user }}/.gem/specs state=directory mode=0755 owner={{ sift_user }}"

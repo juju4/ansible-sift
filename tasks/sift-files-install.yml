@@ -5,7 +5,8 @@
     src: /tmp/sift-files/foremost/foremost.conf
     dest: /etc/foremost.conf
 
-- stat: path=/usr/share/tsk/sorter
+- name: Check if /usr/share/tsk/sorter exists
+  stat: path=/usr/share/tsk/sorter
   register: tsksorter
 - name: list sift tsk sorter files
   command: find /tmp/sift-files/sorter/ -type f

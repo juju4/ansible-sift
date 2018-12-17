@@ -17,6 +17,5 @@
 
 - block:
     - name: install languages package for {{ lang }}
-      apt: name={{ item }} state=present
-      with_items: "{{ pkglist.stdout.split(' ') }}"
+      apt: name={{ pkglist.stdout.split(' ') }} state=present
   when: pkglist.stdout is defined and pkglist.stdout
