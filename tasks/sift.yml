@@ -10,9 +10,9 @@
   apt_repository: repo='ppa:sift/stable' state=present
   when: ansible_distribution_release == 'trusty'
 
-- name: adding SIFT repository - dev
-  apt_repository: repo='ppa:sift/dev' state=present
-  when: ansible_distribution_release == 'xenial'
+#- name: adding SIFT repository - dev
+#  apt_repository: repo='ppa:sift/dev' state=present
+#  when: ansible_distribution_release == 'xenial'
 
 - name: adding Ubuntu Tweak repository
   apt_repository: repo='ppa:tualatrix/ppa' state=present

@@ -269,7 +269,7 @@ sift_packages:
 #    - unity-greeter
     - ubuntu-wallpapers
     - "{{ gift_ppa_packages }}"
-    - "{{ sift_ppa_packages }}"
+#    - "{{ sift_ppa_packages }}"
 
 # moved to separate role
 sift_docker_pkg: []
