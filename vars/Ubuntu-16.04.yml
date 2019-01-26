@@ -74,8 +74,8 @@ sift_packages:
     - arp-scan
 #    - autopsy
     - bcrypt
-    - bitpim
-    - bitpim-lib
+#    - bitpim
+#    - bitpim-lib
     - bkhive
     - bless
     - blt
