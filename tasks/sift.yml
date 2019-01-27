@@ -18,22 +18,21 @@
   apt_repository: repo='ppa:tualatrix/ppa' state=present
   when: ansible_distribution_release == 'trusty'
 
-# These repositories are needed, but are disabled on some Ubuntu 14.04 base builds, so enable them.
-- name: Enabling Universe repository
-#  apt_repository: repo='deb http://archive.ubuntu.com/ubuntu trusty universe' state=present
-  apt_repository:
-    repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release | lower }} universe"
-    state: present
-- name: Enabling Multiverse repository
-  apt_repository:
-    repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release | lower }} multiverse"
-    state: present
-- name: Enabling Multiverse security updates
-  replace:
-    dest: /etc/apt/sources.list
-    regexp: '^# (.*)multiverse$'
-    replace: '\1multiverse'
-    backup: yes
+# Xenial, bionic: universe and multiverse already enabled by default
+#- name: Enabling Universe repository
+#  apt_repository:
+#    repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release | lower }} universe"
+#    state: present
+#- name: Enabling Multiverse repository
+#  apt_repository:
+#    repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release | lower }} multiverse"
+#    state: present
+#- name: Enabling Multiverse security updates
+#  replace:
+#    dest: /etc/apt/sources.list
+#    regexp: '^# (.*)multiverse$'
+#    replace: '\1multiverse'
+#    backup: yes
 - name: check sources.list
   command: cat /etc/apt/sources.list
   register: sources
