@@ -259,7 +259,7 @@ sift_packages:
     - virtuoso-minimal
     - vmfs-tools
     - winbind
-    - wine
+#    - wine
     - wireshark
     - xdot
     - xfsprogs
