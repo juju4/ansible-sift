@@ -1,0 +1,12 @@
+---
+
+- hosts: all
+  vars:
+    - sift_docker: false
+## xenial on container has issue to install bluez which is required for unity
+#    - sift_do_x11: false
+    - sift_hashdb_version: HEAD
+    - sift_bulkextractor_version: HEAD
+    - sift_files_version: HEAD
+  roles:
+    - juju4.sift
