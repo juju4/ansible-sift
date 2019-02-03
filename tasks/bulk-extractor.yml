@@ -26,14 +26,14 @@
   git:
     repo: https://github.com/NPS-DEEP/hashdb.git
     dest: "{{ hashdb_path }}"
-    version: HEAD
+    version: "{{ sift_hashdb_version | default('9e01bbc6c2051dd2cd01ff2e722652534d012a75') }}"
     update: no
 
 - name: git clone bulk extractor
   git:
     repo: https://github.com/simsong/bulk_extractor.git
     dest: "{{ be_path }}"
-    version: HEAD
+    version: "{{ sift_bulkextractor_version | default('215ed3f1c0ef2dfc0a662cfbe7448ab9cbe2f511') }}"
 
 - name: ensure development tools are present
   package:

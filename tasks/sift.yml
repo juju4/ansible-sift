@@ -123,7 +123,7 @@
   git:
     repo: https://github.com/sans-dfir/sift-files
     dest: /tmp/sift-files
-    version: HEAD
+    version: "{{ sift_files_version | default('7fec2425ef10f71f849b6e244c199945ec4e27a2') }}"
     recursive: no
 ## FIXME! (if recursive=yes) Failed to init/update submodules: No submodule mapping found in .gitmodules
 ##      for path 'Java_IDX_Parser'

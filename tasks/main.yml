@@ -53,7 +53,7 @@
   changed_when: False
   when: ansible_architecture == 'x86_64'
 - name: Ensure both i386/x86_64 architecture support for packages
-  shell: dpkg --add-architecture i386
+  command: dpkg --add-architecture i386
   when: ansible_architecture == 'x86_64' and archi.stdout.find('i386') == -1
 
 ## https://github.com/sans-dfir/sift-bootstrap/
