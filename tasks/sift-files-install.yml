@@ -2,14 +2,14 @@
 
 - name: copy sift foremost conf to /etc
   copy:
-    src: /tmp/sift-files/foremost/foremost.conf
+    src: "{{ sift_files }}/files/foremost/foremost.conf"
     dest: /etc/foremost.conf
 
 - name: Check if /usr/share/tsk/sorter exists
   stat: path=/usr/share/tsk/sorter
   register: tsksorter
 - name: list sift tsk sorter files
-  command: find /tmp/sift-files/sorter/ -type f
+  command: "find {{ sift_files }}/files/sorter/ -type f"
   register: sorter
   changed_when: false
   ignore_errors: true
@@ -18,12 +18,12 @@
     src: "{{ item }}"
     dest: /usr/share/tsk/sorter/
   with_fileglob:
-    - "/tmp/sift-files/sorter/*.sort"
+    - "{{ sift_files }}/files/sorter/*.sort"
   when: tsksorter.stat.exists
 
 - name: copy sift samba files
   copy:
-    src: /tmp/sift-files/samba/smb.conf
+    src: "{{ sift_files }}/files/samba/smb.conf"
     dest: /etc/samba/smb.conf
 
 ## FIXME! upstream: some files are there twice in both wbtools and scripts:
@@ -34,15 +34,8 @@
     dest: /usr/local/bin/
     mode: '0755'
   with_fileglob:
-    - /tmp/sift-files/wbtools/*
-    - /tmp/sift-files/pdf-tools/*
-    - /tmp/sift-files/scripts/*
-    - /tmp/sift-files/densityscout/densityscout
-## FIXME! submodule missing...
-##    - /tmp/sift-files/pe_carver/*.py
-##    - /tmp/sift-files/page_brute/*.py     # empty?
-#    - /tmp/sift-files/java_idx_parser/*.py
-    - /tmp/sift-files/sift/scripts/*
+    - "{{ sift_files }}/files/pdf-tools/*"
+    - "{{ sift_files }}/files/page-brute/*.py"
 
 - name: Check if volatility is present
   stat: path=/usr/lib/python2.7/dist-packages/volatility
@@ -54,7 +47,7 @@
         dest: /usr/lib/python2.7/dist-packages/volatility/plugins/
         mode: '0644'
       with_fileglob:
-        - /tmp/sift-files/volatility/*.py
+        - "{{ sift_files }}/files/volatility/*.py"
 
 ## why? https://github.com/sans-dfir/sift-files/blob/master/install.sh
     - name: remove volatility javarat plugins
@@ -77,11 +70,11 @@
     src: "{{ item }}"
     dest: /usr/share/sift/
   with_items:
-    - /tmp/sift-files/sift/scripts
-    - /tmp/sift-files/sift/other
-    - /tmp/sift-files/sift/images
-    - /tmp/sift-files/sift/audio
-    - /tmp/sift-files/sift/resources
+    - "{{ sift_files }}/files/sift/scripts"
+    - "{{ sift_files }}/files/sift/other"
+    - "{{ sift_files }}/files/sift/images"
+    - "{{ sift_files }}/files/sift/audio"
+    - "{{ sift_files }}/files/sift/resources"
 
 - name: copy regripper files to /usr/share/regripper
   copy:
@@ -89,23 +82,13 @@
     dest: /usr/share/regripper/
     mode: '0755'
   with_items:
-    - /tmp/sift-files/regripper/rip.pl
-    - /tmp/sift-files/regripper/plugins
+    - "{{ sift_files }}/files/regripper/rip.pl"
 
 - name: ensure /usr/local/bin/id absent
   file: dest=/usr/local/bin/id state=absent
 
-# Install rc.local patch for more loopback devices
-# fixes https://github.com/sans-dfir/sift/issues/22
-- name: apply patch to one file
-  patch: >
-    src=/tmp/sift-files/patches/rc.local.patch
-    dest=/etc/rc.local
-    remote_src=True
-  ignore_errors: true
-
 - name: sift fixubuntu.sh
   command: bash fixubuntu.sh
   args:
-    chdir: /tmp/sift-files
+    chdir: "{{ sift_files }}/files"
   ignore_errors: true

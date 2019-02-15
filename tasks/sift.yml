@@ -119,16 +119,12 @@
   when: sift_elastic1 is defined and sift_elastic1
 
 
-- name: Install SIFT files
+- name: Fetch SIFT files
   git:
-    repo: https://github.com/sans-dfir/sift-files
-    dest: /tmp/sift-files
-    version: "{{ sift_files_version | default('7fec2425ef10f71f849b6e244c199945ec4e27a2') }}"
+    repo: https://github.com/sans-dfir/sift-saltstack.git
+    dest: "{{ sift_files }}"
+    version: "{{ sift_saltstack_version | default('9913b8bca7226ad7b642f95d4d6abdba1a9bd9e5') }}"
     recursive: no
-## FIXME! (if recursive=yes) Failed to init/update submodules: No submodule mapping found in .gitmodules
-##      for path 'Java_IDX_Parser'
-#- command: "bash install.sh chdir=/tmp/sift-files"
-#  ignore_errors: true
 - include: sift-files-install.yml
 
 - name: Create SIFT folders
