@@ -1,0 +1,22 @@
+---
+
+- name: Download sans-dfir sift-cli
+  get_url:
+    url: "{{ item.u }}"
+    dest: "/usr/local/bin/{{ item.u | basename }}"
+    owner: root
+    mode: "{{ item.m }}"
+  with_items:
+    - { u: 'https://github.com/sans-dfir/sift-cli/releases/download/v1.7.1/sift-cli-linux', m: '0755' }
+    - { u: 'https://github.com/sans-dfir/sift-cli/releases/download/v1.7.1/sift-cli-linux.sha256.asc', m: '0400' }
+
+- name: Import gpg key
+  command: gpg --keyserver hkp://pgp.mit.edu:80 --recv-keys 22598A94
+
+- name: Validate sift-cli hash signature
+  command: gpg --verify sift-cli-linux.sha256.asc
+
+- name: Validate hash of sift-cli
+  command: shasum -a 256 -c sift-cli-linux.sha256.asc
+  args:
+    chdir: /usr/local/bin

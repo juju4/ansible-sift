@@ -326,3 +326,5 @@
     state: link
     force: yes
   when: sift_x11_background is defined and sift_x11_background
+
+- include: sift-cli.yml
