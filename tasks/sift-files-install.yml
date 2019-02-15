@@ -4,6 +4,7 @@
   copy:
     src: "{{ sift_files }}/files/foremost/foremost.conf"
     dest: /etc/foremost.conf
+    remote_src: true
 
 - name: Check if /usr/share/tsk/sorter exists
   stat: path=/usr/share/tsk/sorter
@@ -17,6 +18,7 @@
   copy:
     src: "{{ item }}"
     dest: /usr/share/tsk/sorter/
+    remote_src: true
   with_fileglob:
     - "{{ sift_files }}/files/sorter/*.sort"
   when: tsksorter.stat.exists
@@ -25,6 +27,7 @@
   copy:
     src: "{{ sift_files }}/files/samba/smb.conf"
     dest: /etc/samba/smb.conf
+    remote_src: true
 
 ## FIXME! upstream: some files are there twice in both wbtools and scripts:
 ##      extract_mft_record_slack.py, ShellItems.py, shellbags.py
@@ -33,6 +36,7 @@
     src: "{{ item }}"
     dest: /usr/local/bin/
     mode: '0755'
+    remote_src: true
   with_fileglob:
     - "{{ sift_files }}/files/pdf-tools/*"
     - "{{ sift_files }}/files/page-brute/*.py"
@@ -46,6 +50,7 @@
         src: "{{ item }}"
         dest: /usr/lib/python2.7/dist-packages/volatility/plugins/
         mode: '0644'
+        remote_src: true
       with_fileglob:
         - "{{ sift_files }}/files/volatility/*.py"
 
@@ -69,6 +74,7 @@
   copy:
     src: "{{ item }}"
     dest: /usr/share/sift/
+    remote_src: true
   with_items:
     - "{{ sift_files }}/files/sift/scripts"
     - "{{ sift_files }}/files/sift/other"
@@ -81,6 +87,7 @@
     src: "{{ item }}"
     dest: /usr/share/regripper/
     mode: '0755'
+    remote_src: true
   with_items:
     - "{{ sift_files }}/files/regripper/rip.pl"
 
