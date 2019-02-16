@@ -2,7 +2,7 @@
 
 - name: copy sift foremost conf to /etc
   copy:
-    src: "{{ sift_files }}/files/foremost/foremost.conf"
+    src: "{{ sift_files }}/sift/files/foremost/foremost.conf"
     dest: /etc/foremost.conf
     remote_src: true
 
@@ -10,7 +10,7 @@
   stat: path=/usr/share/tsk/sorter
   register: tsksorter
 - name: list sift tsk sorter files
-  command: "find {{ sift_files }}/files/sorter/ -type f"
+  command: "find {{ sift_files }}/sift/files/sorter/ -type f"
   register: sorter
   changed_when: false
   ignore_errors: true
@@ -20,12 +20,12 @@
     dest: /usr/share/tsk/sorter/
     remote_src: true
   with_fileglob:
-    - "{{ sift_files }}/files/sorter/*.sort"
+    - "{{ sift_files }}/sift/files/sorter/*.sort"
   when: tsksorter.stat.exists
 
 - name: copy sift samba files
   copy:
-    src: "{{ sift_files }}/files/samba/smb.conf"
+    src: "{{ sift_files }}/sift/files/samba/smb.conf"
     dest: /etc/samba/smb.conf
     remote_src: true
 
@@ -38,8 +38,8 @@
     mode: '0755'
     remote_src: true
   with_fileglob:
-    - "{{ sift_files }}/files/pdf-tools/*"
-    - "{{ sift_files }}/files/page-brute/*.py"
+    - "{{ sift_files }}/sift/files/pdf-tools/*"
+    - "{{ sift_files }}/sift/files/page-brute/*.py"
 
 - name: Check if volatility is present
   stat: path=/usr/lib/python2.7/dist-packages/volatility
@@ -52,7 +52,7 @@
         mode: '0644'
         remote_src: true
       with_fileglob:
-        - "{{ sift_files }}/files/volatility/*.py"
+        - "{{ sift_files }}/sift/files/volatility/*.py"
 
 ## why? https://github.com/sans-dfir/sift-files/blob/master/install.sh
     - name: remove volatility javarat plugins
@@ -76,11 +76,11 @@
     dest: /usr/share/sift/
     remote_src: true
   with_items:
-    - "{{ sift_files }}/files/sift/scripts"
-    - "{{ sift_files }}/files/sift/other"
-    - "{{ sift_files }}/files/sift/images"
-    - "{{ sift_files }}/files/sift/audio"
-    - "{{ sift_files }}/files/sift/resources"
+    - "{{ sift_files }}/sift/files/sift/scripts"
+    - "{{ sift_files }}/sift/files/sift/other"
+    - "{{ sift_files }}/sift/files/sift/images"
+    - "{{ sift_files }}/sift/files/sift/audio"
+    - "{{ sift_files }}/sift/files/sift/resources"
 
 - name: copy regripper files to /usr/share/regripper
   copy:
@@ -89,7 +89,7 @@
     mode: '0755'
     remote_src: true
   with_items:
-    - "{{ sift_files }}/files/regripper/rip.pl"
+    - "{{ sift_files }}/sift/files/regripper/rip.pl"
 
 - name: ensure /usr/local/bin/id absent
   file: dest=/usr/local/bin/id state=absent
@@ -97,5 +97,5 @@
 - name: sift fixubuntu.sh
   command: bash fixubuntu.sh
   args:
-    chdir: "{{ sift_files }}/files"
+    chdir: "{{ sift_files }}/sift/files"
   ignore_errors: true
