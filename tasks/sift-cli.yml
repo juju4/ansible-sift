@@ -12,9 +12,11 @@
 
 - name: Import gpg key
   command: gpg --keyserver hkp://pgp.mit.edu:80 --recv-keys 22598A94
+  ignore_errors: true
 
 - name: Validate sift-cli hash signature
   command: gpg --verify sift-cli-linux.sha256.asc
+  ignore_errors: true
 
 - name: Validate hash of sift-cli
   command: shasum -a 256 -c sift-cli-linux.sha256.asc
