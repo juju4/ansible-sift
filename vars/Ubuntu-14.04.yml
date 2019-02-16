@@ -205,6 +205,7 @@ sift_packages:
     - libglib2.0-bin
 #    - unity-greeter
     - ubuntu-wallpapers
+    - rsync
 
 # moved to separate role
 sift_docker_pkg: []

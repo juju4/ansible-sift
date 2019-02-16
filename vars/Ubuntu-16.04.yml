@@ -61,6 +61,7 @@ sift_ppa_packages:
     - sleuthkit
     - windows-perl
 # more...
+    - rsync
 
 sift_packages:
     - openssh-server
