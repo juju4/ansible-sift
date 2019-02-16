@@ -27,5 +27,7 @@ sift_public_keys: []
 sift_extra_languages:
     - fr
 
+# if empty, will use file included in role
+sift_pgp_server: ''
 #sift_pgp_server: hkp://pgp.mit.edu:80
 sift_pgp_key: 0x15b9ad7122598a94
