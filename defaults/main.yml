@@ -26,3 +26,6 @@ sift_public_keys: []
 
 sift_extra_languages:
     - fr
+
+#sift_pgp_server: hkp://pgp.mit.edu:80
+sift_pgp_key: 0x15b9ad7122598a94

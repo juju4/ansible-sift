@@ -10,9 +10,22 @@
     - { u: 'https://github.com/sans-dfir/sift-cli/releases/download/v1.7.1/sift-cli-linux', m: '0755' }
     - { u: 'https://github.com/sans-dfir/sift-cli/releases/download/v1.7.1/sift-cli-linux.sha256.asc', m: '0400' }
 
-- name: Import gpg key
-  command: gpg --keyserver hkp://pgp.mit.edu:80 --recv-keys 22598A94
+- name: Upload sift gpg public key
+  copy:
+    src: sift.asc
+    dest: "{{ sift_files }}/sift.asc"
+  when: not (sift_pgp_server and sift_pgp_key)
+
+- name: Import local gpg key
+  command: >
+    gpg --import {{ sift_files }}/sift.asc
+  when: not (sift_pgp_server and sift_pgp_key)
+
+- name: Import gpg key from pgp directory server
+  command: >
+    gpg --keyserver {{ sift_pgp_server }} --recv-keys {{ sift_pgp_key }}
   ignore_errors: true
+  when: sift_pgp_server and sift_pgp_key
 
 - name: Validate sift-cli hash signature
   command: gpg --verify sift-cli-linux.sha256.asc
