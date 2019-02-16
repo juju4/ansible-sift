@@ -71,16 +71,16 @@
     - /usr/share/regripper
 
 - name: copy sift tools directories to /usr/share/sift
-  copy:
+  synchronize:
     src: "{{ item }}"
     dest: /usr/share/sift/
-    remote_src: true
   with_items:
     - "{{ sift_files }}/sift/files/sift/scripts"
     - "{{ sift_files }}/sift/files/sift/other"
     - "{{ sift_files }}/sift/files/sift/images"
     - "{{ sift_files }}/sift/files/sift/audio"
     - "{{ sift_files }}/sift/files/sift/resources"
+  delegate_to: "{{ inventory_hostname }}"
 
 - name: copy regripper files to /usr/share/regripper
   copy:
