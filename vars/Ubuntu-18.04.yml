@@ -1,7 +1,6 @@
 ---
 
 gift_ppa_packages:
-    - artifacts
     - libbde
     - libbde-tools
     - libesedb
