@@ -65,6 +65,15 @@ script:
 ## travis/docker: Errno::EROFS: Read-only file system @ dir_s_mkdir - /etc/ansible/roles/juju4.sift/test/integration/${suite}/serverspec/.bundle
 #  - 'sudo docker exec --tty "$(cat ${container_id})" /etc/ansible/roles/juju4.sift/test/integration/${suite}/serverspec/run-local-tests.sh'
 
+after_failure:
+  # Check what happened on systems.
+  - 'sudo docker exec --tty "$(cat ${container_id})" tail -100 /var/log/syslog'
+
+after_script:
+  # check state of some packages between sift/gift/ubuntu
+  - 'sudo docker exec --tty "$(cat ${container_id})" apt show libtsk-dev -a'
+  - 'sudo docker exec --tty "$(cat ${container_id})" apt show libewf -a'
+  - 'sudo docker exec --tty "$(cat ${container_id})" apt show libewf2 -a'
   # Clean up
   - 'sudo docker stop "$(cat ${container_id})"'
 
