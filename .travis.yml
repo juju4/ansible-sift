@@ -72,6 +72,7 @@ after_failure:
 after_script:
   # check state of some packages between sift/gift/ubuntu
   - 'sudo docker exec --tty "$(cat ${container_id})" apt show libtsk-dev -a'
+  - 'sudo docker exec --tty "$(cat ${container_id})" apt show libtsk13 -a'
   - 'sudo docker exec --tty "$(cat ${container_id})" apt show libewf -a'
   - 'sudo docker exec --tty "$(cat ${container_id})" apt show libewf2 -a'
   # Clean up
