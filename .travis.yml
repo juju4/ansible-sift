@@ -75,6 +75,8 @@ after_script:
   - 'sudo docker exec --tty "$(cat ${container_id})" apt show libtsk13 -a'
   - 'sudo docker exec --tty "$(cat ${container_id})" apt show libewf -a'
   - 'sudo docker exec --tty "$(cat ${container_id})" apt show libewf2 -a'
+  - 'sudo docker exec --tty "$(cat ${container_id})" apt-get install -y apt-rdepends'
+  - 'sudo docker exec --tty "$(cat ${container_id})" apt-rdepends libtsk-dev'
   # Clean up
   - 'sudo docker stop "$(cat ${container_id})"'
 
