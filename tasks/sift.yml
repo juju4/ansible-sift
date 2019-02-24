@@ -49,10 +49,11 @@
 
 - name: SIFT | packages install
   apt:
-    name: "{{ sift_packages }}"
+    name: "{{ item }}"
     state: present
     update_cache: yes
     cache_valid_time: 3600
+  with_items: "{{ sift_packages }}"
   notify:
     - Updating ClamAV Signatures
   async: 7200
