@@ -221,7 +221,7 @@
   when: ansible_distribution_release == 'trusty' or  ansible_distribution_release == 'xenial'
 
 - include: bulk-extractor.yml
-  when: ansible_distribution_release != 'trusty' or ansible_distribution_release == 'bionic'
+  when: ansible_distribution_release != 'trusty' and ansible_distribution_release != 'bionic'
 
 - name: Setting noclobber for {{ sift_user }} and root
   lineinfile:
