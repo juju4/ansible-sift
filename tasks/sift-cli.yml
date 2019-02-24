@@ -29,6 +29,8 @@
 
 - name: Validate sift-cli hash signature
   command: gpg --verify sift-cli-linux.sha256.asc
+  args:
+    chdir: /usr/local/bin
   ignore_errors: true
 
 - name: Validate hash of sift-cli
