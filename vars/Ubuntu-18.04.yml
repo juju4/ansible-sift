@@ -1,6 +1,7 @@
 ---
 
 gift_ppa_packages:
+    - artifacts
     - libbde
     - libbde-tools
     - libesedb
@@ -71,7 +72,7 @@ sift_packages:
 #    - afterglow
     - aircrack-ng
     - arp-scan
-    - autopsy
+#    - autopsy
     - bcrypt
 #    - bitpim
 #    - bitpim-lib
@@ -208,15 +209,14 @@ sift_packages:
     - python-pefile
     - python-pip
     - python3-pip
-    - plaso
     - python-qt4
     - python-tk
     - python-yara
 ## mantaray : Depends: pytsk3 but it is not installable
 ## FIXME! pytsk3 available in https://launchpad.net/~gift/+archive/ubuntu/stable but not found? python-pytsk3 found in ppa:gift
 ##    - pytsk3
-    - python-tsk
-    - python3-tsk
+#    - python-tsk
+#    - python3-tsk
     - qemu
     - qemu-utils
 ## note: radare and radare-gtk conflict each other...
@@ -231,7 +231,6 @@ sift_packages:
     - samba
     - samdump2
     - scalpel
-    - sleuthkit
     - socat
     - ssdeep
     - ssldump
@@ -265,8 +264,8 @@ sift_packages:
     - libglib2.0-bin
 #    - unity-greeter
     - ubuntu-wallpapers
-## 201804 Currently bionic not supported
     - "{{ gift_ppa_packages }}"
+## 201902 Currently bionic not supported
 #    - "{{ sift_ppa_packages }}"
     - rsync
 
