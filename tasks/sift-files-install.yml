@@ -21,7 +21,7 @@
     remote_src: true
 #  with_fileglob:
 #    - "{{ sift_files }}/sift/files/sorter/*.sort"
-  with_items: "{{ sorter.stdout }}"
+  with_items: "{{ sorter.stdout_lines }}"
   when: tsksorter.stat.exists
 
 - name: copy sift samba files
@@ -44,7 +44,7 @@
 #  with_fileglob:
 #    - "{{ sift_files }}/sift/files/pdf-tools/*"
 #    - "{{ sift_files }}/sift/files/page-brute/*.py"
-  with_items: "{{ find2.stdout }}"
+  with_items: "{{ find2.stdout_lines }}"
 
 - name: Check if volatility is present
   stat: path=/usr/lib/python2.7/dist-packages/volatility
@@ -63,7 +63,7 @@
         remote_src: true
 #      with_fileglob:
 #        - "{{ sift_files }}/sift/files/volatility/*.py"
-      with_items: "{{ find3.stdout }}"
+      with_items: "{{ find3.stdout_lines }}"
 
 ## why? https://github.com/sans-dfir/sift-files/blob/master/install.sh
     - name: remove volatility javarat plugins
