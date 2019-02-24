@@ -265,7 +265,7 @@ sift_packages:
 #    - unity-greeter
     - ubuntu-wallpapers
 ## 201804 Currently bionic not supported
-#    - "{{ gift_ppa_packages }}"
+    - "{{ gift_ppa_packages }}"
 #    - "{{ sift_ppa_packages }}"
     - rsync
 
