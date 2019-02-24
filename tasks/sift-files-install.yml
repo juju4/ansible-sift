@@ -19,8 +19,9 @@
     src: "{{ item }}"
     dest: /usr/share/tsk/sorter/
     remote_src: true
-  with_fileglob:
-    - "{{ sift_files }}/sift/files/sorter/*.sort"
+#  with_fileglob:
+#    - "{{ sift_files }}/sift/files/sorter/*.sort"
+  with_items: "{{ sorter.stdout }}"
   when: tsksorter.stat.exists
 
 - name: copy sift samba files
@@ -29,30 +30,40 @@
     dest: /etc/samba/smb.conf
     remote_src: true
 
-## FIXME! upstream: some files are there twice in both wbtools and scripts:
-##      extract_mft_record_slack.py, ShellItems.py, shellbags.py
+- name: list sift pdf-tools & page-brute files
+  command: "find {{ sift_files }}/sift/files/pdf-tools/ {{ sift_files }}/sift/files/page-brute/ -type f"
+  register: find2
+  changed_when: false
+  ignore_errors: true
 - name: copy sift files for various tools
   copy:
     src: "{{ item }}"
     dest: /usr/local/bin/
     mode: '0755'
     remote_src: true
-  with_fileglob:
-    - "{{ sift_files }}/sift/files/pdf-tools/*"
-    - "{{ sift_files }}/sift/files/page-brute/*.py"
+#  with_fileglob:
+#    - "{{ sift_files }}/sift/files/pdf-tools/*"
+#    - "{{ sift_files }}/sift/files/page-brute/*.py"
+  with_items: "{{ find2.stdout }}"
 
 - name: Check if volatility is present
   stat: path=/usr/lib/python2.7/dist-packages/volatility
   register: vol
 - block:
+    - name: list sift volatility files
+      command: "find {{ sift_files }}/sift/files/volatility/ -type f -iname '*.py'"
+      register: find3
+      changed_when: false
+      ignore_errors: true
     - name: copy sift volatility files
       copy:
         src: "{{ item }}"
         dest: /usr/lib/python2.7/dist-packages/volatility/plugins/
         mode: '0644'
         remote_src: true
-      with_fileglob:
-        - "{{ sift_files }}/sift/files/volatility/*.py"
+#      with_fileglob:
+#        - "{{ sift_files }}/sift/files/volatility/*.py"
+      with_items: "{{ find3.stdout }}"
 
 ## why? https://github.com/sans-dfir/sift-files/blob/master/install.sh
     - name: remove volatility javarat plugins
@@ -84,12 +95,10 @@
 
 - name: copy regripper files to /usr/share/regripper
   copy:
-    src: "{{ item }}"
+    src: "{{ sift_files }}/sift/files/regripper/rip.pl"
     dest: /usr/share/regripper/
     mode: '0755'
     remote_src: true
-  with_items:
-    - "{{ sift_files }}/sift/files/regripper/rip.pl"
 
 - name: ensure /usr/local/bin/id absent
   file: dest=/usr/local/bin/id state=absent
