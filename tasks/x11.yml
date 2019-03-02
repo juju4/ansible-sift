@@ -16,15 +16,14 @@
 
 - name: Trusty | SIFT x11 packages install (unity)
   apt:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - xinit
-    - ubuntu-desktop
-    - ubuntu-session
-    - unity-greeter
+    name:
+      - xinit
+      - ubuntu-desktop
+      - ubuntu-session
+      - unity-greeter
 ## conflicts file /usr/bin/vba_extract.py between python-xlsxwriter (required by plaso, python-plaso) and
 ##      python3-xlsxwriter (required by ubuntu-desktop chain)
+    state: present
   when: sift_x11_env is defined and sift_x11_env and ansible_distribution_release == 'trusty'
 ## mostly for travis to avoid stalling "No output has been received in the last 10m0s"...
   async: 1200
@@ -34,12 +33,11 @@
 
 - name: Xenial | SIFT x11 packages install (lxde)
   apt:
-    name: "{{ item }}"
+    name:
+      - xinit
+      - lxde
+      - lxdm
     state: present
-  with_items:
-    - xinit
-    - lxde
-    - lxdm
   when: sift_x11_env is defined and sift_x11_env and ansible_distribution_release == 'xenial'
 ## mostly for travis to avoid stalling "No output has been received in the last 10m0s"...
   async: 600
