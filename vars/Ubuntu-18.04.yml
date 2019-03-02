@@ -58,7 +58,7 @@ sift_ppa_packages:
 #    - pdf-tools
 #    - pyelftools
     - regripper
-    - sleuthkit
+#    - sleuthkit
     - windows-perl
 # more...
 
