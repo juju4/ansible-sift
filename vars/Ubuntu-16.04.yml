@@ -39,6 +39,7 @@ gift_ppa_packages:
     - python-efilter
     - python-pytsk3
     - python-plaso
+    - plaso-tools
 
 ## https://launchpad.net/~sift/+archive/ubuntu/dev?field.series_filter=xenial WIP
 sift_ppa_packages:
