@@ -89,15 +89,15 @@
   register: pkg_result
   until: pkg_result is success
 
-##- name: Setting up auto-login for user {{ sift_user }}
-##- name: Setting up auto-login for user {{ sift_user }}
-##  replace: dest='/etc/lxdm/lxdm.conf' regexp={{ item.regexp }} replace={{ item.replace }}
-##  with_items:
-##    - { regexp: '^#\ autologin=dgod', replace: "autologin={{ sift_user }}" }
-##    - { regexp: '^disable=0$', replace: 'disable=1' }
-#- name: Setting up auto-login for user {{ sift_user }}
-#  replace: dest='/etc/lxdm/lxdm.conf' regexp='^#\ autologin=dgod' replace="autologin={{ sift_user }}"
-#- replace: dest='/etc/lxdm/lxdm.conf' regexp='^disable=0$' replace='disable=1'
+- name: Setting up auto-login for user {{ sift_user }}
+  replace:
+    dest: '/etc/lxdm/lxdm.conf'
+    regexp: "{{ item.regexp }}"
+    replace: "{{ item.replace }}"
+  with_items:
+    - { regexp: '^#\ autologin=dgod', replace: "autologin={{ sift_user }}" }
+    - { regexp: '^disable=0$', replace: 'disable=1' }
+  when: sift_autologin
 
 - include: pip-upgrade.yml
 
