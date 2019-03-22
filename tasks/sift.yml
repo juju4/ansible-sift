@@ -97,7 +97,7 @@
   with_items:
     - { regexp: '^#\ autologin=dgod', replace: "autologin={{ sift_user }}" }
     - { regexp: '^disable=0$', replace: 'disable=1' }
-  when: sift_autologin
+  when: sift_autologin and sift_do_x11
 
 - include: pip-upgrade.yml
 
