@@ -87,13 +87,14 @@
   when: ansible_distribution_release == 'trusty'
 
 - name: Setting up auto-login for user {{ sift_user }}
-  replace:
+  lineinfile:
     dest: '/etc/lxdm/lxdm.conf'
     regexp: "{{ item.regexp }}"
-    replace: "{{ item.replace }}"
+    line: "{{ item.replace }}"
+    create: true
   with_items:
-    - { regexp: '^#\ autologin=dgod', replace: "autologin={{ sift_user }}" }
-    - { regexp: '^disable=0$', replace: 'disable=1' }
+    - { regexp: '^autologin=.*', replace: "autologin={{ sift_user }}" }
+    - { regexp: '^disable=.*', replace: 'disable=1' }
   when: sift_autologin
 
 ## Manual or alternative
