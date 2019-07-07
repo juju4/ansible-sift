@@ -3,11 +3,10 @@
 
 - name: ensure language-selector-common is present
   apt:
-    name: "{{ item }}"
+    name:
+      - locales
+      - language-selector-common
     state: present
-  with_items:
-    - locales
-    - language-selector-common
   register: pkg_result
   until: pkg_result is success
 

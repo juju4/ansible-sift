@@ -4,15 +4,19 @@
   group: name={{ sift_user }}
 ## used as samba guest
 - name: Creating sansforensics generic account
-  user: name={{ sift_user }} password={{ sift_pass }} groups={{ sift_user }},sudo append=yes
+  user:
+    name: "{{ sift_user }}"
+    password: "{{ sift_pass }}"
+    groups: "{{ sift_user }},sudo"
+    append: yes
 
 - name: adding SIFT repository - stable
   apt_repository: repo='ppa:sift/stable' state=present
-  when: ansible_distribution_release == 'trusty'
+  when: sift_ppa != 'dev'
 
 - name: adding SIFT repository - dev
   apt_repository: repo='ppa:sift/dev' state=present
-  when: ansible_distribution_release == 'xenial'
+  when: sift_ppa == 'dev'
 
 - name: adding Ubuntu Tweak repository
   apt_repository: repo='ppa:tualatrix/ppa' state=present
@@ -49,11 +53,10 @@
 
 - name: SIFT | packages install
   apt:
-    name: "{{ item }}"
+    name: "{{ sift_packages }}"
     state: present
     update_cache: yes
     cache_valid_time: 3600
-  with_items: "{{ sift_packages }}"
   notify:
     - Updating ClamAV Signatures
   async: 7200
