@@ -6,9 +6,6 @@ sift_do_x11: true
 sift_x11_background: true
 sift_x11_env: true
 sift_ppa: stable
-## Included Elasticsearch v1.5/kibana is pretty old. Might use one include or other role
-sift_elastic1: false
-sift_kibana_v: 4.6.1
 
 ## if you want to fully disable docker install, remove 'ernestas-poskus.docker' from meta/main.yml
 sift_docker: true

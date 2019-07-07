@@ -111,12 +111,6 @@
   register: pkg_result
   until: pkg_result is success
 
-- block:
-    - include: elasticsearch.yml
-    - include: kibana.yml
-  when: sift_elastic1 is defined and sift_elastic1
-
-
 - name: Fetch SIFT files
   git:
     repo: https://github.com/sans-dfir/sift-saltstack.git
