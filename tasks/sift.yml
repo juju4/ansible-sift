@@ -51,6 +51,7 @@
 - name: SIFT | accept Microsoft EULA for ttf-mscorefonts-installer
   debconf: name=ttf-mscorefonts-installer question='msttcorefonts/accepted-mscorefonts-eula' value=true vtype='select'
 
+# Note: don't change to ansible loop syntax else fails (list too long?)
 - name: SIFT | packages install
   apt:
     name: "{{ item }}"
