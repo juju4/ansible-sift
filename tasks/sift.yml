@@ -10,6 +10,14 @@
     groups: "{{ sift_user }},sudo"
     append: yes
 
+- name: Add authorized keys for {{ sift_user }} user
+  authorized_key:
+    user: "{{ sift_user }}"
+    key: "{{ item }}"
+  with_file: "{{ sift_public_keys }}"
+  when: sift_public_keys is defined and sift_public_keys
+  become: yes
+
 - name: adding SIFT repository - stable
   apt_repository: repo='ppa:sift/stable' state=present
   when: sift_ppa != 'dev'
