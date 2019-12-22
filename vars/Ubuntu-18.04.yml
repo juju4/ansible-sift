@@ -14,6 +14,7 @@ gift_ppa_packages:
     - libewf-python
     - libewf-tools
     - libffi-dev
+    - libfsapfs-tools
     - libfuse-dev
     - libfvde
     - libfvde-tools
