@@ -301,7 +301,7 @@ sift_pip_packages:
     - stix
 ## FIXME! build issue
 #    - stix-validator
-    - timesketch
+#    - timesketch
     - lxml
     - ioc_writer
     - colorama
