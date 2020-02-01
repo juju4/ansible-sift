@@ -112,7 +112,7 @@
   pip:
     name: "{{ sift_pip_packages }}"
     state: present
-    executable "{{ pip_bin | default('pip') }}"
+    executable: "{{ pip_bin | default('pip') }}"
   register: pkg_result
   until: pkg_result is success
 
