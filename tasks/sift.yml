@@ -105,11 +105,14 @@
 - include: pip-upgrade.yml
 
 - name: Install pip packages dependencies
-  package: name={{ sift_pip_packages_deps }} state=present
+  package: name={{ sift_pip_packages_deps + python_deps }} state=present
   register: pkg_result
   until: pkg_result is success
 - name: Install pip packages
-  pip: name={{ sift_pip_packages }} state=present
+  pip:
+    name: "{{ sift_pip_packages }}"
+    state: present
+    executable "{{ pip_bin | default('pip') }}"
   register: pkg_result
   until: pkg_result is success
 
