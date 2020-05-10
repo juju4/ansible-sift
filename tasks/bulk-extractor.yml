@@ -33,7 +33,7 @@
   git:
     repo: https://github.com/simsong/bulk_extractor.git
     dest: "{{ be_path }}"
-    version: "{{ sift_bulkextractor_version | default('1.5.3') }}"
+    version: "{{ sift_bulkextractor_version | default('v1.6.0') }}"
 
 - name: ensure development tools are present
   package:
