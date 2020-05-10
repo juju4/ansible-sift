@@ -188,6 +188,9 @@
     backup: yes
     create: yes
 
+- name: Ensure user Desktop directory exists
+  file: dest="/home/{{ sift_user }}/Desktop" state=directory mode=0755
+
 - name: setting symlinks
   file:
     src: "{{ item.src }}"
@@ -262,8 +265,6 @@
 #- name: Cleaning up broken symlinks on Desktop
 #  command: "find -L /home/{{ sift_user }}/Desktop -type l -delete"
 
-- name: Ensure user Desktop directory exists
-  file: dest="/home/{{ sift_user }}/Desktop" state=directory mode=0755
 - name: Adding all SIFT Resources to Desktop
   file:
     src: "/usr/share/sift/resources/{{ item }}"
