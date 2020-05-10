@@ -1,0 +1,328 @@
+---
+
+gift_ppa_packages:
+    - libbde
+    - libbde-tools
+    - libesedb
+    - libesedb-tools
+    - libevt
+    - libevt-tools
+    - libevtx
+    - libevtx-tools
+    - libewf
+    - libewf-dev
+    - libewf-python
+    - libewf-tools
+    - libffi-dev
+    - libfsapfs-tools
+    - libfuse-dev
+    - libfvde
+    - libfvde-tools
+    - libmsiecf
+    - libnet1
+    - libolecf
+    - libparse-win32registry-perl
+#    - libpff
+#    - libpff-dev
+#    - libpff-python
+#    - libpff-tools
+    - libregf
+    - libregf-dev
+    - libregf-python
+    - libregf-tools
+    - libssl-dev
+    - libtext-csv-perl
+    - libvshadow
+    - libvshadow-dev
+    - libvshadow-python
+    - libvshadow-tools
+    - python-dfvfs
+    - python-efilter
+    - python-pytsk3
+    - python-plaso
+    - plaso-tools
+
+## https://launchpad.net/~sift/+archive/ubuntu/dev?field.series_filter=xenial WIP
+sift_ppa_packages:
+    - afterglow
+#    - autopsy
+#    - mantaray
+#    - sift-scripts
+## bulk-extractor : Depends: openjdk-7-jdk but it is not installable = but fine w openjdk-8-jdk.
+##  => package not maintained. source install
+#    - bulk-extractor
+#    - flowgrep
+    - liblightgrep
+    - mac-robber
+    - maltegoce
+#    - ntdsxtract
+    - passivedns
+#    - pdf-tools
+#    - pyelftools
+    - regripper
+#    - sleuthkit
+    - windows-perl
+# more...
+
+sift_packages:
+    - openssh-server
+    - dos2unix
+# l.200 https://github.com/sans-dfir/sift-bootstrap/blob/0d1bd146377050f9217b8187837516659e361060/bootstrap.sh
+    - aeskeyfind
+#    - afflib-tools
+#    - afterglow
+    - aircrack-ng
+    - arp-scan
+#    - autopsy
+    - bcrypt
+#    - bitpim
+#    - bitpim-lib
+    - bkhive
+    - bless
+    - blt
+    - build-essential
+#    - bulk-extractor
+    - cabextract
+    - clamav
+    - cmospwd
+    - cpanminus
+    - cryptcat
+    - cryptsetup
+    - dc3dd
+    - dconf-tools
+    - driftnet
+    - dsniff
+#    - dumbpig
+    - e2fslibs-dev
+    - ent
+    - epic5
+    - etherape
+    - ettercap-graphical
+    - exfat-fuse
+    - exfat-utils
+    - exif
+    - extundelete
+#    - f-spot
+    - fdupes
+    - feh
+    - flare
+    - flasm
+    - flex
+    - foremost
+    - g++
+    - gawk
+    - gcc
+## Keep same setting than remnux for gdb. gdb-minimal is trusty only
+    - gdb
+#    - gdb-minimal
+## l.250 https://github.com/sans-dfir/sift-bootstrap/blob/0d1bd146377050f9217b8187837516659e361060/bootstrap.sh
+    - gddrescue
+    - ghex
+    - git
+    - graphviz
+    - gthumb
+    - gzrt
+    - hexedit
+    - htop
+    - hydra
+    - hydra-gtk
+    - ipython
+    - kdiff3
+    - knocker
+    - kpartx
+    - lft
+#    - libafflib-dev
+    - libafflib0v5
+#    - libbde
+#    - libbde-tools
+#    - libesedb
+#    - libesedb-tools
+#    - libevt
+#    - libevt-tools
+#    - libevtx
+#    - libevtx-tools
+#    - libewf
+#    - libewf-dev
+#    - libewf-python
+#    - libewf-tools
+#    - libffi-dev
+#    - libfuse-dev
+#    - libfvde
+#    - libfvde-tools
+#    - liblightgrep
+#    - libmsiecf
+#    - libnet1
+#    - libolecf
+#    - libparse-win32registry-perl
+#    - libpff
+#    - libpff-dev
+#    - libpff-python
+#    - libpff-tools
+#    - libregf
+#    - libregf-dev
+#    - libregf-python
+#    - libregf-tools
+#    - libssl-dev
+#    - libtext-csv-perl
+#    - libvshadow
+#    - libvshadow-dev
+### l.300 https://github.com/sans-dfir/sift-bootstrap/blob/0d1bd146377050f9217b8187837516659e361060/bootstrap.sh
+#    - libvshadow-python
+#    - libvshadow-tools
+    - libxml2-dev
+    - libxslt1-dev
+#    - maltegoce
+#    - mantaray
+    - md5deep
+    - mongodb-clients
+    - mongodb-server
+    - nbd-client
+    - nbtscan
+## ensure same choice between netcat and netcat-traditional inside {sift,remnux.yml}
+    - netcat
+    - netpbm
+    - netsed
+    - netwox
+    - nfdump
+    - ngrep
+    - nikto
+#    - ntopng
+    - okular
+## https://bugs.launchpad.net/ubuntu/+source/open-iscsi/+bug/1651497
+#    - open-iscsi
+    - ophcrack
+    - ophcrack-cli
+    - outguess
+    - p0f
+    - p7zip-full
+#    - pdftk    # artful but not bionic
+    - pev
+    - phonon
+    - pv
+    - pyew
+    - python
+    - python-dev
+#    - python-dfvfs
+#    - python-flowgrep
+    - python-fuse
+    - python-nids
+#    - python-ntdsxtract
+    - python-pefile
+    - python-pip
+    - python3-pip
+    - python-qt4
+    - python-tk
+    - python-yara
+## mantaray : Depends: pytsk3 but it is not installable
+## FIXME! pytsk3 available in https://launchpad.net/~gift/+archive/ubuntu/stable but not found? python-pytsk3 found in ppa:gift
+##    - pytsk3
+#    - python-tsk
+#    - python3-tsk
+    - qemu
+    - qemu-utils
+## note: radare and radare-gtk conflict each other...
+#    - radare
+## l.350 https://github.com/sans-dfir/sift-bootstrap/blob/0d1bd146377050f9217b8187837516659e361060/bootstrap.sh
+    - radare2
+#    - rar
+#    - readpst  # artful but not bionic
+#    - regripper
+    - rsakeyfind
+    - safecopy
+    - samba
+    - samdump2
+    - scalpel
+    - socat
+    - ssdeep
+    - ssldump
+    - sslsniff
+    - stunnel4
+    - system-config-samba
+    - tcl
+    - tcpflow
+    - tcpstat
+    - tcptrace
+    - tcptrack
+    - tcpxtract
+    - testdisk
+    - tofrodos
+    - transmission
+#    - ubuntu-tweak
+#    - unity-control-center
+    - unrar-free
+    - upx-ucl
+    - vbindiff
+    - vim
+    - virtuoso-minimal
+    - vmfs-tools
+    - winbind
+    - wine-stable
+    - wireshark
+    - xdot
+    - xfsprogs
+#    - xmount
+## gsettings
+    - libglib2.0-bin
+#    - unity-greeter
+    - ubuntu-wallpapers
+    - "{{ gift_ppa_packages }}"
+## 201902 Currently bionic not supported
+#    - "{{ sift_ppa_packages }}"
+    - rsync
+
+# moved to separate role
+sift_docker_pkg: []
+
+sift_pip_packages_deps:
+## for stix
+  - libxml2-dev
+  - libxslt1-dev
+  - python-dev
+  - libffi-dev
+  - lib32z1-dev
+
+sift_pip_packages:
+    - python-dateutil==2.4.2
+    - distorm3
+    - bitstring
+#    - rekall
+    - docopt
+    - python-evtx
+    - python-registry
+    - six
+    - construct
+## FIXME! missing include
+#    - pyv8
+    - pefile
+    - analyzeMFT
+    - python-magic
+    - argparse
+    - unicodecsv
+    - stix
+## FIXME! build issue
+#    - stix-validator
+#    - timesketch
+    - lxml
+    - ioc_writer
+    - colorama
+    - usnparser
+    - windowsprefetch
+
+## xenial: random issue w avahi-daemon, dependency of libnss-mdns
+##	https://forum.proxmox.com/threads/ubuntu-16-04-template-for-proxmox-4-1.27034/
+
+gift_ppa_symlinks: []
+#    - { src: '/usr/bin/ewfmount', path: '/usr/bin/mount_ewf.py' }
+
+sift_ppa_symlinks:
+    - { src: '/etc/rc.local', path: '/home/sansforensics/Desktop/rc.local-add_loop_devices' }
+
+sift_files: /usr/local/share/sift-saltstack
+
+python_deps:
+  - python3
+  - python3-dev
+  - python3-pip
+
+python_bin: python3
+pip_bin: pip3
