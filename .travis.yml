@@ -74,6 +74,8 @@ after_script:
   - 'sudo docker exec --tty "$(cat ${container_id})" apt show libewf2 -a'
   - 'sudo docker exec --tty "$(cat ${container_id})" apt-get install -y apt-rdepends'
   - 'sudo docker exec --tty "$(cat ${container_id})" apt-rdepends libtsk-dev'
+  - 'sudo docker exec --tty "$(cat ${container_id})" ls /home/sansforensics'
+  - 'sudo docker exec --tty "$(cat ${container_id})" ls /home/sansforensics/Desktop'
   # Clean up
   - 'sudo docker stop "$(cat ${container_id})"'
 
