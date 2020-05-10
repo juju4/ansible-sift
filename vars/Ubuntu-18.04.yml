@@ -314,7 +314,8 @@ sift_pip_packages:
 gift_ppa_symlinks: []
 #    - { src: '/usr/bin/ewfmount', path: '/usr/bin/mount_ewf.py' }
 
-sift_ppa_symlinks: []
+sift_ppa_symlinks:
+    - { src: '/etc/rc.local', path: '/home/sansforensics/Desktop/rc.local-add_loop_devices' }
 
 sift_files: /usr/local/share/sift-saltstack
 
