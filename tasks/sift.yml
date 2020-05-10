@@ -180,6 +180,14 @@
   with_items:
     - [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 ]
 
+- name: Add extra device loop backs
+  lineinfile:
+    dest: /etc/rc.local
+    regexp: 'seq 8 100'
+    line: 'for i in `seq 8 100`; do mknod /dev/loop$i b 7 $i; done'
+    backup: yes
+    create: yes
+
 - name: setting symlinks
   file:
     src: "{{ item.src }}"
@@ -272,13 +280,5 @@
     - network-forensics-cheatsheet.pdf
     - sift-cheatsheet.pdf
     - windows-to-unix-cheatsheet.pdf
-
-- name: Add extra device loop backs
-  lineinfile:
-    dest: /etc/rc.local
-    regexp: 'seq 8 100'
-    line: 'for i in `seq 8 100`; do mknod /dev/loop$i b 7 $i; done'
-    backup: yes
-    create: yes
 
 - include: sift-cli.yml
