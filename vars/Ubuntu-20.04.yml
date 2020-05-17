@@ -48,9 +48,6 @@ sift_ppa_packages:
 #    - autopsy
 #    - mantaray
 #    - sift-scripts
-## bulk-extractor : Depends: openjdk-7-jdk but it is not installable = but fine w openjdk-8-jdk.
-##  => package not maintained. source install
-#    - bulk-extractor
 #    - flowgrep
     - liblightgrep
     - mac-robber
@@ -74,10 +71,8 @@ sift_packages:
     - aircrack-ng
     - arp-scan
 #    - autopsy
-    - bcrypt
 #    - bitpim
 #    - bitpim-lib
-    - bkhive
     - bless
     - blt
     - build-essential
@@ -89,7 +84,6 @@ sift_packages:
     - cryptcat
     - cryptsetup
     - dc3dd
-    - dconf-tools
     - driftnet
     - dsniff
 #    - dumbpig
@@ -126,7 +120,6 @@ sift_packages:
     - htop
     - hydra
     - hydra-gtk
-    - ipython
     - kdiff3
     - knocker
     - kpartx
@@ -197,27 +190,19 @@ sift_packages:
     - p7zip-full
 #    - pdftk    # artful but not bionic
     - pev
-    - phonon
     - pv
-    - pyew
-    - python
-    - python-dev
+    - python3
+    - python3-dev
 #    - python-dfvfs
 #    - python-flowgrep
-    - python-fuse
-    - python-nids
+    - python3-fuse
 #    - python-ntdsxtract
-    - python-pefile
-    - python-pip
+    - python3-pefile
     - python3-pip
-    - python-qt4
-    - python-tk
-    - python-yara
-## mantaray : Depends: pytsk3 but it is not installable
-## FIXME! pytsk3 available in https://launchpad.net/~gift/+archive/ubuntu/stable but not found? python-pytsk3 found in ppa:gift
-##    - pytsk3
-#    - python-tsk
-#    - python3-tsk
+    - python3-pip
+    - python3-tk
+    - python3-yara
+    - python3-tsk
     - qemu
     - qemu-utils
 ## note: radare and radare-gtk conflict each other...
@@ -237,7 +222,6 @@ sift_packages:
     - ssldump
     - sslsniff
     - stunnel4
-    - system-config-samba
     - tcl
     - tcpflow
     - tcpstat
@@ -265,7 +249,7 @@ sift_packages:
     - libglib2.0-bin
 #    - unity-greeter
     - ubuntu-wallpapers
-    - "{{ gift_ppa_packages }}"
+#    - "{{ gift_ppa_packages }}"
 ## 201902 Currently bionic not supported
 #    - "{{ sift_ppa_packages }}"
     - rsync
@@ -277,7 +261,6 @@ sift_pip_packages_deps:
 ## for stix
   - libxml2-dev
   - libxslt1-dev
-  - python-dev
   - libffi-dev
   - lib32z1-dev
 

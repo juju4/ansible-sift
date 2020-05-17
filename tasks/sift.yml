@@ -20,11 +20,15 @@
 
 - name: adding SIFT repository - stable
   apt_repository: repo='ppa:sift/stable' state=present
-  when: sift_ppa != 'dev'
+  when:
+    - sift_ppa != 'dev'
+    - (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int < 20)
 
 - name: adding SIFT repository - dev
   apt_repository: repo='ppa:sift/dev' state=present
-  when: sift_ppa == 'dev'
+  when:
+    - sift_ppa == 'dev'
+    - (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int < 20)
 
 - name: adding Ubuntu Tweak repository
   apt_repository: repo='ppa:tualatrix/ppa' state=present

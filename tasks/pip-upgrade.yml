@@ -7,7 +7,7 @@
 - name: check current pip version
   shell: |
     set -o pipefail
-    pip --version | sed "s/pip \(.*\) from .*/\1/"
+    {{ pip_bin }} --version | sed "s/pip \(.*\) from .*/\1/"
   args:
     executable: /bin/bash
   changed_when: false
@@ -19,11 +19,11 @@
 - block:
 
     - name: upgrade pip to latest
-      command: pip install --upgrade pip
+      command: "{{ pip_bin }} install --upgrade pip"
       when: ansible_os_family != "Debian"
 
     - name: upgrade setuptools to latest
-      command: pip install --upgrade setuptools
+      command: "{{ pip_bin }} install --upgrade setuptools"
       when: ansible_os_family != "Debian"
 
 ## FIXME! debian/ubuntu prevent that, https://github.com/pypa/pip/issues/2964
