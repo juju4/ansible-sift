@@ -75,12 +75,14 @@
     src: /usr/share/unity-greeter/logo.png
     dest: /usr/share/unity-greeter/logo.png.ubuntu
     owner: "{{ sift_user }}"
+    remote_src: true
   when: not logoubuntu2.stat.exists and logoubuntu1.stat.exists
 - name: copy sift unity greeter logo
   copy:
     src: /usr/share/sift/images/login_logo.png
     dest: /usr/share/unity-greeter/logo.png
     owner: "{{ sift_user }}"
+    remote_src: true
   when: not logoubuntu1.stat.exists
 
 - include: trusty-bugs.yml
