@@ -35,29 +35,29 @@
   when: ansible_distribution_release == 'trusty'
 
 # Xenial, bionic: universe and multiverse already enabled by default
-#- name: Enabling Universe repository
-#  apt_repository:
-#    repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release | lower }} universe"
-#    state: present
-#- name: Enabling Multiverse repository
-#  apt_repository:
-#    repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release | lower }} multiverse"
-#    state: present
-#- name: Enabling Multiverse security updates
-#  replace:
-#    dest: /etc/apt/sources.list
-#    regexp: '^# (.*)multiverse$'
-#    replace: '\1multiverse'
-#    backup: yes
+# - name: Enabling Universe repository
+#   apt_repository:
+#     repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release | lower }} universe"
+#     state: present
+# - name: Enabling Multiverse repository
+#   apt_repository:
+#     repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release | lower }} multiverse"
+#     state: present
+# - name: Enabling Multiverse security updates
+#   replace:
+#     dest: /etc/apt/sources.list
+#     regexp: '^# (.*)multiverse$'
+#     replace: '\1multiverse'
+#     backup: yes
 - name: check sources.list
   command: cat /etc/apt/sources.list
   register: sources
   changed_when: false
 - debug: var=sources.stdout_lines
 # Some 64-bit systems are not configured to support i386 packages. Let's make sure they are enabled. (done in main.yml)
-#- name: Ensure both i386/x86_64 architecture support for packages
-#  command: dpkg --add-architecture i386
-#- command: ldconfig
+# - name: Ensure both i386/x86_64 architecture support for packages
+#   command: dpkg --add-architecture i386
+# - command: ldconfig
 
 
 - name: SIFT | accept Microsoft EULA for ttf-mscorefonts-installer
@@ -175,20 +175,21 @@
     state: directory
     mode: '0755'
   with_items:
-    - [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 ]
+    - [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
 - name: Create SIFT folders
   file:
     path: "/mnt/shadow_mount/vss{{ item }}"
     state: directory
     mode: '0755'
   with_items:
-    - [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 ]
+    - [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
 
 - name: Add extra device loop backs
   lineinfile:
     dest: /etc/rc.local
     regexp: 'seq 8 100'
     line: 'for i in `seq 8 100`; do mknod /dev/loop$i b 7 $i; done'
+    mode: '0644'
     backup: yes
     create: yes
 
@@ -199,11 +200,12 @@
   file:
     src: "{{ item.src }}"
     path: "{{ item.path }}"
+    mode: '0644'
     state: link
   with_items:
     - { src: '/usr/bin/gedit', path: '/usr/bin/kedit' }
     - { src: '/etc/foremost.conf', path: '/usr/local/etc/foremost.conf' }
-#    - { src: '/usr/bin/iscsiadm', path: '/sbin/iscsiadm' }
+    # - { src: '/usr/bin/iscsiadm', path: '/sbin/iscsiadm' }
     - "{{  gift_ppa_symlinks }}"
     - "{{  sift_ppa_symlinks }}"
 
@@ -216,6 +218,7 @@
     dest: /etc/apt/apt.conf.d/10periodic
     regexp: '^APT::Periodic::Update-Package-Lists'
     line: 'APT::Periodic::Update-Package-Lists "0";'
+    mode: '0644'
   when: periodic.stat.exists
 
 - name: ensure current user is used for samba
@@ -223,12 +226,18 @@
     dest: /etc/samba/smb.conf
     regexp: 'SIFT_USER'
     replace: "{{ sift_user }}"
+    mode: '0644'
   notify:
     - restart samba smbd
     - restart samba nmbd
 
 - name: Set timezone variables
-  replace: dest=/etc/timezone regexp='(.*)' replace={{ tz }} backup=yes
+  replace:
+    dest: /etc/timezone
+    regexp: '(.*)'
+    replace: "{{ tz }}"
+    mode: '0644'
+    backup: yes
   notify:
     - update timezone
 
@@ -243,6 +252,7 @@
     dest: "{{ item }}"
     regexp: '^set -o noclobber'
     line: 'set -o noclobber'
+    mode: '0600'
   with_items:
     - "/home/{{ sift_user }}/.bashrc"
     - /root/.bashrc
@@ -251,6 +261,7 @@
     dest: "{{ item }}"
     regexp: '^alias mountwin='
     line: 'alias mountwin="mount -o ro,loop,show_sys_files,streams_interface=windows"'
+    mode: '0600'
     create: yes
   with_items:
     - "/home/{{ sift_user }}/.bash_aliases"
@@ -260,22 +271,27 @@
   file: path="/home/{{ sift_user }}/Desktop" state=directory mode=0700
 
 - name: Setting up useful links on {{ sift_user }} Desktop
-  file: src="{{ item.src }}" path="{{ item.path }}" state=link
+  file:
+    src: "{{ item.src }}"
+    path: "{{ item.path }}"
+    mode: '0644'
+    state: link
   with_items:
     - { src: '/cases', path: "/home/{{ sift_user }}/Desktop/cases" }
     - { src: '/mnt', path: "/home/{{ sift_user }}/Desktop/mount_points" }
 
 ## FIXME! not idempotent
-#- name: Cleaning up broken symlinks on Desktop
-#  command: "find -L /home/{{ sift_user }}/Desktop -type l -delete"
+# - name: Cleaning up broken symlinks on Desktop
+#   command: "find -L /home/{{ sift_user }}/Desktop -type l -delete"
 
 - name: Adding all SIFT Resources to Desktop
   file:
     src: "/usr/share/sift/resources/{{ item }}"
     dest: "/home/{{ sift_user }}/Desktop/{{ item | basename }}"
+    mode: '0644'
     state: link
-#  with_fileglob:
-#    - /usr/share/sift/resources/*.pdf
+    # with_fileglob:
+    #   - /usr/share/sift/resources/*.pdf
   with_items:
     - Evidence-of-Poster.pdf
     - Find-Evil-Poster.pdf

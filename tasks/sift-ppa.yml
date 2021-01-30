@@ -8,7 +8,10 @@
   shell: "dos2unix -ascii /usr/share/regripper/*"
   when: not d2u_rr.stat.exists
 - name: Add dos2unix regripper marker
-  file: path=/root/.dos2unix_regripper state=touch
+  file:
+    path: /root/.dos2unix_regripper
+    mode: '0600'
+    state: touch
   when: not d2u_rr.stat.exists
 - name: Check if /usr/share/regripper/plugins/usrclass-all exists
   stat: path=/usr/share/regripper/plugins/usrclass-all
@@ -26,19 +29,21 @@
   file:
     src: /usr/share/regripper/plugins/usrclass-all
     dest: /usr/share/regripper/plugins/usrclass
+    mode: '0755'
     state: link
   when: rrusr.stat.exists and not rrusr2.stat.exists
 - name: Link regripper ntuser
   file:
     src: /usr/share/regripper/plugins/ntuser-all
     dest: /usr/share/regripper/plugins/ntuser
+    mode: '0755'
     state: link
   when: rrnt.stat.exists and not rrnt2.stat.exists
 - name: Ensure rip.pl permissions
   file:
     path: "/usr/share/regripper/rip.pl"
     mode: '0775'
-#- command: chmod -R 755 /usr/share/regripper/plugins
+# - command: chmod -R 755 /usr/share/regripper/plugins
 
 - name: Ensure regripper plugins permissions
   file:

@@ -2,8 +2,8 @@
 
 # to avoid error at install. unity only? (bluez* gnome-bluetooth* gnome-user-share* indicator-bluetooth*
 #       unity-control-center* unity-control-center-signon*)
-#bluez package
-#systemctl disable bluetooth.service
+# bluez package
+# systemctl disable bluetooth.service
 - name: bluez package install
   apt:
     name: bluez
@@ -21,11 +21,11 @@
       - ubuntu-desktop
       - ubuntu-session
       - unity-greeter
-## conflicts file /usr/bin/vba_extract.py between python-xlsxwriter (required by plaso, python-plaso) and
-##      python3-xlsxwriter (required by ubuntu-desktop chain)
+      ## conflicts file /usr/bin/vba_extract.py between python-xlsxwriter (required by plaso, python-plaso) and
+      ##      python3-xlsxwriter (required by ubuntu-desktop chain)
     state: present
   when: sift_x11_env is defined and sift_x11_env and ansible_distribution_release == 'trusty'
-## mostly for travis to avoid stalling "No output has been received in the last 10m0s"...
+  ## mostly for travis to avoid stalling "No output has been received in the last 10m0s"...
   async: 1200
   poll: 15
   register: pkg_result
@@ -39,7 +39,7 @@
       - lxdm
     state: present
   when: sift_x11_env is defined and sift_x11_env and ansible_distribution_release == 'xenial'
-## mostly for travis to avoid stalling "No output has been received in the last 10m0s"...
+  ## mostly for travis to avoid stalling "No output has been received in the last 10m0s"...
   async: 600
   poll: 15
   register: pkg_result
@@ -59,7 +59,11 @@
     owner: "{{ sift_user }}"
 
 - name: disable GUI upgrade prompt
-  replace: dest=/etc/update-manager/release-upgrades regexp='^Prompt=.*' replace='Prompt=never'
+  replace:
+    dest: /etc/update-manager/release-upgrades
+    regexp: '^Prompt=.*'
+    replace: 'Prompt=never'
+    mode: '0644'
   when: ansible_distribution_release == 'trusty'
 
 - name: ensure unity-greeter directory exists
@@ -75,6 +79,7 @@
     src: /usr/share/unity-greeter/logo.png
     dest: /usr/share/unity-greeter/logo.png.ubuntu
     owner: "{{ sift_user }}"
+    mode: '0644'
     remote_src: true
   when: not logoubuntu2.stat.exists and logoubuntu1.stat.exists
 - name: copy sift unity greeter logo
@@ -82,6 +87,7 @@
     src: /usr/share/sift/images/login_logo.png
     dest: /usr/share/unity-greeter/logo.png
     owner: "{{ sift_user }}"
+    mode: '0644'
     remote_src: true
   when: not logoubuntu1.stat.exists
 
@@ -93,6 +99,7 @@
     dest: '/etc/lxdm/lxdm.conf'
     regexp: "{{ item.regexp }}"
     line: "{{ item.replace }}"
+    mode: '0644'
     create: true
   with_items:
     - { regexp: '^autologin=.*', replace: "autologin={{ sift_user }}" }
@@ -118,15 +125,20 @@
   command: "{{ item }}"
   with_items:
     - "gsettings set org.gnome.desktop.background picture-uri file:///usr/share/sift/images/forensics_blue.jpg"
-## stderr: No such schema 'com.canonical.Unity.Launcher'
-    - "gsettings set com.canonical.Unity.Launcher favorites \"['application://nautilus.desktop', 'application://gnome-terminal.desktop', 'application://firefox.desktop', 'application://gnome-screenshot.desktop', 'application://gcalctool.desktop', 'application://bless.desktop', 'application://autopsy.desktop', 'application://wireshark.desktop']\""
+    ## stderr: No such schema 'com.canonical.Unity.Launcher'
+    - "gsettings set com.canonical.Unity.Launcher favorites \"['application://nautilus.desktop', 'application://gnome-terminal.desktop', 'application://firefox.desktop', 'application://gnome-screenshot.desktop', 'application://gcalctool.desktop', 'application://bless.desktop', 'application://autopsy.desktop', 'application://wireshark.desktop']\""  # noqa 204
   ignore_errors: true
   become: yes
   become_user: "{{ sift_user }}"
   when: sift_x11_env is defined and sift_x11_env
 
 - name: Autostart folder
-  file: path="{{ item }}" state=directory mode=0700 owner={{ sift_user }} group={{ sift_user }}
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0700'
+    owner: "{{ sift_user }}"
+    group: "{{ sift_user }}"
   with_items:
     - "/home/{{ sift_user }}/.config/autostart"
 
@@ -138,6 +150,7 @@
     src: /usr/share/sift/other/gnome-terminal.desktop
     dest: "/home/{{ sift_user }}/.config/autostart/gnome-terminal.desktop"
     owner: "{{ sift_user }}"
+    mode: '0644'
     remote_src: true
   when: gtd.stat.exists
 
@@ -145,7 +158,7 @@
   file:
     src: /usr/share/sift/images/forensics_blue.jpg
     dest: /usr/share/backgrounds/warty-final-ubuntu.png
-    mode: 0644
+    mode: '0644'
     state: link
     force: yes
   when: sift_x11_background is defined and sift_x11_background

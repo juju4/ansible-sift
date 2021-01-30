@@ -2,25 +2,25 @@
 
 - name: Set fact for bulk_extractor
   set_fact:
-## website seems down. using github. https://github.com/simsong/bulk_extractor/issues/84
-#    be_url: http://downloads.digitalcorpora.org/downloads/bulk_extractor/bulk_extractor-1.5.5.tar.gz
-#    be_hash: 'sha256:297a57808c12b81b8e0d82222cf57245ad988804ab467eb0a70cf8669594e8ed'
-#    be_path: /root/bulk_extractor-1.5.5
+    ## website seems down. using github. https://github.com/simsong/bulk_extractor/issues/84
+    # be_url: http://downloads.digitalcorpora.org/downloads/bulk_extractor/bulk_extractor-1.5.5.tar.gz
+    # be_hash: 'sha256:297a57808c12b81b8e0d82222cf57245ad988804ab467eb0a70cf8669594e8ed'
+    # be_path: /root/bulk_extractor-1.5.5
     hashdb_path: /root/hashdb
     be_path: /root/bulk_extractor
 
-#- name: download bulk-extractor
-#  get_url:
-#    url: "{{ be_url }}"
-#    dest: "/root/bulk_extractor-{{ be_url | basename }}"
-#    checksum: "{{ be_hash }}"
-#    mode: '0644'
+# - name: download bulk-extractor
+#   get_url:
+#     url: "{{ be_url }}"
+#     dest: "/root/bulk_extractor-{{ be_url | basename }}"
+#     checksum: "{{ be_hash }}"
+#     mode: '0644'
 
-#- name: uncompress bulk-extractor
-#  unarchive:
-#    src: "/root/bulk_extractor-{{ be_url | basename }}"
-#    dest: /root
-#    remote_src: True
+# - name: uncompress bulk-extractor
+#   unarchive:
+#     src: "/root/bulk_extractor-{{ be_url | basename }}"
+#     dest: /root
+#     remote_src: True
 
 - name: git clone hashdb
   git:
@@ -47,7 +47,7 @@
     - autoconf
     - libssl-dev
     - libtsk-dev
-# for hashdb
+    # for hashdb
     - libtool-bin
     - python-dev
     - swig
@@ -61,6 +61,7 @@
   file:
     src: /usr/include/tsk
     dest: /usr/include/tsk3
+    mode: '0755'
     state: link
 
 - name: patch hashdb - hashdb#6
@@ -68,6 +69,7 @@
     dest: "{{ hashdb_path }}/configure.ac"
     regexp: '^AC_CHECK_LIB\(\[ssl\],\[SSL_library_init\],\[\],\[AC_MSG_ERROR\(\[Could not find ssl library\]\)\]\)'
     replace: 'AC_CHECK_LIB([ssl],[OPENSSL_init_ssl],[],[AC_MSG_ERROR([Could not find ssl library])])'
+    mode: '0600'
     backup: yes
   when: ansible_distribution_release == 'bionic'
 

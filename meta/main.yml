@@ -6,21 +6,21 @@ galaxy_info:
   license: BSD
   min_ansible_version: 1.9
   platforms:
-  - name: Ubuntu
-    versions:
-    - bionic
-    - xenial
-    - trusty
+    - name: Ubuntu
+      versions:
+        - bionic
+        - xenial
+        - trusty
   galaxy_tags:
-  - system
-  - security
+    - system
+    - security
 dependencies:
   - geerlingguy.java
-## use external role for docker-engine repository.
-## CI test impact: docker in docker + ulimit
-#  - ernestas-poskus.docker
+  ## use external role for docker-engine repository.
+  ## CI test impact: docker in docker + ulimit
+  #  - ernestas-poskus.docker
   - juju4.gift
   - juju4.sleuthkit
-## sift ppa volatility or separate role
+  ## sift ppa volatility or separate role
   - juju4.volatility
   - juju4.rekall

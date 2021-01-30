@@ -4,6 +4,7 @@
   copy:
     src: "{{ sift_files }}/sift/files/foremost/foremost.conf"
     dest: /etc/foremost.conf
+    mode: '0644'
     remote_src: true
 
 - name: Check if /usr/share/tsk/sorter exists
@@ -18,9 +19,10 @@
   copy:
     src: "{{ item }}"
     dest: /usr/share/tsk/sorter/
+    mode: '0644'
     remote_src: true
-#  with_fileglob:
-#    - "{{ sift_files }}/sift/files/sorter/*.sort"
+    # with_fileglob:
+    #   - "{{ sift_files }}/sift/files/sorter/*.sort"
   with_items: "{{ sorter.stdout_lines }}"
   when: tsksorter.stat.exists
 
@@ -28,6 +30,7 @@
   copy:
     src: "{{ sift_files }}/sift/files/samba/smb.conf"
     dest: /etc/samba/smb.conf
+    mode: '0644'
     remote_src: true
 
 - name: list sift pdf-tools & page-brute files
@@ -41,9 +44,9 @@
     dest: /usr/local/bin/
     mode: '0755'
     remote_src: true
-#  with_fileglob:
-#    - "{{ sift_files }}/sift/files/pdf-tools/*"
-#    - "{{ sift_files }}/sift/files/page-brute/*.py"
+    # with_fileglob:
+    #   - "{{ sift_files }}/sift/files/pdf-tools/*"
+    #   - "{{ sift_files }}/sift/files/page-brute/*.py"
   with_items: "{{ find2.stdout_lines }}"
 
 - name: Check if volatility is present
@@ -61,18 +64,21 @@
         dest: /usr/lib/python2.7/dist-packages/volatility/plugins/
         mode: '0644'
         remote_src: true
-#      with_fileglob:
-#        - "{{ sift_files }}/sift/files/volatility/*.py"
+        # with_fileglob:
+        #   - "{{ sift_files }}/sift/files/volatility/*.py"
       with_items: "{{ find3.stdout_lines }}"
 
-## why? https://github.com/sans-dfir/sift-files/blob/master/install.sh
+    ## why? https://github.com/sans-dfir/sift-files/blob/master/install.sh
     - name: remove volatility javarat plugins
       file: dest=/usr/lib/python2.7/dist-packages/volatility/plugins/javarat.py state=absent
 
   when: vol.stat.exists and sift_include_volplugins
 
 - name: ensure directories exist
-  file: dest={{ item }} state=directory
+  file:
+    dest: "{{ item }}"
+    state: directory
+    mode: '0755'
   with_items:
     - /usr/share/sift/resources
     - /usr/share/sift/images
@@ -103,7 +109,7 @@
 - name: ensure /usr/local/bin/id absent
   file: dest=/usr/local/bin/id state=absent
 
-- name: sift fixubuntu.sh
+- name: sift fixubuntu.sh  # noqa 301
   command: bash fixubuntu.sh
   args:
     chdir: "{{ sift_files }}/sift/files"

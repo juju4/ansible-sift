@@ -14,6 +14,7 @@
   copy:
     src: sift.asc
     dest: "{{ sift_files }}/sift.asc"
+    mode: '0644'
   when: not (sift_pgp_server and sift_pgp_key)
 
 - name: Import local gpg key
@@ -29,11 +30,13 @@
 
 - name: Validate sift-cli hash signature
   command: gpg --verify sift-cli-linux.sha256.asc
+  changed_when: false
   args:
     chdir: /usr/local/bin
   ignore_errors: true
 
 - name: Validate hash of sift-cli
   command: shasum -a 256 -c sift-cli-linux.sha256.asc
+  changed_when: false
   args:
     chdir: /usr/local/bin

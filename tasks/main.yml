@@ -22,12 +22,13 @@
     dest: '/etc/hosts'
     regexp: '^127.0.0.1([ ]+)localhost'
     replace: '127.0.0.1\1localhost {{ sift_hostname }}'
+    mode: '0644'
     backup: yes
   when: sift_hostname is defined
 
-#- name: Include version-specific variables for Ubuntu.
-#  include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
-#  when: ansible_distribution == 'Ubuntu'
+# - name: Include version-specific variables for Ubuntu.
+#   include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
+#   when: ansible_distribution == 'Ubuntu'
 
 - name: Check if user ~/.gem/specs exists
   stat: path=/home/{{ sift_user }}/.gem/specs
@@ -55,6 +56,7 @@
     dest: /etc/ssh/sshd_config
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
+    mode: '0644'
     backup: yes
   with_items:
     - { regexp: '^PasswordAuthentication', line: 'PasswordAuthentication no' }
@@ -71,6 +73,7 @@
     dest: /etc/security/limits.d/openfiles
     regexp: "^{{ sift_user }}\t\thard\tnofiles\t\t2048"
     line: "{{ sift_user }}\t\thard\tnofiles\t\t2048"
+    mode: '0644'
     state: present
     create: yes
 
