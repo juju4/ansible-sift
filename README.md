@@ -1,5 +1,9 @@
 [![Build Status - Master](https://travis-ci.org/juju4/ansible-sift.svg?branch=master)](https://travis-ci.org/juju4/ansible-sift)
 [![Build Status - Devel](https://travis-ci.org/juju4/ansible-sift.svg?branch=devel)](https://travis-ci.org/juju4/ansible-sift/branches)
+
+[![Actions Status - Master](https://github.com/juju4/ansible-sift/workflows/AnsibleCI/badge.svg)](https://github.com/juju4/ansible-sift/actions?query=branch%3Amaster)
+[![Actions Status - Devel](https://github.com/juju4/ansible-sift/workflows/AnsibleCI/badge.svg?branch=devel)](https://github.com/juju4/ansible-sift/actions?query=branch%3Adevel)
+
 # SANS Investigative Forensic Toolkit (SIFT) Workstation ansible role
 
 A simple ansible role to setup ISC SANS Investigative Forensic Toolkit (SIFT) Workstation.
