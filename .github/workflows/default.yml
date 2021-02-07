@@ -90,7 +90,7 @@ jobs:
         continue-on-error: true
       - name: After script - files
         run: |
-          ls /home/sansforensics
-          ls /home/sansforensics/Desktop
+          sudo ls /home/sansforensics
+          sudo ls /home/sansforensics/Desktop
         if: ${{ always() }}
         continue-on-error: true
