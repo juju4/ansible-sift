@@ -62,8 +62,8 @@ jobs:
           ip addr
           cat /etc/resolv.conf
           host www.google.com
-          ping -c 1 www.google.com
-          ping -c 1 8.8.8.8
+          ping -c 1 www.google.com || true
+          ping -c 1 8.8.8.8 || true
         if: ${{ failure() }}
         continue-on-error: true
       - name: After script - systemd
@@ -71,6 +71,7 @@ jobs:
           systemctl -l --no-pager status iptables || true
           systemd-analyze security || true
           rsyslogd -v
+        if: ${{ always() }}
         continue-on-error: true
       - name: After script - etc
         run: |
@@ -85,9 +86,11 @@ jobs:
           apt show libewf2 -a
           sudo apt-get install -y apt-rdepends
           apt-rdepends libtsk-dev
+        if: ${{ always() }}
         continue-on-error: true
       - name: After script - files
         run: |
           ls /home/sansforensics
           ls /home/sansforensics/Desktop
+        if: ${{ always() }}
         continue-on-error: true
