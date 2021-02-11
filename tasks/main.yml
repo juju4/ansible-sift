@@ -68,7 +68,7 @@
   tags:
     - sift
 
-- name: Review some limits
+- name: Review some limits  # noqa no-tabs
   lineinfile:
     dest: /etc/security/limits.d/openfiles
     regexp: "^{{ sift_user }}\t\thard\tnofiles\t\t2048"
