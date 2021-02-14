@@ -154,6 +154,8 @@ jobs:
           cd $GITHUB_WORKSPACE/juju4.sift
           sudo kitchen exec ${{ matrix.suite }}-${{ matrix.distribution }}-${{ matrix.version2 }} -c 'ls -lA /home/sansforensics'
           sudo kitchen exec ${{ matrix.suite }}-${{ matrix.distribution }}-${{ matrix.version2 }} -c 'ls -lA /home/sansforensics/Desktop'
+          sudo kitchen exec ${{ matrix.suite }}-${{ matrix.distribution }}-${{ matrix.version2 }} -c 'ls -lA /usr/local/bin'
+          sudo kitchen exec ${{ matrix.suite }}-${{ matrix.distribution }}-${{ matrix.version2 }} -c 'ls -lA /usr/share/sift'
         if: ${{ always() }}
         continue-on-error: true
       - name: After script - logs
