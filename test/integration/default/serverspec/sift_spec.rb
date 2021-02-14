@@ -23,10 +23,6 @@ end
 describe file('/usr/share/tsk/sorter/archives.sort') do
   it { should be_file }
 end
-describe file('/usr/local/bin/update-sift') do
-  it { should be_file }
-  it { should be_executable }
-end
 describe file('/usr/bin/java') do
   it { should be_file }
   it { should be_executable }
