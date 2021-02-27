@@ -103,5 +103,6 @@ jobs:
           sudo ls /home/sansforensics
           sudo ls /home/sansforensics/Desktop
           ls -lA /usr/local/bin
+          ls -lA /usr/share/sift
         if: ${{ always() }}
         continue-on-error: true
