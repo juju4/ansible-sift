@@ -232,12 +232,8 @@
     - restart samba nmbd
 
 - name: Set timezone variables
-  replace:
-    dest: /etc/timezone
-    regexp: '(.*)'
-    replace: "{{ tz }}"
-    mode: '0644'
-    backup: yes
+  timezone:
+    name: "{{ tz }}"
   notify:
     - update timezone
 
