@@ -194,7 +194,7 @@
     create: yes
 
 - name: Ensure user Desktop directory exists
-  file: dest="/home/{{ sift_user }}/Desktop" state=directory mode=0755
+  file: dest="/home/{{ sift_user }}/Desktop" state=directory mode=0700
 
 - name: setting symlinks
   file:
@@ -262,9 +262,6 @@
   with_items:
     - "/home/{{ sift_user }}/.bash_aliases"
     - /root/.bash_aliases
-
-- name: Sanity check for Desktop folder
-  file: path="/home/{{ sift_user }}/Desktop" state=directory mode=0700
 
 - name: Setting up useful links on {{ sift_user }} Desktop
   file:
