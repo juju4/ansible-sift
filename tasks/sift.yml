@@ -63,14 +63,12 @@
 - name: SIFT | accept Microsoft EULA for ttf-mscorefonts-installer
   debconf: name=ttf-mscorefonts-installer question='msttcorefonts/accepted-mscorefonts-eula' value=true vtype='select'
 
-# Note: don't change to ansible loop syntax else fails (list too long?)
 - name: SIFT | packages install
   apt:
-    name: "{{ item }}"
+    name: "{{ sift_packages }}"
     state: present
     update_cache: yes
     cache_valid_time: 3600
-  with_items: "{{ sift_packages }}"
   notify:
     - Updating ClamAV Signatures
   async: 7200
