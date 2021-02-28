@@ -7,8 +7,8 @@
     owner: root
     mode: "{{ item.m }}"
   with_items:
-    - { u: 'https://github.com/sans-dfir/sift-cli/releases/download/v1.7.1/sift-cli-linux', m: '0755' }
-    - { u: 'https://github.com/sans-dfir/sift-cli/releases/download/v1.7.1/sift-cli-linux.sha256.asc', m: '0400' }
+    - { u: 'https://github.com/sans-dfir/sift-cli/releases/download/v1.9.2/sift-cli-linux', m: '0755' }
+    - { u: 'https://github.com/sans-dfir/sift-cli/releases/download/v1.9.2/sift-cli-linux.sha256.asc', m: '0400' }
 
 - name: Upload sift gpg public key
   copy:
