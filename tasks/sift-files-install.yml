@@ -108,9 +108,3 @@
 
 - name: ensure /usr/local/bin/id absent
   file: dest=/usr/local/bin/id state=absent
-
-- name: sift fixubuntu.sh  # noqa 301
-  command: bash fixubuntu.sh
-  args:
-    chdir: "{{ sift_files }}/sift/files"
-  ignore_errors: true
