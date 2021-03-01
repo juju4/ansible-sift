@@ -30,10 +30,6 @@
     - sift_ppa == 'dev'
     - (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int < 20)
 
-- name: adding Ubuntu Tweak repository
-  apt_repository: repo='ppa:tualatrix/ppa' state=present
-  when: ansible_distribution_release == 'trusty'
-
 # Xenial, bionic: universe and multiverse already enabled by default
 # - name: Enabling Universe repository
 #   apt_repository:
@@ -236,10 +232,8 @@
     - update timezone
 
 - include: sift-ppa.yml
-  when: ansible_distribution_release == 'trusty' or  ansible_distribution_release == 'xenial'
 
 - include: bulk-extractor.yml
-  when: ansible_distribution_release != 'trusty'
 
 - name: Setting noclobber for {{ sift_user }} and root
   lineinfile:
@@ -265,7 +259,7 @@
   file:
     src: "{{ item.src }}"
     path: "{{ item.path }}"
-    mode: '0644'
+    mode: '0777'
     state: link
   with_items:
     - { src: '/cases', path: "/home/{{ sift_user }}/Desktop/cases" }
