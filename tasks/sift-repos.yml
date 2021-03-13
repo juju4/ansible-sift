@@ -46,7 +46,7 @@
   apt_repository: repo='ppa:malteworld/ppa' state=present
   when: ansible_distribution_release == 'bionic' and ansible_distribution_release == 'cosmic'
 
-- name: adding malteworld/ppa repository
+- name: Bionic | adding noobslab/{themes,icons} repositories
   apt_repository:
     repo: "{{ item }}"
     state: present
