@@ -55,6 +55,8 @@
   register: pkg_result
   until: pkg_result is success
 
+- import_tasks: sift-arc.yml
+
 - name: Check if pescan is present
   stat: path=/usr/bin/pescan
   register: rpev
@@ -205,7 +207,15 @@
 
 - include: sift-ppa.yml
 
-- include: bulk-extractor.yml
+- import_tasks: bulk-extractor.yml
+  when: sift_bulkextractor_source|bool
+- name: Install bulk-extractor package - sift ppa
+  package:
+    name: bulk-extractor
+    state: present
+  register: pkg_result
+  until: pkg_result is success
+  when: not sift_bulkextractor_source|bool
 
 - name: Setting noclobber for {{ sift_user }} and root
   lineinfile:

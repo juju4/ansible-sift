@@ -45,7 +45,6 @@ gift_ppa_packages:
 ## https://launchpad.net/~sift/+archive/ubuntu/dev?field.series_filter=xenial WIP
 sift_ppa_packages:
   - afterglow
-  # - autopsy
   # - mantaray
   # - sift-scripts
   ## bulk-extractor : Depends: openjdk-7-jdk but it is not installable = but fine w openjdk-8-jdk.
@@ -69,11 +68,11 @@ sift_packages:
   - dos2unix
   ## l.200 https://github.com/sans-dfir/sift-bootstrap/blob/0d1bd146377050f9217b8187837516659e361060/bootstrap.sh
   - aeskeyfind
-  # - afflib-tools
+  - afflib-tools
   # - afterglow
   - aircrack-ng
   - arp-scan
-  # - autopsy
+  - autopsy
   - bcrypt
   # - bitpim
   # - bitpim-lib
@@ -83,13 +82,19 @@ sift_packages:
   - build-essential
   # - bulk-extractor
   - cabextract
+  - ccrypt
+  - cifs-utils
   - clamav
   - cmospwd
   - cpanminus
   - cryptcat
   - cryptsetup
+  - curl
   - dc3dd
+  - dcfldd
   - dconf-tools
+  - default-jre
+  - dos2unix
   - driftnet
   - dsniff
   # - dumbpig
@@ -120,13 +125,16 @@ sift_packages:
   - ghex
   - git
   - graphviz
+  - grepcidr
   - gthumb
   - gzrt
+  - hashdeep
   - hexedit
   - htop
   - hydra
   - hydra-gtk
-  - ipython
+  - ipython3
+  - jq
   - kdiff3
   - knocker
   - kpartx

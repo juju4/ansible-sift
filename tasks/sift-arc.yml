@@ -1,0 +1,9 @@
+---
+
+- name: Bionic | adding noobslab/{themes,icons} packages
+  packages:
+    name:
+      - arc-icons
+      - arc-themes
+    state: present
+  when: ansible_distribution_release == 'bionic'

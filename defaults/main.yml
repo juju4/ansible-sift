@@ -12,6 +12,8 @@ sift_docker: true
 ## if you want to use additional volatility plugins grouped by sift or from external role
 sift_include_volplugins: true
 
+sift_bulkextractor_source: false
+
 # sift_webserver: apache2
 sift_webserver: nginx
 
