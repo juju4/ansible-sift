@@ -13,28 +13,45 @@
     - (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int < 20)
 
 # Xenial, bionic: universe and multiverse already enabled by default
-# - name: Enabling Universe repository
-#   apt_repository:
-#     repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release | lower }} universe"
-#     state: present
-# - name: Enabling Multiverse repository
-#   apt_repository:
-#     repo: "deb http://archive.ubuntu.com/ubuntu {{ ansible_distribution_release | lower }} multiverse"
-#     state: present
-# - name: Enabling Multiverse security updates
-#   replace:
-#     dest: /etc/apt/sources.list
-#     regexp: '^# (.*)multiverse$'
-#     replace: '\1multiverse'
-#     backup: yes
+- name: Enabling universe repository
+  replace:
+    dest: /etc/apt/sources.list
+    regexp: '^#(\.*)universe$'
+    replace: '\1universe'
+    mode: '0644'
+    backup: yes
+
+- name: Enabling multiverse repository
+  replace:
+    dest: /etc/apt/sources.list
+    regexp: '^#(\.*)multiverse$'
+    replace: '\1multiverse'
+    mode: '0644'
+    backup: yes
+
 - name: check sources.list
   command: cat /etc/apt/sources.list
   register: sources
   changed_when: false
 - name: Debug | sources.list content
   debug: var=sources.stdout_lines
+
 # Some 64-bit systems are not configured to support i386 packages. Let's make sure they are enabled. (done in main.yml)
 # - name: Ensure both i386/x86_64 architecture support for packages
 #   command: dpkg --add-architecture i386
 # - command: ldconfig
 
+- name: adding flexiondotorg/magnus repository
+  apt_repository: repo='ppa:flexiondotorg/magnus' state=present
+
+- name: adding malteworld/ppa repository
+  apt_repository: repo='ppa:malteworld/ppa' state=present
+
+- name: adding malteworld/ppa repository
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+  with_items:
+    - noobslab/themes
+    - noobslab/icons
+  when: ansible_distribution_release == 'bionic'
