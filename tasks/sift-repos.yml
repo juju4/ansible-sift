@@ -41,9 +41,6 @@
 #   command: dpkg --add-architecture i386
 # - command: ldconfig
 
-- name: adding flexiondotorg/magnus repository
-  apt_repository: repo='ppa:flexiondotorg/magnus' state=present
-
 - name: adding malteworld/ppa repository
   apt_repository: repo='ppa:malteworld/ppa' state=present
 
