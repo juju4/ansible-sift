@@ -17,10 +17,17 @@
     mode: '0644'
   when: not (sift_pgp_server and sift_pgp_key)
 
+- name: Check current gpg keys
+  command: gpg --list-keys
+  changed_when: false
+  register: keys
+
 - name: Import local gpg key
   command: >
     gpg --import {{ sift_files }}/sift.asc
-  when: not (sift_pgp_server and sift_pgp_key)
+  when:
+    - not (sift_pgp_server and sift_pgp_key)
+    - "'5D29135B37983CAC6097962315B9AD7122598A94' not in keys.stdout"
 
 - name: Import gpg key from pgp directory server
   command: >
