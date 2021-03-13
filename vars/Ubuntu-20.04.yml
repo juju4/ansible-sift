@@ -69,7 +69,7 @@ sift_packages:
   # - afterglow
   - aircrack-ng
   - arp-scan
-  - autopsy
+  # - autopsy
   # - bitpim
   # - bitpim-lib
   - bless
@@ -245,7 +245,7 @@ sift_packages:
   - wireshark
   - xdot
   - xfsprogs
-  - xmount
+  # - xmount
   - zenity
   ## gsettings
   - libglib2.0-bin
