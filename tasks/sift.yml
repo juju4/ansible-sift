@@ -49,7 +49,8 @@
   command: cat /etc/apt/sources.list
   register: sources
   changed_when: false
-- debug: var=sources.stdout_lines
+- name: Debug | sources.list content
+  debug: var=sources.stdout_lines
 # Some 64-bit systems are not configured to support i386 packages. Let's make sure they are enabled. (done in main.yml)
 # - name: Ensure both i386/x86_64 architecture support for packages
 #   command: dpkg --add-architecture i386
