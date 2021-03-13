@@ -127,6 +127,8 @@
     dest: "{{ sift_files }}"
     version: "{{ sift_saltstack_version | default('9913b8bca7226ad7b642f95d4d6abdba1a9bd9e5') }}"
     recursive: no
+    update: no
+    force: no
 - include: sift-files-install.yml
 
 - name: Create SIFT folders
