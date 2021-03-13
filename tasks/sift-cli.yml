@@ -47,3 +47,18 @@
   changed_when: false
   args:
     chdir: /usr/local/bin
+
+- name: Execute remnux install
+  command: "sift-cli-linux install --user={{ sift_user }}"
+  become: yes
+  when: sift_cli_install is defined and sift_cli_install|bool
+
+- name: Execute sift-cli install server - keeping ssh
+  command: "sift-cli-linux install --mode=server --user={{ sift_user }}"
+  become: yes
+  when: sift_cli_install_server is defined and sift_cli_install_server|bool
+
+- name: Execute sift-cli upgrade
+  command: "sift-cli-linux upgrade --user={{ sift_user }}"
+  become: yes
+  when: sift_cli_upgrade is defined and sift_cli_upgrade|bool
