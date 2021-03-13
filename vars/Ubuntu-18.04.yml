@@ -260,8 +260,6 @@ sift_packages:
   - libglib2.0-bin
   # - unity-greeter
   - ubuntu-wallpapers
-  - "{{ gift_ppa_packages }}"
-  - "{{ sift_ppa_packages }}"
   - rsync
 
 # moved to separate role
