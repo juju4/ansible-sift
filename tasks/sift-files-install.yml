@@ -80,17 +80,19 @@
     state: directory
     mode: '0755'
   with_items:
-    - /usr/share/sift/resources
-    - /usr/share/sift/images
-    - /usr/share/sift/audio
-    - /usr/share/sift/other
-    - /usr/share/sift/scripts
+    # - /usr/share/sift/resources
+    # - /usr/share/sift/images
+    # - /usr/share/sift/audio
+    # - /usr/share/sift/other
+    # - /usr/share/sift/scripts
     - /usr/share/regripper
 
 - name: copy sift tools directories to /usr/share/sift
-  synchronize:
+  file:
     src: "{{ item }}"
-    dest: /usr/share/sift/
+    dest: "/usr/share/sift/{{ item | basename }}"
+    state: link
+    mode: '0755'
   with_items:
     - "{{ sift_files }}/sift/files/sift/scripts"
     - "{{ sift_files }}/sift/files/sift/other"
@@ -102,8 +104,8 @@
 - name: copy regripper files to /usr/share/regripper
   copy:
     src: "{{ sift_files }}/sift/files/regripper/rip.pl"
-    dest: /usr/share/regripper/
-    mode: '0755'
+    dest: /usr/share/regripper/rip.pl
+    mode: '0775'
     remote_src: true
 
 - name: ensure /usr/local/bin/id absent
