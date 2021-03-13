@@ -84,7 +84,7 @@
     # - /usr/share/sift/images
     # - /usr/share/sift/audio
     # - /usr/share/sift/other
-    # - /usr/share/sift/scripts
+    - /usr/share/sift
     - /usr/share/regripper
 
 - name: copy sift tools directories to /usr/share/sift
