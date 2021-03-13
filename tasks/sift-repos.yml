@@ -4,13 +4,13 @@
   apt_repository: repo='ppa:sift/stable' state=present
   when:
     - sift_ppa != 'dev'
-    - (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int < 20)
+    - (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int <= 20)
 
 - name: adding SIFT repository - dev
   apt_repository: repo='ppa:sift/dev' state=present
   when:
     - sift_ppa == 'dev'
-    - (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int < 20)
+    - (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int <= 20)
 
 # Xenial, bionic: universe and multiverse already enabled by default
 - name: Enabling universe repository
