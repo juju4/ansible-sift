@@ -22,16 +22,13 @@ gift_ppa_packages:
   - libnet1
   - libolecf
   - libparse-win32registry-perl
-  # - libpff
-  # - libpff-dev
-  # - libpff-python
-  # - libpff-tools
   - libregf
   - libregf-dev
   - libregf-python
   - libregf-tools
   - libssl-dev
   - libtext-csv-perl
+  - libvmdk
   - libvshadow
   - libvshadow-dev
   - libvshadow-python
@@ -47,11 +44,9 @@ sift_ppa_packages:
   - afterglow
   # - mantaray
   # - sift-scripts
-  ## bulk-extractor : Depends: openjdk-7-jdk but it is not installable = but fine w openjdk-8-jdk.
-  ##  => package not maintained. source install
-  # - bulk-extractor
   # - flowgrep
   - liblightgrep
+  - libplist-utils
   - mac-robber
   - maltegoce
   # - ntdsxtract
@@ -139,53 +134,29 @@ sift_packages:
   - knocker
   - kpartx
   - lft
-  # - libafflib-dev
+  - libafflib-dev
   - libafflib0v5
-  # - libbde
-  # - libbde-tools
-  # - libesedb
-  # - libesedb-tools
-  # - libevt
-  # - libevt-tools
-  # - libevtx
-  # - libevtx-tools
-  # - libewf
-  # - libewf-dev
-  # - libewf-python
-  # - libewf-tools
-  # - libffi-dev
-  # - libfuse-dev
-  # - libfvde
-  # - libfvde-tools
-  # - liblightgrep
-  # - libmsiecf
-  # - libnet1
-  # - libolecf
-  # - libparse-win32registry-perl
-  # - libpff
-  # - libpff-dev
-  # - libpff-python
-  # - libpff-tools
-  # - libregf
-  # - libregf-dev
-  # - libregf-python
-  # - libregf-tools
-  # - libssl-dev
-  # - libtext-csv-perl
-  # - libvshadow
-  # - libvshadow-dev
-  ## l.300 https://github.com/sans-dfir/sift-bootstrap/blob/0d1bd146377050f9217b8187837516659e361060/bootstrap.sh
-  # - libvshadow-python
-  # - libvshadow-tools
+  - libbcprov-java
+  - libcommons-lang3-java
+  - libdatetime-perl
+  - libencode-perl
+  - libfuse-dev
+  - libguestfs-tools
+  - libncurses5-dev
+  - libnet1
+  - libparse-win32registry-perl
+  - libpcap-dev
+  - libssl-dev
+  - libtext-csv-perl
   - libxml2-dev
   - libxslt1-dev
-  # - maltegoce
-  # - mantaray
+  - libyara3
   - md5deep
   - mongodb-clients
   - mongodb-server
   - nbd-client
   - nbtscan
+  - net-tools
   ## ensure same choice between netcat and netcat-traditional inside {sift,remnux.yml}
   - netcat
   - netpbm
@@ -194,12 +165,12 @@ sift_packages:
   - nfdump
   - ngrep
   - nikto
-  # - ntopng
   - okular
-  ## https://bugs.launchpad.net/ubuntu/+source/open-iscsi/+bug/1651497
-  # - open-iscsi
+  - onboard
+  - open-iscsi
   - ophcrack
   - ophcrack-cli
+  - orca
   - outguess
   - p0f
   - p7zip-full
