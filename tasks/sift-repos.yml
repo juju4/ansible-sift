@@ -41,8 +41,10 @@
 #   command: dpkg --add-architecture i386
 # - command: ldconfig
 
+# http://ppa.launchpad.net/malteworld/ppa/ubuntu/dists/
 - name: adding malteworld/ppa repository
   apt_repository: repo='ppa:malteworld/ppa' state=present
+  when: ansible_distribution_release == 'bionic' and ansible_distribution_release == 'cosmic'
 
 - name: adding malteworld/ppa repository
   apt_repository:
