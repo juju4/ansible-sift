@@ -1,7 +1,7 @@
 ---
 
 - name: Bionic | adding noobslab/{themes,icons} packages
-  packages:
+  package:
     name:
       - arc-icons
       - arc-themes
