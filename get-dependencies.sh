@@ -12,6 +12,7 @@ fi
 [ ! -d $rolesdir/juju4.redhat_epel ] && git clone https://github.com/juju4/ansible-redhat-epel $rolesdir/juju4.redhat_epel
 #[ ! -d $rolesdir/geerlingguy.java ] && git clone https://github.com/geerlingguy/ansible-role-java.git $rolesdir/geerlingguy.java
 [ ! -d $rolesdir/geerlingguy.java ] && git clone https://github.com/juju4/ansible-role-java.git $rolesdir/geerlingguy.java
+[ ! -d $rolesdir/geerlingguy.docker ] && git clone https://github.com/geerlingguy/ansible-role-docker.git $rolesdir/geerlingguy.docker
 [ ! -d $rolesdir/ernestas-poskus.docker ] && git clone https://github.com/ernestas-poskus/ansible-role-docker.git $rolesdir/ernestas-poskus.docker
 [ ! -d $rolesdir/juju4.gift ] && git clone https://github.com/juju4/ansible-gift.git $rolesdir/juju4.gift
 [ ! -d $rolesdir/juju4.sleuthkit ] && git clone https://github.com/juju4/ansible-sleuthkit.git $rolesdir/juju4.sleuthkit

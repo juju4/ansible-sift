@@ -6,4 +6,5 @@
     ## xenial on container has issue to install bluez which is required for unity
     # - sift_do_x11: false
   roles:
+    - geerlingguy.docker
     - juju4.sift
