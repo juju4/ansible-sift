@@ -20,7 +20,7 @@
 - name: Add new hostname in /etc/hosts (local resolv)
   replace:
     dest: '/etc/hosts'
-    regexp: '^127.0.0.1([ ]+)localhost'
+    regexp: '^127.0.0.1([ ]+)localhost$'
     replace: '127.0.0.1\1localhost {{ sift_hostname }}'
     mode: '0644'
     backup: yes
