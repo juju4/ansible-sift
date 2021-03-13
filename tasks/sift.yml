@@ -265,7 +265,7 @@
   file:
     src: "{{ item.src }}"
     path: "{{ item.path }}"
-    mode: '0777'
+    mode: '1775'
     state: link
   with_items:
     - { src: '/cases', path: "/home/{{ sift_user }}/Desktop/cases" }
