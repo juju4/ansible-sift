@@ -225,11 +225,17 @@
     - restart samba smbd
     - restart samba nmbd
 
+- name: Check timezone setting
+  slurp:
+    src: /etc/timezone
+  register: timezone
+## FIXME: not idempotent??? = adding when
 - name: Set timezone variables
   timezone:
     name: "{{ tz }}"
   notify:
     - update timezone
+  when: "tz not in timezone['content'] | b64decode"
 
 - include: sift-ppa.yml
 
