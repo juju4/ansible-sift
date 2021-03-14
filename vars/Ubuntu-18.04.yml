@@ -42,23 +42,23 @@ gift_ppa_packages:
 
 ## https://launchpad.net/~sift/+archive/ubuntu/dev?field.series_filter=xenial WIP
 sift_ppa_packages:
-  - afterglow
+  # - afterglow
   # - mantaray
   # - sift-scripts
   # - flowgrep
   - liblightgrep
   - libplist-utils
   - mac-robber
-  - maltegoce
+  # - maltegoce
   # - ntdsxtract
-  - passivedns
+  # - passivedns
   # - pdf-tools
   # - pyelftools
   - python-pytsk3
-  - regripper
+  # - regripper
   - sleuthkit
-  - windows-perl
-# more...
+  # - windows-perl
+  # more...
 
 sift_packages:
   - openssh-server

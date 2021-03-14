@@ -33,8 +33,8 @@ gift_ppa_packages:
   - libvshadow-dev
   - libvshadow-python
   - libvshadow-tools
-  - python-dfvfs
-  - python-efilter
+  - python3-dfvfs
+  - python3-efilter
   - python3-pytsk3
   - python3-plaso
   - plaso-data
@@ -42,22 +42,22 @@ gift_ppa_packages:
 
 ## https://launchpad.net/~sift/+archive/ubuntu/dev?field.series_filter=xenial WIP
 sift_ppa_packages:
-  - afterglow
+  # - afterglow
   # - mantaray
   # - sift-scripts
   # - flowgrep
   - liblightgrep
   - libplist-utils
   - mac-robber
-  - maltegoce
+  # - maltegoce
   # - ntdsxtract
-  - passivedns
+  # - passivedns
   # - pdf-tools
   # - pyelftools
   - python3-pytsk3
-  - regripper
+  # - regripper
   - sleuthkit
-  - windows-perl
+  # - windows-perl
   # more...
 
 sift_packages:
