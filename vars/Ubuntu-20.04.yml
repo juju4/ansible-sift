@@ -140,7 +140,7 @@ sift_packages:
   - libdatetime-perl
   - libencode-perl
   - libfuse-dev
-  - libguestfs-tools
+  # - libguestfs-tools
   - libncurses5-dev
   - libnet1
   - libparse-win32registry-perl
