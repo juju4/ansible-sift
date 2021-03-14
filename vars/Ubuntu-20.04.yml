@@ -60,6 +60,19 @@ sift_ppa_packages:
   # - windows-perl
   # more...
 
+sift_perl_packages:
+  - libdate-calc-perl
+  - libdbi-perl
+  - libimage-exiftool-perl
+  - libjson-perl
+  - libcgi-pm-perl
+  - libxml-xpath-perl
+
+sift_perl_cpanm_packages:
+  - DBD::SQLite
+  - HTML::QuickTable
+  - Net::Wigle
+
 sift_packages:
   - openssh-server
   - dos2unix

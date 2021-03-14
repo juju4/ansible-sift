@@ -25,7 +25,7 @@
 
 - name: SIFT | packages install
   apt:
-    name: "{{ sift_packages }}"
+    name: "{{ sift_packages + sift_perl_packages }}"
     state: present
     update_cache: yes
     cache_valid_time: 3600
@@ -90,9 +90,10 @@
   until: pkg_result is success
 
 - name: Install perl modules
-  cpanm: name={{ item }}
-  with_items:
-    - Net::Wigle
+  cpanm:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ sift_perl_cpanm_packages }}"
   register: pkg_result
   until: pkg_result is success
 
