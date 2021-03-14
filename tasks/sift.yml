@@ -31,8 +31,8 @@
     cache_valid_time: 3600
   notify:
     - Updating ClamAV Signatures
-  async: 7200
-  poll: 300
+  async: 3600
+  poll: 60
   register: pkg_result
   until: pkg_result is success
 
@@ -42,8 +42,6 @@
     state: present
     update_cache: yes
     cache_valid_time: 3600
-  async: 7200
-  poll: 300
   register: pkg_result
   until: pkg_result is success
 
