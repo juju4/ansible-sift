@@ -104,5 +104,6 @@ jobs:
           sudo ls /home/sansforensics/Desktop
           ls -lA /usr/local/bin
           ls -lA /usr/share/sift
+          ls -lA /etc/apt/sources.list.d
         if: ${{ always() }}
         continue-on-error: true
