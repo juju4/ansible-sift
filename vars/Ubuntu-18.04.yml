@@ -287,29 +287,41 @@ sift_pip_packages_deps:
   - lib32z1-dev
 
 sift_pip_packages:
-  - python-dateutil==2.4.2
-  - distorm3
+  - argparse
   - bitstring
+  - colorama
+  - defang==0.5.2
+  - geoip2
+  - ioc_writer
+  - keyrings.alt
+  - lxml
+  - machinae
+  - pefile
+  - pillow
+  - pip==21.0.1
+  # - pyhindsight  # TODO
+  - python-dateutil
+  - python-evtx
+  - python-magic
+  - python-registry
+  - setuptools_rust
+  - setuptools
+  - stix
+  - six
+  - stix-validator
+  - stix
+  - virustotal-api
+  - wheel
+  - yara-python
+  # not anymore?
+  - distorm3
   # - rekall
   - docopt
-  - python-evtx
-  - python-registry
-  - six
   - construct
   ## FIXME! missing include
   # - pyv8
-  - pefile
   - analyzeMFT
-  - python-magic
-  - argparse
   - unicodecsv
-  - stix
-  ## FIXME! build issue
-  # - stix-validator
-  # - timesketch
-  - lxml
-  - ioc_writer
-  - colorama
   - usnparser
   - windowsprefetch
 
