@@ -92,7 +92,6 @@
 - name: Install perl modules
   cpanm:
     name: "{{ item }}"
-    state: present
   with_items: "{{ sift_perl_cpanm_packages }}"
   register: pkg_result
   until: pkg_result is success
