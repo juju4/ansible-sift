@@ -4,6 +4,6 @@
   package:
     name:
       - arc-icons
-      - arc-themes
+      # - arc-themes
     state: present
   when: ansible_distribution_release == 'bionic'
