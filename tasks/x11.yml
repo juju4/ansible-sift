@@ -82,24 +82,16 @@
 ## https://github.com/jistr/ansible-gsetting
 ## https://github.com/JBKahn/provisioning-local/tree/master/ansible_modules/{dconf,gconftool-2,gsettings}
 - name: SIFT Wallpaper Configuration
-  command: "{{ item }}"
-  with_items:
-    - "gsettings set org.gnome.desktop.background picture-uri file:///usr/share/sift/images/forensics_blue.jpg"
-  ignore_errors: true
+  command: "gsettings set org.gnome.desktop.background picture-uri file:///usr/share/sift/images/forensics_blue.jpg"
   become: yes
   become_user: "{{ sift_user }}"
   when: sift_x11_background is defined and sift_x11_background
-- name: Set desktop background with gsettings
-  command: gsettings set com.canonical.unity-greeter background file:///usr/share/sift/images/forensics_blue.jpg
-  when: ansible_distribution_version == '12.04' and sift_x11_background is defined and sift_x11_background
 
-- name: SIFT Configuration Function
-  command: "{{ item }}"
-  with_items:
-    - "gsettings set org.gnome.desktop.background picture-uri file:///usr/share/sift/images/forensics_blue.jpg"
-    ## stderr: No such schema 'com.canonical.Unity.Launcher'
-    - "gsettings set com.canonical.Unity.Launcher favorites \"['application://nautilus.desktop', 'application://gnome-terminal.desktop', 'application://firefox.desktop', 'application://gnome-screenshot.desktop', 'application://gcalctool.desktop', 'application://bless.desktop', 'application://autopsy.desktop', 'application://wireshark.desktop']\""  # noqa 204
-  ignore_errors: true
+- name: SIFT X11 | set launcher favorites
+  dconf:
+    key: /com/canonical/unity/launcher/favorites
+    value: "{{ sift_x11_launcher_favorites }}"
+    state: present
   become: yes
   become_user: "{{ sift_user }}"
   when: sift_x11_env is defined and sift_x11_env

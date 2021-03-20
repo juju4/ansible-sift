@@ -28,6 +28,7 @@ sift_public_keys: []
 
 sift_extra_languages:
     - fr
+sift_x11_launcher_favorites: "['gnome-terminal.desktop', 'firefox.desktop', 'org.gnome.Nautilus.desktop']"
 
 # if empty, will use file included in role
 sift_pgp_server: ''
