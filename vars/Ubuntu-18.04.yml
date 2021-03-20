@@ -284,7 +284,6 @@ sift_pip_packages_deps:
   - python-dev
   - libffi-dev
   - lib32z1-dev
-  - psutil
 
 sift_pip_packages:
   - argparse
