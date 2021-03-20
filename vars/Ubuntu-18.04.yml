@@ -207,8 +207,7 @@ sift_packages:
   # - python-ntdsxtract
   - python-pip
   - python-wxgtk3.0
-  - python2-dev
-  - python3-m2crypto
+  # - python3-m2crypto
   - python3-pefile
   - python3-pip
   - python3-pyqt4
@@ -295,16 +294,16 @@ sift_pip_packages:
   - ioc_writer
   - keyrings.alt
   - lxml
-  - machinae
+  # - machinae
   - pefile
   - pillow
-  - pip==21.0.1
+  - pip==20.3.4
   # - pyhindsight  # TODO
   - python-dateutil
   - python-evtx
   - python-magic
   - python-registry
-  - setuptools_rust
+  # - setuptools_rust
   - setuptools
   - stix
   - six
