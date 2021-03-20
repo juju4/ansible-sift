@@ -323,6 +323,7 @@ sift_pip_packages:
   - unicodecsv
   - usnparser
   - windowsprefetch
+  - psutil
 
   ## xenial: random issue w avahi-daemon, dependency of libnss-mdns
   ##  https://forum.proxmox.com/threads/ubuntu-16-04-template-for-proxmox-4-1.27034/
