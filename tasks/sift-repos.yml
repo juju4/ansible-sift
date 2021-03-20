@@ -44,11 +44,11 @@
 # http://ppa.launchpad.net/malteworld/ppa/ubuntu/dists/
 - name: adding malteworld/ppa repository
   apt_repository: repo='ppa:malteworld/ppa' state=present
-  when: ansible_distribution_release == 'bionic' and ansible_distribution_release == 'cosmic'
+  when: ansible_distribution_release == 'bionic' or ansible_distribution_release == 'cosmic'
 
 - name: Bionic | adding noobslab/{themes,icons} repositories
   apt_repository:
-    repo: "{{ item }}"
+    repo: "ppa:{{ item }}"
     state: present
   with_items:
     - noobslab/themes
