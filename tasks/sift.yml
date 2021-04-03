@@ -237,14 +237,15 @@
     - /root/.bashrc
 - name: Configuring Aliases for {{ sift_user }} and root
   lineinfile:
-    dest: "{{ item }}"
+    dest: "{{ item.d }}"
     regexp: '^alias mountwin='
     line: 'alias mountwin="mount -o ro,loop,show_sys_files,streams_interface=windows"'
     mode: '0600'
+    owner: "{{ item.o }}"
     create: yes
   with_items:
-    - "/home/{{ sift_user }}/.bash_aliases"
-    - /root/.bash_aliases
+    - { d: "/home/{{ sift_user }}/.bash_aliases", o: "{{ sift_user }}" }
+    - { d: /root/.bash_aliases, o: root }
 
 - name: Setting up useful links on {{ sift_user }} Desktop
   file:
