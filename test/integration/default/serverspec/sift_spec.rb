@@ -56,4 +56,3 @@ end
 describe file('/etc/hosts') do
   its(:content) { should match /siftworkstation/ }
 end
-
