@@ -15,8 +15,9 @@
 ## fails under lxd+systemd, https://github.com/ansible/ansible-modules-core/issues/5582
 - name: set hostname
   hostname: name={{ sift_hostname }}
-  when: sift_hostname is defined
-  ignore_errors: true
+  when: >
+    sift_hostname is defined and
+    not (ansible_virtualization_type is defined and ansible_virtualization_type == "lxc")
 
 - name: Add new hostname in /etc/hosts (local resolv)
   replace:

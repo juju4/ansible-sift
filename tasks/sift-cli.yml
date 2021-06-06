@@ -32,7 +32,6 @@
 - name: Import gpg key from pgp directory server
   command: >
     gpg --keyserver {{ sift_pgp_server }} --recv-keys {{ sift_pgp_key }}
-  ignore_errors: true
   when: sift_pgp_server and sift_pgp_key
 
 - name: Validate sift-cli hash signature
@@ -40,7 +39,6 @@
   changed_when: false
   args:
     chdir: /usr/local/bin
-  ignore_errors: true
 
 - name: Validate hash of sift-cli
   command: shasum -a 256 -c sift-cli-linux.sha256.asc

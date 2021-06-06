@@ -21,7 +21,7 @@
 ## https://bugs.launchpad.net/ubuntu/+source/clamav/+bug/820896 ?
 - name: Updating ClamAV Signatures
   command: freshclam --quiet
-  ignore_errors: true
+  failed_when: false
   ## mostly for travis to avoid stalling "No output has been received in the last 10m0s"... still too long
   async: 600
   poll: 15
