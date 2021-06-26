@@ -27,4 +27,4 @@
       command: "{{ pip_bin }} install --upgrade setuptools"
       when: ansible_os_family != "Debian"
 
-  when: pipv.stdout|int is version_compare( '10.1', '<')
+  when: pipv.stdout is version_compare( '10.1', '<')
