@@ -286,6 +286,7 @@ sift_pip_packages_deps:
   - lib32z1-dev
 
 sift_pip_packages:
+  - setuptools==52.0.0
   - argparse
   - bitstring
   - colorama
@@ -304,7 +305,6 @@ sift_pip_packages:
   - python-magic
   - python-registry
   # - setuptools_rust
-  - setuptools==56.1.0
   - stix
   - six
   - stix-validator
