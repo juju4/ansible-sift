@@ -304,7 +304,7 @@ sift_pip_packages:
   - python-magic
   - python-registry
   # - setuptools_rust
-  - setuptools
+  - setuptools==56.1.0
   - stix
   - six
   - stix-validator
