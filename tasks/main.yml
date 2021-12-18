@@ -80,7 +80,9 @@
     state: present
     create: yes
 
-- include_tasks: "languages-additional.yml lang={{ outer_item }}"
+- include_tasks: "languages-additional.yml"
   with_items: "{{ sift_extra_languages }}"
+  vars:
+    lang: "{{ outer_item }}"
   loop_control:
     loop_var: outer_item
