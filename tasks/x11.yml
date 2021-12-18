@@ -95,6 +95,7 @@
   become: yes
   become_user: "{{ sift_user }}"
   when: sift_x11_env is defined and sift_x11_env
+  failed_when: false
 
 - name: Autostart folder
   file:
