@@ -49,7 +49,7 @@
   when: ansible_architecture == 'x86_64' and archi.stdout.find('i386') == -1
 
 ## https://github.com/sans-dfir/sift-bootstrap/
-- include: sift.yml
+- include_tasks: sift.yml
   tags:
     - sift
 
@@ -66,7 +66,7 @@
 
 - name: Debug | sift_do_x11 var
   debug: var=sift_do_x11
-- include: x11.yml
+- include_tasks: x11.yml
   when: sift_do_x11 is defined and sift_do_x11
   tags:
     - sift
@@ -80,7 +80,7 @@
     state: present
     create: yes
 
-- include: "languages-additional.yml lang={{ outer_item }}"
+- include_tasks: "languages-additional.yml lang={{ outer_item }}"
   with_items: "{{ sift_extra_languages }}"
   loop_control:
     loop_var: outer_item

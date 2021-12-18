@@ -75,7 +75,7 @@
   register: pkg_result
   until: pkg_result is success
 
-- include: pip-upgrade.yml
+- include_tasks: pip-upgrade.yml
 
 - name: Install pip packages dependencies
   package: name={{ sift_pip_packages_deps + python_deps }} state=present
@@ -104,7 +104,7 @@
     recursive: no
     update: no
     force: no
-- include: sift-files-install.yml
+- include_tasks: sift-files-install.yml
 
 - name: Create SIFT folders
   file:
@@ -214,7 +214,7 @@
     - update timezone
   when: "tz not in timezone['content'] | b64decode"
 
-- include: sift-ppa.yml
+- include_tasks: sift-ppa.yml
 
 - import_tasks: bulk-extractor.yml
   when: sift_bulkextractor_source|bool
@@ -279,4 +279,4 @@
     - sift-cheatsheet.pdf
     - windows-to-unix-cheatsheet.pdf
 
-- include: sift-cli.yml
+- include_tasks: sift-cli.yml
