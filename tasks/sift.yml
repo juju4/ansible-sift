@@ -252,6 +252,8 @@
     src: "{{ item.src }}"
     path: "{{ item.path }}"
     mode: '1775'
+    owner: "{{ sift_user }}"
+    follow: no
     state: link
   with_items:
     - { src: '/cases', path: "/home/{{ sift_user }}/Desktop/cases" }
@@ -266,6 +268,8 @@
     src: "/usr/share/sift/resources/{{ item }}"
     dest: "/home/{{ sift_user }}/Desktop/{{ item | basename }}"
     mode: '0644'
+    owner: "{{ sift_user }}"
+    follow: no
     state: link
     # with_fileglob:
     #   - /usr/share/sift/resources/*.pdf
