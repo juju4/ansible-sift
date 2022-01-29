@@ -1,0 +1,279 @@
+---
+
+gift_ppa_packages: []
+
+sift_ppa_packages: []
+
+sift_perl_packages:
+  - libdate-calc-perl
+  - libdbi-perl
+  - libimage-exiftool-perl
+  - libjson-perl
+  - libcgi-pm-perl
+  - libxml-xpath-perl
+
+sift_perl_cpanm_packages:
+  - DBD::SQLite
+  - HTML::QuickTable
+  - Net::Wigle
+
+sift_packages:
+  - openssh-server
+  - dos2unix
+  ## l.200 https://github.com/sans-dfir/sift-bootstrap/blob/0d1bd146377050f9217b8187837516659e361060/bootstrap.sh
+  - aeskeyfind
+  - afflib-tools
+  # - afterglow
+  - aircrack-ng
+  - arp-scan
+  - autopsy
+  # - bitpim
+  # - bitpim-lib
+  - bless
+  - blt
+  - build-essential
+  # - bulk-extractor
+  - cabextract
+  - ccrypt
+  - cifs-utils
+  - clamav
+  - cmospwd
+  - cpanminus
+  - cryptcat
+  - cryptsetup
+  - curl
+  - dc3dd
+  - dcfldd
+  - default-jre
+  - dos2unix
+  - driftnet
+  - dsniff
+  # - dumbpig
+  - e2fslibs-dev
+  - ent
+  - epic5
+  - etherape
+  - ettercap-graphical
+  - exfat-fuse
+  - exfat-utils
+  - exif
+  - extundelete
+  # - f-spot
+  - fdupes
+  - feh
+  - flare
+  - flasm
+  - flex
+  - foremost
+  - g++
+  - gawk
+  - gcc
+  ## Keep same setting than remnux for gdb. gdb-minimal is trusty only
+  - gdb
+  # - gdb-minimal
+  ## l.250 https://github.com/sans-dfir/sift-bootstrap/blob/0d1bd146377050f9217b8187837516659e361060/bootstrap.sh
+  - gddrescue
+  - ghex
+  - git
+  - graphviz
+  - grepcidr
+  - gthumb
+  - gzrt
+  - hashdeep
+  - hexedit
+  - htop
+  - hydra
+  - hydra-gtk
+  - ipython3
+  - jq
+  - kdiff3
+  - knocker
+  - kpartx
+  - lft
+  - libafflib-dev
+  - libafflib0v5
+  - libbcprov-java
+  - libcommons-lang3-java
+  - libdatetime-perl
+  - libencode-perl
+  - libfuse-dev
+  - libguestfs-tools
+  - libncurses5-dev
+  - libnet1
+  - libparse-win32registry-perl
+  - libpcap-dev
+  - libssl-dev
+  - libtext-csv-perl
+  - libxml2-dev
+  - libxslt1-dev
+  - libyara3
+  - magnus
+  - md5deep
+  - mongodb-clients
+  - mongodb-server
+  - nbd-client
+  - nbtscan
+  - net-tools
+  ## ensure same choice between netcat and netcat-traditional inside {sift,remnux.yml}
+  - netcat
+  - netpbm
+  - netsed
+  - netwox
+  - nfdump
+  - ngrep
+  - nikto
+  - okular
+  - onboard
+  - open-iscsi
+  - ophcrack
+  - ophcrack-cli
+  - orca
+  - outguess
+  - p0f
+  - p7zip-full
+  - patch
+  - pdftk
+  - pdftk-java
+  - perl
+  - pev
+  - phonon4qt5
+  - pkg-config
+  # - powershell  # from https://github.com/Powershell/Powershell/releases or microsoft repository
+  - pst-utils
+  - pv
+  - python3
+  - python3-dfvfs
+  - python3-dev
+  - python3-fuse
+  - python3-m2crypto
+  # - python-ntdsxtract
+  - python3-pefile
+  - python3-pip
+  - python3-pyqt5
+  - python3-redis
+  - python3-tk
+  - python3-virtualenv
+  - python3-xlsxwriter
+  - python3-yara
+  - qemu
+  - qemu-utils
+  ## note: radare and radare-gtk conflict each other...
+  # - radare
+  ## l.350 https://github.com/sans-dfir/sift-bootstrap/blob/0d1bd146377050f9217b8187837516659e361060/bootstrap.sh
+  - radare2
+  # - rar
+  # - readpst  # artful but not bionic
+  # - regripper
+  - rsakeyfind
+  - safecopy
+  - samba
+  - samdump2
+  - scalpel
+  - socat
+  - software-properties-common
+  - ssdeep
+  - ssldump
+  - sslsniff
+  - stunnel4
+  - swig
+  - tcl
+  - tcpflow
+  - tcpick
+  - tcpreplay
+  - tcpslice
+  - tcpstat
+  - tcptrace
+  - tcptrack
+  - tcpxtract
+  - testdisk
+  - transmission
+  - tofrodos
+  - transmission
+  # - ubuntu-tweak
+  - unity-control-center
+  - unrar-free
+  - upx-ucl
+  - vbindiff
+  - vim
+  - virtuoso-minimal
+  - vmfs-tools
+  - winbind
+  - wine-stable
+  - wireshark
+  - xdot
+  - xfsprogs
+  - xmount
+  - zenity
+  ## gsettings
+  - libglib2.0-bin
+  # - unity-greeter
+  - ubuntu-wallpapers
+  - rsync
+
+# moved to separate role
+sift_docker_pkg: []
+
+sift_pip_packages_deps:
+  ## for stix
+  - libxml2-dev
+  - libxslt1-dev
+  - libffi-dev
+  - lib32z1-dev
+
+sift_pip_packages:
+  - argparse
+  - bitstring
+  - colorama
+  - defang==0.5.2
+  - geoip2
+  - ioc_writer
+  - keyrings.alt
+  - lxml
+  - machinae
+  - pefile
+  - pillow
+  - pip==21.0.1
+  # - pyhindsight  # TODO
+  - python-dateutil
+  - python-evtx
+  - python-magic
+  - python-registry
+  - setuptools_rust
+  - setuptools
+  - stix
+  - six
+  - stix-validator
+  - stix
+  - virustotal-api
+  - wheel
+  - yara-python
+  # not anymore?
+  - distorm3
+  # - rekall
+  - docopt
+  - construct
+  ## FIXME! missing include
+  # - pyv8
+  - analyzeMFT
+  - unicodecsv
+  - usnparser
+  - windowsprefetch
+
+  ## xenial: random issue w avahi-daemon, dependency of libnss-mdns
+  ##   https://forum.proxmox.com/threads/ubuntu-16-04-template-for-proxmox-4-1.27034/
+
+gift_ppa_symlinks: []
+# - { src: '/usr/bin/ewfmount', path: '/usr/bin/mount_ewf.py' }
+
+sift_ppa_symlinks:
+  - { src: '/etc/rc.local', path: '/home/sansforensics/Desktop/rc.local-add_loop_devices' }
+
+sift_files: /usr/local/share/sift-saltstack
+
+python_deps:
+  - python3
+  - python3-dev
+  - python3-pip
+
+python_bin: python3
+pip_bin: pip3
