@@ -1,17 +1,17 @@
 ---
 
 - name: Creating sansforensics group
-  group: name={{ sift_user }}
+  ansible.builtin.group: name={{ sift_user }}
 ## used as samba guest
 - name: Creating sansforensics generic account
-  user:
+  ansible.builtin.user:
     name: "{{ sift_user }}"
     password: "{{ sift_pass }}"
     groups: "{{ sift_user }},sudo"
     append: yes
 
 - name: Add authorized keys for {{ sift_user }} user
-  authorized_key:
+  ansible.builtin.authorized_key:
     user: "{{ sift_user }}"
     key: "{{ item }}"
   with_file: "{{ sift_public_keys }}"
@@ -21,10 +21,10 @@
 - import_tasks: sift-repos.yml
 
 - name: SIFT | accept Microsoft EULA for ttf-mscorefonts-installer
-  debconf: name=ttf-mscorefonts-installer question='msttcorefonts/accepted-mscorefonts-eula' value=true vtype='select'
+  ansible.builtin.debconf: name=ttf-mscorefonts-installer question='msttcorefonts/accepted-mscorefonts-eula' value=true vtype='select'
 
 - name: SIFT | packages install
-  apt:
+  ansible.builtin.apt:
     name: "{{ sift_packages + sift_perl_packages }}"
     state: present
     update_cache: yes
@@ -37,7 +37,7 @@
   until: pkg_result is success
 
 - name: SIFT | gift+sift ppa packages install
-  apt:
+  ansible.builtin.apt:
     name: "{{ sift_ppa_packages + gift_ppa_packages }}"
     state: present
     update_cache: yes
@@ -46,20 +46,20 @@
   until: pkg_result is success
 
 - name: SIFT | apache2 packages install
-  apt: name=apache2 state=present
+  ansible.builtin.apt: name=apache2 state=present
   when: sift_webserver is defined and sift_webserver == 'apache2'
   register: pkg_result
   until: pkg_result is success
 
 - name: SIFT | docker packages install
-  apt: name={{ sift_docker_pkg }} state=present
+  ansible.builtin.apt: name={{ sift_docker_pkg }} state=present
   when: sift_docker
   register: pkg_result
   until: pkg_result is success
 
 ## missing dependencies in some case?
 - name: Debian | gedit install
-  apt: name=gedit state=present
+  ansible.builtin.apt: name=gedit state=present
   ignore_errors: true
   register: pkg_result
   until: pkg_result is success
@@ -67,10 +67,10 @@
 - import_tasks: sift-arc.yml
 
 - name: Check if pescan is present
-  stat: path=/usr/bin/pescan
+  ansible.builtin.stat: path=/usr/bin/pescan
   register: rpev
 - name: Debian | pev install (only if not remnux-pev)
-  apt: name=pev state=present
+  ansible.builtin.apt: name=pev state=present
   when: not rpev.stat.exists
   register: pkg_result
   until: pkg_result is success
@@ -78,11 +78,11 @@
 - include_tasks: pip-upgrade.yml
 
 - name: Install pip packages dependencies
-  package: name={{ sift_pip_packages_deps + python_deps }} state=present
+  ansible.builtin.package: name={{ sift_pip_packages_deps + python_deps }} state=present
   register: pkg_result
   until: pkg_result is success
 - name: Install pip packages
-  pip:
+  ansible.builtin.pip:
     name: "{{ sift_pip_packages }}"
     state: present
     executable: "{{ pip_bin | default('pip3') }}"
@@ -97,7 +97,7 @@
   until: pkg_result is success
 
 - name: Fetch SIFT files
-  git:
+  ansible.builtin.git:
     repo: https://github.com/sans-dfir/sift-saltstack.git
     dest: "{{ sift_files }}"
     version: "{{ sift_saltstack_version | default('9913b8bca7226ad7b642f95d4d6abdba1a9bd9e5') }}"
@@ -107,7 +107,7 @@
 - include_tasks: sift-files-install.yml
 
 - name: Create SIFT folders
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
     mode: '01775'
@@ -116,7 +116,7 @@
   with_items:
     - /cases
 - name: Create SIFT folders
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
     mode: '0755'
@@ -141,14 +141,14 @@
     - /mnt/ewf_mount4
     - /mnt/ewf_mount5
 - name: Create SIFT folders
-  file:
+  ansible.builtin.file:
     path: "/mnt/shadow/vss{{ item }}"
     state: directory
     mode: '0755'
   with_items:
     - [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
 - name: Create SIFT folders
-  file:
+  ansible.builtin.file:
     path: "/mnt/shadow_mount/vss{{ item }}"
     state: directory
     mode: '0755'
@@ -156,7 +156,7 @@
     - [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
 
 - name: Add extra device loop backs
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/rc.local
     regexp: 'seq 8 100'
     line: 'for i in `seq 8 100`; do mknod /dev/loop$i b 7 $i; done'
@@ -165,10 +165,10 @@
     create: yes
 
 - name: Ensure user Desktop directory exists
-  file: dest="/home/{{ sift_user }}/Desktop" state=directory mode=0700
+  ansible.builtin.file: dest="/home/{{ sift_user }}/Desktop" state=directory mode=0700
 
 - name: setting symlinks
-  file:
+  ansible.builtin.file:
     src: "{{ item.src }}"
     path: "{{ item.path }}"
     mode: '0644'
@@ -181,11 +181,11 @@
     - "{{  sift_ppa_symlinks }}"
 
 - name: Check if /etc/apt/apt.conf.d/10periodic exists
-  stat:
+  ansible.builtin.stat:
     path: /etc/apt/apt.conf.d/10periodic
   register: periodic
 - name: disable automated package update
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/apt/apt.conf.d/10periodic
     regexp: '^APT::Periodic::Update-Package-Lists'
     line: 'APT::Periodic::Update-Package-Lists "0";'
@@ -193,7 +193,7 @@
   when: periodic.stat.exists
 
 - name: ensure current user is used for samba
-  replace:
+  ansible.builtin.replace:
     dest: /etc/samba/smb.conf
     regexp: 'SIFT_USER'
     replace: "{{ sift_user }}"
@@ -203,12 +203,12 @@
     - restart samba nmbd
 
 - name: Check timezone setting
-  slurp:
+  ansible.builtin.slurp:
     src: /etc/timezone
   register: timezone
 ## FIXME: not idempotent??? = adding when
 - name: Set timezone variables
-  timezone:
+  ansible.builtin.timezone:
     name: "{{ tz }}"
   notify:
     - update timezone
@@ -219,7 +219,7 @@
 - import_tasks: bulk-extractor.yml
   when: sift_bulkextractor_source|bool
 - name: Install bulk-extractor package - sift ppa
-  package:
+  ansible.builtin.package:
     name: bulk-extractor
     state: present
   register: pkg_result
@@ -227,7 +227,7 @@
   when: not sift_bulkextractor_source|bool
 
 - name: Setting noclobber for {{ sift_user }} and root
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: "{{ item }}"
     regexp: '^set -o noclobber'
     line: 'set -o noclobber'
@@ -236,7 +236,7 @@
     - "/home/{{ sift_user }}/.bashrc"
     - /root/.bashrc
 - name: Configuring Aliases for {{ sift_user }} and root
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: "{{ item.d }}"
     regexp: '^alias mountwin='
     line: 'alias mountwin="mount -o ro,loop,show_sys_files,streams_interface=windows"'
@@ -248,7 +248,7 @@
     - { d: /root/.bash_aliases, o: root }
 
 - name: Setting up useful links on {{ sift_user }} Desktop
-  file:
+  ansible.builtin.file:
     src: "{{ item.src }}"
     path: "{{ item.path }}"
     mode: '1775'
@@ -264,7 +264,7 @@
 #   command: "find -L /home/{{ sift_user }}/Desktop -type l -delete"
 
 - name: Adding all SIFT Resources to Desktop
-  file:
+  ansible.builtin.file:
     src: "/usr/share/sift/resources/{{ item }}"
     dest: "/home/{{ sift_user }}/Desktop/{{ item | basename }}"
     mode: '0644'

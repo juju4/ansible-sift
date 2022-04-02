@@ -5,17 +5,17 @@
 # bluez package
 # systemctl disable bluetooth.service
 - name: bluez package install
-  apt:
+  ansible.builtin.apt:
     name: bluez
     state: present
   ignore_errors: true
   register: pkg_result
   until: pkg_result is success
 - name: disable bluetooth service
-  service: name=bluetooth state=stopped enabled=no
+  ansible.builtin.service: name=bluetooth state=stopped enabled=no
 
 - name: SIFT x11 packages install (lxde)
-  apt:
+  ansible.builtin.apt:
     name:
       - xinit
       - lxde
@@ -29,28 +29,28 @@
   until: pkg_result is success
 
 - name: x11 ensure desktop-directories exists
-  file:
+  ansible.builtin.file:
     dest: "/home/{{ sift_user }}/.local/share/desktop-directories"
     mode: '0700'
     owner: "{{ sift_user }}"
     state: directory
 - name: adding sift directory shortcut
-  copy:
+  ansible.builtin.copy:
     src: sift.directory
     dest: "/home/{{ sift_user }}/.local/share/desktop-directories/sift.directory"
     mode: '0644'
     owner: "{{ sift_user }}"
 
 - name: ensure unity-greeter directory exists
-  file: dest=/usr/share/unity-greeter state=directory mode=0755
+  ansible.builtin.file: dest=/usr/share/unity-greeter state=directory mode=0755
 - name: Check if /usr/share/unity-greeter/logo.png exists
-  stat: path=/usr/share/unity-greeter/logo.png
+  ansible.builtin.stat: path=/usr/share/unity-greeter/logo.png
   register: logoubuntu1
 - name: Check if /usr/share/unity-greeter/logo.png.ubuntu exists
-  stat: path=/usr/share/unity-greeter/logo.png.ubuntu
+  ansible.builtin.stat: path=/usr/share/unity-greeter/logo.png.ubuntu
   register: logoubuntu2
 - name: backup ubuntu unity greeter logo
-  copy:
+  ansible.builtin.copy:
     src: /usr/share/unity-greeter/logo.png
     dest: /usr/share/unity-greeter/logo.png.ubuntu
     owner: "{{ sift_user }}"
@@ -58,7 +58,7 @@
     remote_src: true
   when: not logoubuntu2.stat.exists and logoubuntu1.stat.exists
 - name: copy sift unity greeter logo
-  copy:
+  ansible.builtin.copy:
     src: /usr/share/sift/images/login_logo.png
     dest: /usr/share/unity-greeter/logo.png
     owner: "{{ sift_user }}"
@@ -67,7 +67,7 @@
   when: not logoubuntu1.stat.exists
 
 - name: Setting up auto-login for user {{ sift_user }}
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: '/etc/lxdm/lxdm.conf'
     regexp: "{{ item.regexp }}"
     line: "{{ item.replace }}"
@@ -82,7 +82,7 @@
 ## https://github.com/jistr/ansible-gsetting
 ## https://github.com/JBKahn/provisioning-local/tree/master/ansible_modules/{dconf,gconftool-2,gsettings}
 - name: SIFT Wallpaper Configuration
-  command: "gsettings set org.gnome.desktop.background picture-uri file:///usr/share/sift/images/forensics_blue.jpg"
+  ansible.builtin.command: "gsettings set org.gnome.desktop.background picture-uri file:///usr/share/sift/images/forensics_blue.jpg"
   become: yes
   become_user: "{{ sift_user }}"
   when: sift_x11_background is defined and sift_x11_background
@@ -98,7 +98,7 @@
   failed_when: false
 
 - name: Autostart folder
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
     mode: '0700'
@@ -108,10 +108,10 @@
     - "/home/{{ sift_user }}/.config/autostart"
 
 - name: Check if /usr/share/sift/other/gnome-terminal.desktop exists
-  stat: path=/usr/share/sift/other/gnome-terminal.desktop
+  ansible.builtin.stat: path=/usr/share/sift/other/gnome-terminal.desktop
   register: gtd
 - name: autostart sift gnome-terminal
-  copy:
+  ansible.builtin.copy:
     src: /usr/share/sift/other/gnome-terminal.desktop
     dest: "/home/{{ sift_user }}/.config/autostart/gnome-terminal.desktop"
     owner: "{{ sift_user }}"
@@ -120,7 +120,7 @@
   when: gtd.stat.exists
 
 - name: symlink sift forensics background
-  file:
+  ansible.builtin.file:
     src: /usr/share/sift/images/forensics_blue.jpg
     dest: /usr/share/backgrounds/warty-final-ubuntu.png
     mode: '0644'

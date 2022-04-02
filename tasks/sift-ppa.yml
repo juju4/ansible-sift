@@ -2,51 +2,51 @@
 ## Post-install actions for packages from SIFT ppa
 
 - name: Check dos2unix regripper marker
-  stat: path=/root/.dos2unix_regripper
+  ansible.builtin.stat: path=/root/.dos2unix_regripper
   register: d2u_rr
 - name: Fixing Regripper Files
-  shell: "dos2unix -ascii /usr/share/regripper/*"
+  ansible.builtin.shell: "dos2unix -ascii /usr/share/regripper/*"
   when: not d2u_rr.stat.exists
 - name: Add dos2unix regripper marker
-  file:
+  ansible.builtin.file:
     path: /root/.dos2unix_regripper
     mode: '0600'
     state: touch
   when: not d2u_rr.stat.exists
 - name: Check if /usr/share/regripper/plugins/usrclass-all exists
-  stat: path=/usr/share/regripper/plugins/usrclass-all
+  ansible.builtin.stat: path=/usr/share/regripper/plugins/usrclass-all
   register: rrusr
 - name: Check if /usr/share/regripper/plugins/usrclass exists
-  stat: path=/usr/share/regripper/plugins/usrclass
+  ansible.builtin.stat: path=/usr/share/regripper/plugins/usrclass
   register: rrusr2
 - name: Check if /usr/share/regripper/plugins/ntuser-all exists
-  stat: path=/usr/share/regripper/plugins/ntuser-all
+  ansible.builtin.stat: path=/usr/share/regripper/plugins/ntuser-all
   register: rrnt
 - name: Check if /usr/share/regripper/plugins/ntuser exists
-  stat: path=/usr/share/regripper/plugins/ntuser
+  ansible.builtin.stat: path=/usr/share/regripper/plugins/ntuser
   register: rrnt2
 - name: Link regripper usrclass
-  file:
+  ansible.builtin.file:
     src: /usr/share/regripper/plugins/usrclass-all
     dest: /usr/share/regripper/plugins/usrclass
     mode: '0755'
     state: link
   when: rrusr.stat.exists and not rrusr2.stat.exists
 - name: Link regripper ntuser
-  file:
+  ansible.builtin.file:
     src: /usr/share/regripper/plugins/ntuser-all
     dest: /usr/share/regripper/plugins/ntuser
     mode: '0755'
     state: link
   when: rrnt.stat.exists and not rrnt2.stat.exists
 - name: Ensure rip.pl permissions
-  file:
+  ansible.builtin.file:
     path: "/usr/share/regripper/rip.pl"
     mode: '0775'
 # - command: chmod -R 755 /usr/share/regripper/plugins
 
 - name: Ensure regripper plugins permissions
-  file:
+  ansible.builtin.file:
     dest: /usr/share/regripper/plugins
     state: directory
     mode: '0755'

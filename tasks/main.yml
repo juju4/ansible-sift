@@ -1,26 +1,26 @@
 ---
 
 - name: Debug | ansible_env var
-  debug: var=ansible_env
+  ansible.builtin.debug: var=ansible_env
 
 - name: FATAL
-  fail: msg="This role is currently only compatible with Ubuntu"
+  ansible.builtin.fail: msg="This role is currently only compatible with Ubuntu"
   when: >
     ansible_distribution != 'Ubuntu'
 
 - name: Include version-specific variables for Ubuntu.
-  include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
+  ansible.builtin.include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
   when: ansible_distribution == 'Ubuntu'
 
 ## fails under lxd+systemd, https://github.com/ansible/ansible-modules-core/issues/5582
 - name: set hostname
-  hostname: name={{ sift_hostname }}
+  ansible.builtin.hostname: name={{ sift_hostname }}
   when: >
     sift_hostname is defined and
     not (ansible_virtualization_type is defined and ansible_virtualization_type == "lxc")
 
 - name: Add new hostname in /etc/hosts (local resolv)
-  replace:
+  ansible.builtin.replace:
     dest: '/etc/hosts'
     regexp: '^127.0.0.1([ ]+)localhost$'
     replace: '127.0.0.1\1localhost {{ sift_hostname }}'
@@ -29,23 +29,23 @@
   when: sift_hostname is defined
 
 # - name: Include version-specific variables for Ubuntu.
-#   include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
+#   ansible.builtin.include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
 #   when: ansible_distribution == 'Ubuntu'
 
 - name: Check if user ~/.gem/specs exists
-  stat: path=/home/{{ sift_user }}/.gem/specs
+  ansible.builtin.stat: path=/home/{{ sift_user }}/.gem/specs
   register: usergemspecs
 - name: check user gem specs dir permissions
-  file: "dest=/home/{{ sift_user }}/.gem/specs state=directory mode=0755 owner={{ sift_user }}"
+  ansible.builtin.file: "dest=/home/{{ sift_user }}/.gem/specs state=directory mode=0755 owner={{ sift_user }}"
   when: usergemspecs is defined and usergemspecs.stat.exists
 
 - name: Check current dpkg foreign-architectures
-  command: dpkg --print-foreign-architectures
+  ansible.builtin.command: dpkg --print-foreign-architectures
   register: archi
   changed_when: False
   when: ansible_architecture == 'x86_64'
 - name: Ensure both i386/x86_64 architecture support for packages
-  command: dpkg --add-architecture i386
+  ansible.builtin.command: dpkg --add-architecture i386
   when: ansible_architecture == 'x86_64' and archi.stdout.find('i386') == -1
 
 ## https://github.com/sans-dfir/sift-bootstrap/
@@ -54,7 +54,7 @@
     - sift
 
 - name: Restrict sshd config
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
@@ -65,14 +65,14 @@
     - { regexp: '^PermitRootLogin', line: 'PermitRootLogin without-password' }
 
 - name: Debug | sift_do_x11 var
-  debug: var=sift_do_x11
+  ansible.builtin.debug: var=sift_do_x11
 - include_tasks: x11.yml
   when: sift_do_x11 is defined and sift_do_x11
   tags:
     - sift
 
 - name: Review some limits  # noqa no-tabs
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/security/limits.d/openfiles
     regexp: "^{{ sift_user }}\t\thard\tnofiles\t\t2048"
     line: "{{ sift_user }}\t\thard\tnofiles\t\t2048"

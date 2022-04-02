@@ -1,7 +1,7 @@
 ---
 
 - name: Download sans-dfir sift-cli
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ item.u }}"
     dest: "/usr/local/bin/{{ item.u | basename }}"
     owner: root
@@ -11,52 +11,52 @@
     - { u: 'https://github.com/sans-dfir/sift-cli/releases/download/v1.9.2/sift-cli-linux.sha256.asc', m: '0400' }
 
 - name: Upload sift gpg public key
-  copy:
+  ansible.builtin.copy:
     src: sift.asc
     dest: "{{ sift_files }}/sift.asc"
     mode: '0644'
   when: not (sift_pgp_server and sift_pgp_key)
 
 - name: Check current gpg keys
-  command: gpg --list-keys
+  ansible.builtin.command: gpg --list-keys
   changed_when: false
   register: keys
 
 - name: Import local gpg key
-  command: >
+  ansible.builtin.command: >
     gpg --import {{ sift_files }}/sift.asc
   when:
     - not (sift_pgp_server and sift_pgp_key)
     - "'5D29135B37983CAC6097962315B9AD7122598A94' not in keys.stdout"
 
 - name: Import gpg key from pgp directory server
-  command: >
+  ansible.builtin.command: >
     gpg --keyserver {{ sift_pgp_server }} --recv-keys {{ sift_pgp_key }}
   when: sift_pgp_server and sift_pgp_key
 
 - name: Validate sift-cli hash signature
-  command: gpg --verify sift-cli-linux.sha256.asc
+  ansible.builtin.command: gpg --verify sift-cli-linux.sha256.asc
   changed_when: false
   args:
     chdir: /usr/local/bin
 
 - name: Validate hash of sift-cli
-  command: shasum -a 256 -c sift-cli-linux.sha256.asc
+  ansible.builtin.command: shasum -a 256 -c sift-cli-linux.sha256.asc
   changed_when: false
   args:
     chdir: /usr/local/bin
 
 - name: Execute remnux install
-  command: "sift-cli-linux install --user={{ sift_user }}"
+  ansible.builtin.command: "sift-cli-linux install --user={{ sift_user }}"
   become: yes
   when: sift_cli_install is defined and sift_cli_install|bool
 
 - name: Execute sift-cli install server - keeping ssh
-  command: "sift-cli-linux install --mode=server --user={{ sift_user }}"
+  ansible.builtin.command: "sift-cli-linux install --mode=server --user={{ sift_user }}"
   become: yes
   when: sift_cli_install_server is defined and sift_cli_install_server|bool
 
 - name: Execute sift-cli upgrade
-  command: "sift-cli-linux upgrade --user={{ sift_user }}"
+  ansible.builtin.command: "sift-cli-linux upgrade --user={{ sift_user }}"
   become: yes
   when: sift_cli_upgrade is defined and sift_cli_upgrade|bool

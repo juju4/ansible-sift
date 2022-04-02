@@ -1,20 +1,20 @@
 ---
 
 - name: adding SIFT repository - stable
-  apt_repository: repo='ppa:sift/stable' state=present
+  ansible.builtin.apt_repository: repo='ppa:sift/stable' state=present
   when:
     - sift_ppa != 'dev'
     - (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int <= 20)
 
 - name: adding SIFT repository - dev
-  apt_repository: repo='ppa:sift/dev' state=present
+  ansible.builtin.apt_repository: repo='ppa:sift/dev' state=present
   when:
     - sift_ppa == 'dev'
     - (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int <= 20)
 
 # Xenial, bionic: universe and multiverse already enabled by default
 - name: Enabling universe repository
-  replace:
+  ansible.builtin.replace:
     dest: /etc/apt/sources.list
     regexp: '^#(\.*)universe$'
     replace: '\1universe'
@@ -22,7 +22,7 @@
     backup: yes
 
 - name: Enabling multiverse repository
-  replace:
+  ansible.builtin.replace:
     dest: /etc/apt/sources.list
     regexp: '^#(\.*)multiverse$'
     replace: '\1multiverse'
@@ -30,24 +30,24 @@
     backup: yes
 
 - name: check sources.list
-  command: cat /etc/apt/sources.list
+  ansible.builtin.command: cat /etc/apt/sources.list
   register: sources
   changed_when: false
 - name: Debug | sources.list content
-  debug: var=sources.stdout_lines
+  ansible.builtin.debug: var=sources.stdout_lines
 
 # Some 64-bit systems are not configured to support i386 packages. Let's make sure they are enabled. (done in main.yml)
 # - name: Ensure both i386/x86_64 architecture support for packages
-#   command: dpkg --add-architecture i386
-# - command: ldconfig
+#   ansible.builtin.command: dpkg --add-architecture i386
+# - ansible.builtin.command: ldconfig
 
 # http://ppa.launchpad.net/malteworld/ppa/ubuntu/dists/
 - name: adding malteworld/ppa repository
-  apt_repository: repo='ppa:malteworld/ppa' state=present
+  ansible.builtin.apt_repository: repo='ppa:malteworld/ppa' state=present
   when: ansible_distribution_release == 'bionic' or ansible_distribution_release == 'cosmic'
 
 - name: Bionic | adding noobslab/{themes,icons} repositories
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: "ppa:{{ item }}"
     state: present
   with_items:
