@@ -14,7 +14,7 @@
   ansible.builtin.authorized_key:
     user: "{{ sift_user }}"
     key: "{{ item }}"
-  with_file: "{{ sift_public_keys }}"
+  loop: "{{ sift_public_keys }}"
   when: sift_public_keys is defined and sift_public_keys
   become: yes
 

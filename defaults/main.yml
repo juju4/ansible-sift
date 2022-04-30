@@ -24,7 +24,9 @@ sift_pass: '$6$u9LOM5jmW0o$vIK0cgsGk92quWiV4uAGgZ9eIDwPwQ8We64yeagij7bCFLML2HVom
 ## want ssh keys?
 sift_public_keys: []
 # sift_public_keys:
-#    - dummykey.pub
+#   - "ssh-rsa xxxx"
+#   - "{{ lookup('file', lookup('env','HOME') + '/.ssh/dummykey.pub') }}"
+#   - "{{ lookup('file', /path/to/dummykey.pub') }}"
 
 sift_extra_languages:
     - fr
