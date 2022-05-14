@@ -17,7 +17,8 @@
 - name: Debug | languages pkglist var
   ansible.builtin.debug: var=pkglist
 
-- block:
+- name: language-support packages
+  block:
     - name: install languages package for {{ lang }}
       ansible.builtin.apt: name={{ pkglist.stdout.split(' ') }} state=present
       register: pkg_result

@@ -52,7 +52,8 @@
 - name: Check if volatility is present
   ansible.builtin.stat: path=/usr/lib/python2.7/dist-packages/volatility
   register: vol
-- block:
+- name: volatility2 plugins
+  block:
     - name: list sift volatility files
       ansible.builtin.command: "find {{ sift_files }}/sift/files/volatility/ -type f -iname '*.py'"
       register: find3
