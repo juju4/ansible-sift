@@ -55,7 +55,6 @@ sift_packages:
   - etherape
   - ettercap-graphical
   - exfat-fuse
-  - exfat-utils
   - exif
   - extundelete
   # - f-spot
