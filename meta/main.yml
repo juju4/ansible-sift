@@ -23,4 +23,3 @@ dependencies:
   # - juju4.sleuthkit
   ## sift ppa volatility or separate role
   - juju4.volatility
-  - juju4.rekall
