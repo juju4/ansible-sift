@@ -1,15 +1,15 @@
 ---
 
-- name: restart sshd
+- name: Restart sshd
   ansible.builtin.service: name=ssh state=restarted
 
-- name: restart samba smbd
+- name: Restart samba smbd
   ansible.builtin.service: name=smbd state=restarted
 
-- name: restart samba nmbd
+- name: Restart samba nmbd
   ansible.builtin.service: name=nmbd state=restarted
 
-- name: update timezone
+- name: Update timezone
   ansible.builtin.command: dpkg-reconfigure --frontend noninteractive tzdata
 
 ## packer digitalocean: FAILED! => {"changed": true, "cmd": ["freshclam", "--quiet"], "delta": "0:01:04.718911",
@@ -27,5 +27,5 @@
   poll: 15
   when: not (ansible_env['TRAVIS'] is defined and ansible_env['TRAVIS'] == 'true')
 
-- name: run ldconfig
+- name: Run ldconfig
   ansible.builtin.command: ldconfig

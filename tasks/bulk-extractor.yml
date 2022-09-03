@@ -4,14 +4,14 @@
   ansible.builtin.set_fact:
     be_path: /root/bulk_extractor
 
-- name: git clone bulk extractor
+- name: Git clone bulk extractor
   ansible.builtin.git:
     repo: https://github.com/simsong/bulk_extractor.git
     dest: "{{ be_path }}"
     version: "{{ sift_bulkextractor_version | default('b287b06da0bc069681d988bf1a40e9b69437ddcf') }}"
     update: no
 
-- name: ensure development tools are present
+- name: Ensure development tools are present
   ansible.builtin.package:
     name: "{{ item }}"
     state: present
@@ -33,14 +33,14 @@
   register: pkg_result
   until: pkg_result is success
 
-- name: ensure symlink for lib/tsk3
+- name: Ensure symlink for lib/tsk3
   ansible.builtin.file:
     src: /usr/include/tsk
     dest: /usr/include/tsk3
     mode: '0755'
     state: link
 
-- name: build bulk-extractor
+- name: Build bulk-extractor
   ansible.builtin.command: "{{ item.c }}"
   args:
     chdir: "{{ be_path }}"

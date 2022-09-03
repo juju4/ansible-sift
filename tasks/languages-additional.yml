@@ -1,7 +1,7 @@
 ---
 ## $ sudo dpkg-reconfigure keyboard-configuration
 
-- name: ensure language-selector-common is present
+- name: Ensure language-selector-common is present
   ansible.builtin.apt:
     name:
       - locales
@@ -10,16 +10,16 @@
   register: pkg_result
   until: pkg_result is success
 
-- name: get necessary package list for lang {{ lang }}
+- name: Get necessary package list for lang {{ lang }}
   ansible.builtin.command: "check-language-support -l {{ lang }}"
   register: pkglist
   changed_when: false
 - name: Debug | languages pkglist var
   ansible.builtin.debug: var=pkglist
 
-- name: language-support packages
+- name: Language-support packages
   block:
-    - name: install languages package for {{ lang }}
+    - name: Install languages package for {{ lang }}
       ansible.builtin.apt: name={{ pkglist.stdout.split(' ') }} state=present
       register: pkg_result
       until: pkg_result is success

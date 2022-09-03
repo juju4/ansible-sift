@@ -1,6 +1,6 @@
 ---
 
-- name: copy sift foremost conf to /etc
+- name: Copy sift foremost conf to /etc
   ansible.builtin.copy:
     src: "{{ sift_files }}/sift/files/foremost/foremost.conf"
     dest: /etc/foremost.conf
@@ -10,12 +10,12 @@
 - name: Check if /usr/share/tsk/sorter exists
   ansible.builtin.stat: path=/usr/share/tsk/sorter
   register: tsksorter
-- name: list sift tsk sorter files
+- name: List sift tsk sorter files
   ansible.builtin.command: "find {{ sift_files }}/sift/files/sorter/ -type f"
   register: sorter
   changed_when: false
   ignore_errors: true
-- name: copy sift tsk sorter files to package location
+- name: Copy sift tsk sorter files to package location
   ansible.builtin.copy:
     src: "{{ item }}"
     dest: /usr/share/tsk/sorter/
@@ -26,19 +26,19 @@
   with_items: "{{ sorter.stdout_lines }}"
   when: tsksorter.stat.exists
 
-- name: copy sift samba files
+- name: Copy sift samba files
   ansible.builtin.copy:
     src: "{{ sift_files }}/sift/files/samba/smb.conf"
     dest: /etc/samba/smb.conf
     mode: '0644'
     remote_src: true
 
-- name: list sift pdf-tools & page-brute files
+- name: List sift pdf-tools & page-brute files
   ansible.builtin.command: "find {{ sift_files }}/sift/files/pdf-tools/ {{ sift_files }}/sift/files/page-brute/ -type f"
   register: find2
   changed_when: false
   ignore_errors: true
-- name: copy sift files for various tools
+- name: Copy sift files for various tools
   ansible.builtin.copy:
     src: "{{ item }}"
     dest: /usr/local/bin/
@@ -52,14 +52,14 @@
 - name: Check if volatility is present
   ansible.builtin.stat: path=/usr/lib/python2.7/dist-packages/volatility
   register: vol
-- name: volatility2 plugins
+- name: Volatility2 plugins
   block:
-    - name: list sift volatility files
+    - name: List sift volatility files
       ansible.builtin.command: "find {{ sift_files }}/sift/files/volatility/ -type f -iname '*.py'"
       register: find3
       changed_when: false
       ignore_errors: true
-    - name: copy sift volatility files
+    - name: Copy sift volatility files
       ansible.builtin.copy:
         src: "{{ item }}"
         dest: /usr/lib/python2.7/dist-packages/volatility/plugins/
@@ -70,12 +70,12 @@
       with_items: "{{ find3.stdout_lines }}"
 
     ## why? https://github.com/sans-dfir/sift-files/blob/master/install.sh
-    - name: remove volatility javarat plugins
+    - name: Remove volatility javarat plugins
       ansible.builtin.file: dest=/usr/lib/python2.7/dist-packages/volatility/plugins/javarat.py state=absent
 
   when: vol.stat.exists and sift_include_volplugins
 
-- name: ensure directories exist
+- name: Ensure directories exist
   ansible.builtin.file:
     dest: "{{ item }}"
     state: directory
@@ -88,7 +88,7 @@
     - /usr/share/sift
     - /usr/share/regripper
 
-- name: copy sift tools directories to /usr/share/sift
+- name: Copy sift tools directories to /usr/share/sift
   ansible.builtin.file:
     src: "{{ item }}"
     dest: "/usr/share/sift/{{ item | basename }}"
@@ -102,12 +102,12 @@
     - "{{ sift_files }}/sift/files/sift/resources"
   delegate_to: "{{ inventory_hostname }}"
 
-- name: copy regripper files to /usr/share/regripper
+- name: Copy regripper files to /usr/share/regripper
   ansible.builtin.copy:
     src: "{{ sift_files }}/sift/files/regripper/rip.pl"
     dest: /usr/share/regripper/rip.pl
     mode: '0775'
     remote_src: true
 
-- name: ensure /usr/local/bin/id absent
+- name: Ensure /usr/local/bin/id absent
   ansible.builtin.file: dest=/usr/local/bin/id state=absent
