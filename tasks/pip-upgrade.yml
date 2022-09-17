@@ -1,10 +1,6 @@
 ---
 
-## ubuntu xenial: 8.1, trusty: 1.5, centos7: 8.1
-## trusty gets:
-## https://github.com/Toblerity/Shapely/issues/305      ImportError: No module named packaging.version
-## https://github.com/pypa/setuptools/issues/937
-- name: check current pip version
+- name: Check current pip version
   ansible.builtin.shell: |
     set -o pipefail
     {{ pip_bin }} --version | sed "s/pip \(.*\) from .*/\1/"
@@ -17,15 +13,15 @@
   ansible.builtin.debug: var=pipv.stdout
 
 ## does not seem to be handled well by ansible pip module
-- name: old pip
+- name: Old pip
   block:
 
-    - name: upgrade pip to latest
+    - name: Upgrade pip to latest
       ansible.builtin.command: "{{ pip_bin }} install --upgrade pip"
       when: ansible_os_family != "Debian"
 
-    - name: upgrade setuptools to latest
+    - name: Upgrade setuptools to latest
       ansible.builtin.command: "{{ pip_bin }} install --upgrade setuptools"
       when: ansible_os_family != "Debian"
 
-  when: pipv.stdout is version_compare( '10.1', '<')
+  when: pipv.stdout is version_compare('10.1', '<')

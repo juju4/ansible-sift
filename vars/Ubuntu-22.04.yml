@@ -67,9 +67,7 @@ sift_packages:
   - g++
   - gawk
   - gcc
-  ## Keep same setting than remnux for gdb. gdb-minimal is trusty only
   - gdb
-  # - gdb-minimal
   ## l.250 https://github.com/sans-dfir/sift-bootstrap/blob/0d1bd146377050f9217b8187837516659e361060/bootstrap.sh
   - gddrescue
   - ghex

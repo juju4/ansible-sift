@@ -49,14 +49,14 @@
 - name: Execute remnux install
   ansible.builtin.command: "sift-cli-linux install --user={{ sift_user }}"
   become: yes
-  when: sift_cli_install is defined and sift_cli_install|bool
+  when: sift_cli_install is defined and sift_cli_install | bool
 
 - name: Execute sift-cli install server - keeping ssh
   ansible.builtin.command: "sift-cli-linux install --mode=server --user={{ sift_user }}"
   become: yes
-  when: sift_cli_install_server is defined and sift_cli_install_server|bool
+  when: sift_cli_install_server is defined and sift_cli_install_server | bool
 
 - name: Execute sift-cli upgrade
   ansible.builtin.command: "sift-cli-linux upgrade --user={{ sift_user }}"
   become: yes
-  when: sift_cli_upgrade is defined and sift_cli_upgrade|bool
+  when: sift_cli_upgrade is defined and sift_cli_upgrade | bool

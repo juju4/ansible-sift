@@ -1,12 +1,12 @@
 ---
 
-- name: adding SIFT repository - stable
+- name: Adding SIFT repository - stable
   ansible.builtin.apt_repository: repo='ppa:sift/stable' state=present
   when:
     - sift_ppa != 'dev'
     - (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int <= 20)
 
-- name: adding SIFT repository - dev
+- name: Adding SIFT repository - dev
   ansible.builtin.apt_repository: repo='ppa:sift/dev' state=present
   when:
     - sift_ppa == 'dev'
@@ -29,7 +29,7 @@
     mode: '0644'
     backup: yes
 
-- name: check sources.list
+- name: Check sources.list
   ansible.builtin.command: cat /etc/apt/sources.list
   register: sources
   changed_when: false
@@ -42,7 +42,7 @@
 # - ansible.builtin.command: ldconfig
 
 # http://ppa.launchpad.net/malteworld/ppa/ubuntu/dists/
-- name: adding malteworld/ppa repository
+- name: Adding malteworld/ppa repository
   ansible.builtin.apt_repository: repo='ppa:malteworld/ppa' state=present
   when: ansible_distribution_release == 'bionic' or ansible_distribution_release == 'cosmic'
 

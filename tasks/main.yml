@@ -13,7 +13,7 @@
   when: ansible_distribution == 'Ubuntu'
 
 ## fails under lxd+systemd, https://github.com/ansible/ansible-modules-core/issues/5582
-- name: set hostname
+- name: Set hostname
   ansible.builtin.hostname: name={{ sift_hostname }}
   when: >
     sift_hostname is defined and
@@ -35,7 +35,7 @@
 - name: Check if user ~/.gem/specs exists
   ansible.builtin.stat: path=/home/{{ sift_user }}/.gem/specs
   register: usergemspecs
-- name: check user gem specs dir permissions
+- name: Check user gem specs dir permissions
   ansible.builtin.file: "dest=/home/{{ sift_user }}/.gem/specs state=directory mode=0755 owner={{ sift_user }}"
   when: usergemspecs is defined and usergemspecs.stat.exists
 

@@ -167,7 +167,7 @@
 - name: Ensure user Desktop directory exists
   ansible.builtin.file: dest="/home/{{ sift_user }}/Desktop" state=directory mode=0700
 
-- name: setting symlinks
+- name: Setting symlinks
   ansible.builtin.file:
     src: "{{ item.src }}"
     path: "{{ item.path }}"
@@ -177,14 +177,14 @@
     - { src: '/usr/bin/gedit', path: '/usr/bin/kedit' }
     - { src: '/etc/foremost.conf', path: '/usr/local/etc/foremost.conf' }
     # - { src: '/usr/bin/iscsiadm', path: '/sbin/iscsiadm' }
-    - "{{  gift_ppa_symlinks }}"
-    - "{{  sift_ppa_symlinks }}"
+    - "{{ gift_ppa_symlinks }}"
+    - "{{ sift_ppa_symlinks }}"
 
 - name: Check if /etc/apt/apt.conf.d/10periodic exists
   ansible.builtin.stat:
     path: /etc/apt/apt.conf.d/10periodic
   register: periodic
-- name: disable automated package update
+- name: Disable automated package update
   ansible.builtin.lineinfile:
     dest: /etc/apt/apt.conf.d/10periodic
     regexp: '^APT::Periodic::Update-Package-Lists'
@@ -192,15 +192,15 @@
     mode: '0644'
   when: periodic.stat.exists
 
-- name: ensure current user is used for samba
+- name: Ensure current user is used for samba
   ansible.builtin.replace:
     dest: /etc/samba/smb.conf
     regexp: 'SIFT_USER'
     replace: "{{ sift_user }}"
     mode: '0644'
   notify:
-    - restart samba smbd
-    - restart samba nmbd
+    - Restart samba smbd
+    - Restart samba nmbd
 
 - name: Check timezone setting
   ansible.builtin.slurp:
