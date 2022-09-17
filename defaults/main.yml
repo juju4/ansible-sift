@@ -13,6 +13,7 @@ sift_docker: true
 sift_include_volplugins: true
 
 sift_bulkextractor_source: false
+sift_bulkextractor_src_version: 3fb9b0f653e9d4e30a00af996dfcb3ae21efce62
 
 # sift_webserver: apache2
 sift_webserver: nginx

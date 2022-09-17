@@ -217,14 +217,16 @@
 - include_tasks: sift-ppa.yml
 
 - import_tasks: bulk-extractor.yml
-  when: sift_bulkextractor_source|bool
+  when: sift_bulkextractor_source | bool
 - name: Install bulk-extractor package - sift ppa
   ansible.builtin.package:
     name: bulk-extractor
     state: present
   register: pkg_result
   until: pkg_result is success
-  when: not sift_bulkextractor_source|bool
+  when:
+    - not sift_bulkextractor_source | bool
+    - (ansible_distribution == "Ubuntu" and ansible_distribution_major_version | int <= 20)
 
 - name: Setting noclobber for {{ sift_user }} and root
   ansible.builtin.lineinfile:

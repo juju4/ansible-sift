@@ -8,7 +8,7 @@
   ansible.builtin.git:
     repo: https://github.com/simsong/bulk_extractor.git
     dest: "{{ be_path }}"
-    version: "{{ sift_bulkextractor_version | default('b287b06da0bc069681d988bf1a40e9b69437ddcf') }}"
+    version: "{{ sift_bulkextractor_src_version }}"
     update: no
 
 - name: ensure development tools are present
@@ -21,11 +21,16 @@
     - autotools-dev
     - automake
     - autoconf
+    - libexpat1-dev
     - libssl-dev
     - libtsk-dev
+    - libxml2-utils
+    - make
+    - pkg-config
     # for hashdb
     - libtool-bin
-    - python-dev
+    # python-dev or python3-dev. taken from global packages list
+    # - python-dev
     - swig
     - libewf-dev
     - libbz2-dev
