@@ -2,7 +2,8 @@
 ## Post-install actions for packages from SIFT ppa
 
 - name: Check dos2unix regripper marker
-  ansible.builtin.stat: path=/root/.dos2unix_regripper
+  ansible.builtin.stat:
+    path: /root/.dos2unix_regripper
   register: d2u_rr
 - name: Fixing Regripper Files
   ansible.builtin.shell: "dos2unix -ascii /usr/share/regripper/*"
@@ -14,16 +15,20 @@
     state: touch
   when: not d2u_rr.stat.exists
 - name: Check if /usr/share/regripper/plugins/usrclass-all exists
-  ansible.builtin.stat: path=/usr/share/regripper/plugins/usrclass-all
+  ansible.builtin.stat:
+    path: /usr/share/regripper/plugins/usrclass-all
   register: rrusr
 - name: Check if /usr/share/regripper/plugins/usrclass exists
-  ansible.builtin.stat: path=/usr/share/regripper/plugins/usrclass
+  ansible.builtin.stat:
+    path: /usr/share/regripper/plugins/usrclass
   register: rrusr2
 - name: Check if /usr/share/regripper/plugins/ntuser-all exists
-  ansible.builtin.stat: path=/usr/share/regripper/plugins/ntuser-all
+  ansible.builtin.stat:
+    path: /usr/share/regripper/plugins/ntuser-all
   register: rrnt
 - name: Check if /usr/share/regripper/plugins/ntuser exists
-  ansible.builtin.stat: path=/usr/share/regripper/plugins/ntuser
+  ansible.builtin.stat:
+    path: /usr/share/regripper/plugins/ntuser
   register: rrnt2
 - name: Link regripper usrclass
   ansible.builtin.file:

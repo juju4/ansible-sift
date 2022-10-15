@@ -46,17 +46,17 @@
   args:
     chdir: /usr/local/bin
 
-- name: Execute remnux install
+- name: Execute remnux install  # noqa no-free-form
   ansible.builtin.command: "sift-cli-linux install --user={{ sift_user }}"
   become: yes
   when: sift_cli_install is defined and sift_cli_install | bool
 
-- name: Execute sift-cli install server - keeping ssh
+- name: Execute sift-cli install server - keeping ssh  # noqa no-free-form
   ansible.builtin.command: "sift-cli-linux install --mode=server --user={{ sift_user }}"
   become: yes
   when: sift_cli_install_server is defined and sift_cli_install_server | bool
 
-- name: Execute sift-cli upgrade
+- name: Execute sift-cli upgrade  # noqa no-free-form
   ansible.builtin.command: "sift-cli-linux upgrade --user={{ sift_user }}"
   become: yes
   when: sift_cli_upgrade is defined and sift_cli_upgrade | bool

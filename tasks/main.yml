@@ -1,10 +1,12 @@
 ---
 
 - name: Debug | ansible_env var
-  ansible.builtin.debug: var=ansible_env
+  ansible.builtin.debug:
+    var: ansible_env
 
 - name: FATAL
-  ansible.builtin.fail: msg="This role is currently only compatible with Ubuntu"
+  ansible.builtin.fail:
+    msg: "This role is currently only compatible with Ubuntu"
   when: >
     ansible_distribution != 'Ubuntu'
 
@@ -14,7 +16,8 @@
 
 ## fails under lxd+systemd, https://github.com/ansible/ansible-modules-core/issues/5582
 - name: Set hostname
-  ansible.builtin.hostname: name={{ sift_hostname }}
+  ansible.builtin.hostname:
+    name: "{{ sift_hostname }}"
   when: >
     sift_hostname is defined and
     not (ansible_virtualization_type is defined and ansible_virtualization_type == "lxc")
@@ -33,10 +36,15 @@
 #   when: ansible_distribution == 'Ubuntu'
 
 - name: Check if user ~/.gem/specs exists
-  ansible.builtin.stat: path=/home/{{ sift_user }}/.gem/specs
+  ansible.builtin.stat:
+    path: "/home/{{ sift_user }}/.gem/specs"
   register: usergemspecs
 - name: Check user gem specs dir permissions
-  ansible.builtin.file: "dest=/home/{{ sift_user }}/.gem/specs state=directory mode=0755 owner={{ sift_user }}"
+  ansible.builtin.file:
+    dest: "/home/{{ sift_user }}/.gem/specs"
+    state: "directory"
+    mode: "0755"
+    owner: "{{ sift_user }}"
   when: usergemspecs is defined and usergemspecs.stat.exists
 
 - name: Check current dpkg foreign-architectures
@@ -49,7 +57,8 @@
   when: ansible_architecture == 'x86_64' and archi.stdout.find('i386') == -1
 
 ## https://github.com/sans-dfir/sift-bootstrap/
-- include_tasks: sift.yml
+- name: Include sift
+  ansible.builtin.include_tasks: sift.yml
   tags:
     - sift
 
@@ -65,8 +74,10 @@
     - { regexp: '^PermitRootLogin', line: 'PermitRootLogin without-password' }
 
 - name: Debug | sift_do_x11 var
-  ansible.builtin.debug: var=sift_do_x11
-- include_tasks: x11.yml
+  ansible.builtin.debug:
+    var: sift_do_x11
+- name: Include x11
+  ansible.builtin.include_tasks: x11.yml
   when: sift_do_x11 is defined and sift_do_x11
   tags:
     - sift
@@ -80,7 +91,8 @@
     state: present
     create: yes
 
-- include_tasks: "languages-additional.yml"
+- name: Include languages-additional
+  ansible.builtin.include_tasks: "languages-additional.yml"
   with_items: "{{ sift_extra_languages }}"
   vars:
     lang: "{{ outer_item }}"

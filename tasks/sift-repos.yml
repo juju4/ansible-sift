@@ -1,13 +1,17 @@
 ---
 
 - name: Adding SIFT repository - stable
-  ansible.builtin.apt_repository: repo='ppa:sift/stable' state=present
+  ansible.builtin.apt_repository:
+    repo: 'ppa:sift/stable'
+    state: present
   when:
     - sift_ppa != 'dev'
     - (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int <= 20)
 
 - name: Adding SIFT repository - dev
-  ansible.builtin.apt_repository: repo='ppa:sift/dev' state=present
+  ansible.builtin.apt_repository:
+    repo: 'ppa:sift/dev'
+    state: present
   when:
     - sift_ppa == 'dev'
     - (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int <= 20)
@@ -34,7 +38,8 @@
   register: sources
   changed_when: false
 - name: Debug | sources.list content
-  ansible.builtin.debug: var=sources.stdout_lines
+  ansible.builtin.debug:
+    var: sources.stdout_lines
 
 # Some 64-bit systems are not configured to support i386 packages. Let's make sure they are enabled. (done in main.yml)
 # - name: Ensure both i386/x86_64 architecture support for packages
@@ -43,7 +48,9 @@
 
 # http://ppa.launchpad.net/malteworld/ppa/ubuntu/dists/
 - name: Adding malteworld/ppa repository
-  ansible.builtin.apt_repository: repo='ppa:malteworld/ppa' state=present
+  ansible.builtin.apt_repository:
+    repo: 'ppa:malteworld/ppa'
+    state: present
   when: ansible_distribution_release == 'bionic' or ansible_distribution_release == 'cosmic'
 
 - name: Bionic | adding noobslab/{themes,icons} repositories

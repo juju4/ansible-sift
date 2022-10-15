@@ -8,7 +8,8 @@
     remote_src: true
 
 - name: Check if /usr/share/tsk/sorter exists
-  ansible.builtin.stat: path=/usr/share/tsk/sorter
+  ansible.builtin.stat:
+    path: /usr/share/tsk/sorter
   register: tsksorter
 - name: List sift tsk sorter files
   ansible.builtin.command: "find {{ sift_files }}/sift/files/sorter/ -type f"
@@ -50,9 +51,11 @@
   with_items: "{{ find2.stdout_lines }}"
 
 - name: Check if volatility is present
-  ansible.builtin.stat: path=/usr/lib/python2.7/dist-packages/volatility
+  ansible.builtin.stat:
+    path: /usr/lib/python2.7/dist-packages/volatility
   register: vol
 - name: Volatility2 plugins
+  when: vol.stat.exists and sift_include_volplugins
   block:
     - name: List sift volatility files
       ansible.builtin.command: "find {{ sift_files }}/sift/files/volatility/ -type f -iname '*.py'"
@@ -71,9 +74,9 @@
 
     ## why? https://github.com/sans-dfir/sift-files/blob/master/install.sh
     - name: Remove volatility javarat plugins
-      ansible.builtin.file: dest=/usr/lib/python2.7/dist-packages/volatility/plugins/javarat.py state=absent
-
-  when: vol.stat.exists and sift_include_volplugins
+      ansible.builtin.file:
+        dest: /usr/lib/python2.7/dist-packages/volatility/plugins/javarat.py
+        state: absent
 
 - name: Ensure directories exist
   ansible.builtin.file:
@@ -110,4 +113,6 @@
     remote_src: true
 
 - name: Ensure /usr/local/bin/id absent
-  ansible.builtin.file: dest=/usr/local/bin/id state=absent
+  ansible.builtin.file:
+    dest: /usr/local/bin/id
+    state: absent

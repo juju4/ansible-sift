@@ -15,12 +15,15 @@
   register: pkglist
   changed_when: false
 - name: Debug | languages pkglist var
-  ansible.builtin.debug: var=pkglist
+  ansible.builtin.debug:
+    var: pkglist
 
 - name: Language-support packages
+  when: pkglist.stdout is defined and pkglist.stdout
   block:
     - name: Install languages package for {{ lang }}
-      ansible.builtin.apt: name={{ pkglist.stdout.split(' ') }} state=present
+      ansible.builtin.apt:
+        name: "{{ pkglist.stdout.split(' ') }}"
+        state: "present"
       register: pkg_result
       until: pkg_result is success
-  when: pkglist.stdout is defined and pkglist.stdout

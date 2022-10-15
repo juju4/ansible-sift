@@ -15,11 +15,11 @@ galaxy_info:
     - system
     - security
 dependencies:
-  - geerlingguy.java
+  - role: geerlingguy.java
   ## use external role for docker-engine repository.
   ## CI test impact: docker in docker + ulimit
-  #  - ernestas-poskus.docker
-  - juju4.gift
-  # - juju4.sleuthkit
+  #  - role: ernestas-poskus.docker
+  - role: juju4.gift
+  # - role: juju4.sleuthkit
   ## sift ppa volatility or separate role
-  - juju4.volatility
+  - role: juju4.volatility

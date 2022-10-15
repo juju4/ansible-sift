@@ -12,7 +12,10 @@
   register: pkg_result
   until: pkg_result is success
 - name: Disable bluetooth service
-  ansible.builtin.service: name=bluetooth state=stopped enabled=no
+  ansible.builtin.service:
+    name: bluetooth
+    state: stopped
+    enabled: no
 
 - name: SIFT x11 packages install (lxde)
   ansible.builtin.apt:
@@ -42,12 +45,17 @@
     owner: "{{ sift_user }}"
 
 - name: Ensure unity-greeter directory exists
-  ansible.builtin.file: dest=/usr/share/unity-greeter state=directory mode=0755
+  ansible.builtin.file:
+    dest: /usr/share/unity-greeter
+    state: directory
+    mode: 0755
 - name: Check if /usr/share/unity-greeter/logo.png exists
-  ansible.builtin.stat: path=/usr/share/unity-greeter/logo.png
+  ansible.builtin.stat:
+    path: /usr/share/unity-greeter/logo.png
   register: logoubuntu1
 - name: Check if /usr/share/unity-greeter/logo.png.ubuntu exists
-  ansible.builtin.stat: path=/usr/share/unity-greeter/logo.png.ubuntu
+  ansible.builtin.stat:
+    path: /usr/share/unity-greeter/logo.png.ubuntu
   register: logoubuntu2
 - name: Backup ubuntu unity greeter logo
   ansible.builtin.copy:
@@ -88,7 +96,7 @@
   when: sift_x11_background is defined and sift_x11_background
 
 - name: SIFT X11 | set launcher favorites
-  dconf:
+  community.general.dconf:
     key: /com/canonical/unity/launcher/favorites
     value: "{{ sift_x11_launcher_favorites }}"
     state: present
@@ -108,7 +116,8 @@
     - "/home/{{ sift_user }}/.config/autostart"
 
 - name: Check if /usr/share/sift/other/gnome-terminal.desktop exists
-  ansible.builtin.stat: path=/usr/share/sift/other/gnome-terminal.desktop
+  ansible.builtin.stat:
+    path: /usr/share/sift/other/gnome-terminal.desktop
   register: gtd
 - name: Autostart sift gnome-terminal
   ansible.builtin.copy:
