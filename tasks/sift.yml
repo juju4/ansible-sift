@@ -12,7 +12,7 @@
     append: yes
 
 - name: Add authorized keys for sift_user
-  ansible.builtin.authorized_key:
+  ansible.posix.authorized_key:
     user: "{{ sift_user }}"
     key: "{{ item }}"
   loop: "{{ sift_public_keys }}"
@@ -231,7 +231,7 @@
   register: timezone
 ## FIXME: not idempotent??? = adding when
 - name: Set timezone variables
-  ansible.builtin.timezone:
+  community.general.timezone:
     name: "{{ tz }}"
   notify:
     - update timezone
