@@ -4,12 +4,17 @@ name: default-bare
 on:
   push:
   pull_request:
+  workflow_dispatch:
   schedule:  # run weekly, every Wednesday 05:00
     - cron: '0 5 * * 3'
+
+permissions: {}
 
 jobs:
   build:
 
+    permissions:
+      contents: read
     runs-on: ubuntu-${{ matrix.version }}
     continue-on-error: ${{ matrix.experimental }}
     strategy:
@@ -34,11 +39,11 @@ jobs:
       ANSIBLE_EXTRA_VARS: ""
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           path: juju4.sift
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '3.x'
       - name: Install dependencies
