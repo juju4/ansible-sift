@@ -16,7 +16,8 @@
     state: restarted
 
 - name: Update timezone
-  ansible.builtin.command: dpkg-reconfigure --frontend noninteractive tzdata
+  ansible.builtin.command:  # noqa no-changed-when
+    cmd: dpkg-reconfigure --frontend noninteractive tzdata
 
 ## packer digitalocean: FAILED! => {"changed": true, "cmd": ["freshclam", "--quiet"], "delta": "0:01:04.718911",
 ##  "end": "2016-08-11 17:10:03.752850", "failed": true, "invocation": {"module_args": {"_raw_params":
@@ -26,7 +27,8 @@
 ##  [], "warnings": []}
 ## https://bugs.launchpad.net/ubuntu/+source/clamav/+bug/820896 ?
 - name: Updating ClamAV Signatures
-  ansible.builtin.command: freshclam --quiet
+  ansible.builtin.command:  # noqa no-changed-when
+    cmd: freshclam --quiet
   failed_when: false
   ## mostly for travis to avoid stalling "No output has been received in the last 10m0s"... still too long
   async: 600
@@ -34,4 +36,5 @@
   when: not (ansible_env['TRAVIS'] is defined and ansible_env['TRAVIS'] == 'true')
 
 - name: Run ldconfig
-  ansible.builtin.command: ldconfig
+  ansible.builtin.command:  # noqa no-changed-when
+    cmd: ldconfig

@@ -6,7 +6,8 @@
     path: /root/.dos2unix_regripper
   register: d2u_rr
 - name: Fixing Regripper Files
-  ansible.builtin.shell: "dos2unix -ascii /usr/share/regripper/*"
+  ansible.builtin.shell:  # noqa no-changed-when
+    cmd: "dos2unix -ascii /usr/share/regripper/*"
   when: not d2u_rr.stat.exists
 - name: Add dos2unix regripper marker
   ansible.builtin.file:

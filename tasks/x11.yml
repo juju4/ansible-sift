@@ -90,7 +90,8 @@
 ## https://github.com/jistr/ansible-gsetting
 ## https://github.com/JBKahn/provisioning-local/tree/master/ansible_modules/{dconf,gconftool-2,gsettings}
 - name: SIFT Wallpaper Configuration
-  ansible.builtin.command: "gsettings set org.gnome.desktop.background picture-uri file:///usr/share/sift/images/forensics_blue.jpg"
+  ansible.builtin.command:  # noqa no-changed-when
+    cmd: "gsettings set org.gnome.desktop.background picture-uri file:///usr/share/sift/images/forensics_blue.jpg"
   become: yes
   become_user: "{{ sift_user }}"
   when: sift_x11_background is defined and sift_x11_background

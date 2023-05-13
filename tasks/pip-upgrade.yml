@@ -19,9 +19,11 @@
   block:
 
     - name: Upgrade pip to latest
-      ansible.builtin.command: "{{ pip_bin }} install --upgrade pip"
+      ansible.builtin.command:  # noqa no-changed-when
+        cmd: "{{ pip_bin }} install --upgrade pip"
       when: ansible_os_family != "Debian"
 
     - name: Upgrade setuptools to latest
-      ansible.builtin.command: "{{ pip_bin }} install --upgrade setuptools"
+      ansible.builtin.command:  # noqa no-changed-when
+        cmd: "{{ pip_bin }} install --upgrade setuptools"
       when: ansible_os_family != "Debian"
