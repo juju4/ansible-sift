@@ -27,7 +27,7 @@
     name: ttf-mscorefonts-installer
     question: 'msttcorefonts/accepted-mscorefonts-eula'
     value: true
-    vtype: 'select'
+    vtype: 'boolean'
 
 - name: SIFT | packages install
   ansible.builtin.apt:
