@@ -29,7 +29,7 @@ sift_packages:
   - autopsy
   # - bitpim
   # - bitpim-lib
-  - bless
+  # - bless
   - blt
   - build-essential
   # - bulk-extractor
