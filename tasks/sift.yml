@@ -91,6 +91,8 @@
   register: pkg_result
   until: pkg_result is success
 
+- name: Import python-externally-managed
+  ansible.builtin.import_tasks: python-externally-managed.yml
 - name: Include pip-upgrade
   ansible.builtin.include_tasks: pip-upgrade.yml
 
