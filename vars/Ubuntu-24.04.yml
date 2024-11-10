@@ -39,7 +39,7 @@ sift_packages:
   - clamav
   - cmospwd
   - cpanminus
-  - cryptcat
+  # - cryptcat
   - cryptsetup
   - curl
   - dc3dd
@@ -112,7 +112,7 @@ sift_packages:
   - nbtscan
   - net-tools
   ## ensure same choice between netcat and netcat-traditional inside {sift,remnux.yml}
-  - netcat
+  - netcat-traditional
   - netpbm
   - netsed
   - netwox
@@ -152,7 +152,7 @@ sift_packages:
   - python3-virtualenv
   - python3-xlsxwriter
   - python3-yara
-  - qemu
+  - qemu-system
   - qemu-utils
   ## note: radare and radare-gtk conflict each other...
   # - radare
