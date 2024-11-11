@@ -1,4 +1,5 @@
 ---
+# DEPRECATED since March 2023
 
 - name: Download sans-dfir sift-cli
   ansible.builtin.get_url:
