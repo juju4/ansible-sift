@@ -207,6 +207,10 @@ sift_packages:
   - ubuntu-wallpapers
   - rsync
 
+sift_conflict_packages: []
+# prevent upgrade by pip but needed by samba
+#  - python3-dnspython
+
 # moved to separate role
 sift_docker_pkg: []
 
@@ -226,13 +230,13 @@ sift_pip_packages:
   - ioc_writer
   - keyrings.alt
   - lxml
-  - machinae
+  - machinae  # requires more recent dnspython, conflicting with distrib package
   - pefile
   - pillow
   - pip==21.0.1
   # - pyhindsight  # TODO
   - python-dateutil
-  - python-evtx
+  - python-evtx  # requires more recent pyparsing, conflicting with distrib package
   - python-magic
   - python-registry
   - setuptools_rust

@@ -29,6 +29,11 @@
     value: 'true'
     vtype: 'boolean'
 
+- name: SIFT | Remove conflicting packages
+  ansible.builtin.apt:
+    name: "{{ sift_conflict_packages | default([]) }}"
+    state: absent
+
 - name: SIFT | packages install
   ansible.builtin.apt:
     name: "{{ sift_packages + sift_perl_packages }}"
@@ -102,11 +107,19 @@
     state: "present"
   register: pkg_result
   until: pkg_result is success
+- name: Install pip virtualenv
+  ansible.builtin.pip:
+    name: pip
+    extra_args: --upgrade
+    state: present
+    virtualenv: "{{ sift_virtualenv }}"
+  register: pkg_result
+  until: pkg_result is success
 - name: Install pip packages
   ansible.builtin.pip:
     name: "{{ sift_pip_packages }}"
     state: present
-    executable: "{{ pip_bin | default('pip3') }}"
+    virtualenv: "{{ sift_virtualenv }}"
   register: pkg_result
   until: pkg_result is success
 
