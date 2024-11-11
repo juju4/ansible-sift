@@ -48,7 +48,7 @@
   ansible.builtin.file:
     dest: /usr/share/unity-greeter
     state: directory
-    mode: 0755
+    mode: '0755'
 - name: Check if /usr/share/unity-greeter/logo.png exists
   ansible.builtin.stat:
     path: /usr/share/unity-greeter/logo.png
