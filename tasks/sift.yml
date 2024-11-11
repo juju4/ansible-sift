@@ -204,6 +204,7 @@
     dest: "/home/{{ sift_user }}/Desktop"
     state: directory
     mode: 0700
+    owner: "{{ sift_user }}"
 
 - name: Setting symlinks
   ansible.builtin.file:
