@@ -113,6 +113,7 @@
     extra_args: --upgrade
     state: present
     virtualenv: "{{ sift_virtualenv }}"
+    virtualenv_python: "{{ sift_python | default('/usr/bin/python3') }}"
   register: pkg_result
   until: pkg_result is success
 - name: Install pip packages
@@ -120,6 +121,7 @@
     name: "{{ sift_pip_packages }}"
     state: present
     virtualenv: "{{ sift_virtualenv }}"
+    virtualenv_python: "{{ sift_python | default('/usr/bin/python3') }}"
   register: pkg_result
   until: pkg_result is success
 
