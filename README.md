@@ -96,6 +96,12 @@ hostname -f"
 "UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh.", "unreachable": true}"
 "A VirtualBox machine with the name 'ubuntu-xenial-16.04-cloudimg' already exists."
 
+* [24.04] "ModuleNotFoundError: No module named 'pip._vendor.six.moves'". A quick dirty solution from https://stackoverflow.com/questions/49478573/pip3-install-not-working-no-module-named-pip-vendor-pkg-resources:
+```
+. /usr/local/env-sift/bin/activate
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+python get-pip.py --force-reinstall
+```
 
 ## License
 
