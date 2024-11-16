@@ -12,16 +12,13 @@ https://raw.github.com/sans-dfir/sift-bootstrap/master/bootstrap.sh
 
 ### Ansible
 It was tested on the following versions:
- * 1.9
- * 2.0
- * 2.2
- * 2.5
- * 2.9
+ * 2.10-2.17
 
 ### Operating systems
 
-Tested with vagrant and kitchen on Ubuntu 18.04. Note that there are some ppa dependencies.
-Support of Bionic is preliminary depending on sift and gift ppa repository.
+* Ubuntu 20.04
+* Ubuntu 22.04
+* Ubuntu 24.04 (tentative, depending on pending upstream ppa support)
 
 ## Example Playbook
 
