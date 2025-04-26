@@ -60,7 +60,7 @@ sift_packages:
   # - f-spot
   - fdupes
   - feh
-  - flare
+  # - flare
   # - flasm
   - flex
   - foremost
