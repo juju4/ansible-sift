@@ -107,23 +107,14 @@
     state: "present"
   register: pkg_result
   until: pkg_result is success
-- name: Install pip virtualenv
-  ansible.builtin.pip:
-    name: pip
-    extra_args: --upgrade
-    state: present
-    virtualenv: "{{ sift_virtualenv }}"
-    virtualenv_python: "{{ sift_python | default('/usr/bin/python3') }}"
-  register: pkg_result
-  until: pkg_result is success
-- name: Install pip packages
-  ansible.builtin.pip:
-    name: "{{ sift_pip_packages }}"
-    state: present
-    virtualenv: "{{ sift_virtualenv }}"
-    virtualenv_python: "{{ sift_python | default('/usr/bin/python3') }}"
-  register: pkg_result
-  until: pkg_result is success
+
+- name: Import python-virtualenv
+  ansible.builtin.import_tasks: python-virtualenv.yml
+  vars:
+    pv_pip: "{{ sift_pip_packages }}"
+    pv_python: "{{ sift_python | default('/usr/bin/python3') }}"
+    pv_venv: "{{ sift_virtualenv }}"
+    pv_user: "{{ sift_user }}"
 
 - name: Install perl modules
   community.general.cpanm:

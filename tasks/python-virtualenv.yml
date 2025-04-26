@@ -1,0 +1,35 @@
+---
+
+- name: Virtualenv
+  block:
+    - name: Install pip packages
+      ansible.builtin.pip:
+        name: "{{ pv_pip }}"
+        state: present
+        virtualenv: "{{ pv_venv }}"
+        virtualenv_python: "{{ pv_python }}"
+      register: pkg_result
+      until: pkg_result is success
+      become: yes
+      become_user: "{{ pv_user }}"
+  rescue:
+    - name: Remove existing virtualenv
+      ansible.builtin.file:
+        path: "{{ pv_venv }}"
+        state: absent
+    - name: Ensure target folder exists
+      ansible.builtin.file:
+        path: "{{ pv_venv }}"
+        state: directory
+        mode: '0755'
+        owner: "{{ pv_user }}"
+    - name: ReInstall pip packages
+      ansible.builtin.pip:
+        name: "{{ pv_pip }}"
+        state: present
+        virtualenv: "{{ pv_venv }}"
+        virtualenv_python: "{{ pv_python }}"
+      register: pkg_result
+      until: pkg_result is success
+      become: yes
+      become_user: "{{ pv_user }}"
