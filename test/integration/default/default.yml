@@ -6,6 +6,20 @@
     sift_docker: false
     ## xenial on container has issue to install bluez which is required for unity
     # sift_do_x11: false
+  pre_tasks:
+    - name: Debian | Refresh apt cache
+      ansible.builtin.apt:
+        update_cache: yes
+        cache_valid_time: 3600
+      when: ansible_os_family == "Debian"
+    - name: Ensure python3-debian is present - geerlingguy.docker
+      ansible.builtin.apt:
+        name: python3-debian
+        state: present
+      when: ansible_os_family == "Debian"
+    - name: Debug | var ansible_virtualization_type
+      ansible.builtin.debug:
+        var: ansible_virtualization_type
   roles:
     - geerlingguy.docker
     - juju4.sift
