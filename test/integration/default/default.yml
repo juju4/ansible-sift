@@ -23,10 +23,11 @@
       ansible.builtin.pip:
         name: python3-debian
         state: present
-        executable: "{{ ansible_python_interpreter | default(ansible_python) | replace('python', 'pip') }}"
+        executable: "{{ ansible_python_interpreter | default(ansible_python['executable']) | replace('python', 'pip') }}"
       when: >
         (ansible_env['GITHUB_ACTIONS'] is defined and ansible_env['GITHUB_ACTIONS'] == 'true') or
-        (ansible_env['RUNNER_ENVIRONMENT'] is defined and ansible_env['RUNNER_ENVIRONMENT'] == 'github-hosted')
+        (ansible_env['RUNNER_ENVIRONMENT'] is defined and ansible_env['RUNNER_ENVIRONMENT'] == 'github-hosted') or
+        (ansible_env['RUNNER_TOOL_CACHE'] is defined)
     - name: Debug | var ansible_virtualization_type
       ansible.builtin.debug:
         var: ansible_virtualization_type
