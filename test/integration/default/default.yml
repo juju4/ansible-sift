@@ -19,9 +19,9 @@
         - ansible_python_interpreter
         - ansible_python
         - ansible_env
-    - name: Ensure python3-debian is present - geerlingguy.docker
+    - name: Ensure python-debian is present - geerlingguy.docker
       ansible.builtin.pip:
-        name: python3-debian
+        name: python-debian
         state: present
         executable: "{{ ansible_python_interpreter | default(ansible_python['executable']) | replace('python', 'pip') }}"
       when: >
