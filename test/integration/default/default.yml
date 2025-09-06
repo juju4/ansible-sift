@@ -12,11 +12,17 @@
         update_cache: yes
         cache_valid_time: 3600
       when: ansible_os_family == "Debian"
+    - name: Debug | var ansible_python_interpreter
+      ansible.builtin.debug:
+        var: ansible_python_interpreter
     - name: Ensure python3-debian is present - geerlingguy.docker
-      ansible.builtin.apt:
+      ansible.builtin.pip:
         name: python3-debian
         state: present
-      when: ansible_os_family == "Debian"
+        executable: "{{ ansible_python_interpreter | replace('python', 'pip') }}"
+      when: >
+        (ansible_env['GITHUB_ACTIONS'] is defined and ansible_env['GITHUB_ACTIONS'] == 'true') or
+        (ansible_env['RUNNER_USER'] is defined and ansible_env['RUNNER_USER'] == 'runner')
     - name: Debug | var ansible_virtualization_type
       ansible.builtin.debug:
         var: ansible_virtualization_type
