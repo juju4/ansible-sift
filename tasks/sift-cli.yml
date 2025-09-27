@@ -34,7 +34,9 @@
 - name: Import gpg key from pgp directory server
   ansible.builtin.command:  # noqa no-changed-when
     cmd: "gpg --keyserver {{ sift_pgp_server }} --recv-keys {{ sift_pgp_key }}"
-  when: sift_pgp_server and sift_pgp_key
+  when:
+    - sift_pgp_server | length > 0
+    - sift_pgp_key | length > 0
 
 - name: Validate sift-cli hash signature
   ansible.builtin.command:
