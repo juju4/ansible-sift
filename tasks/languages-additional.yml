@@ -19,7 +19,9 @@
     var: pkglist
 
 - name: Language-support packages
-  when: pkglist.stdout is defined and pkglist.stdout
+  when:
+    - pkglist.stdout is defined
+    - pkglist.stdout | length > 0
   block:
     - name: Install languages package for {{ lang }}
       ansible.builtin.apt:
