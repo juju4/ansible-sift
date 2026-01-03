@@ -1,18 +1,18 @@
 ---
 
-- name: Debug | ansible_env var
+- name: Debug | ansible_facts['env'] var
   ansible.builtin.debug:
-    var: ansible_env
+    var: ansible_facts['env']
 
 - name: FATAL
   ansible.builtin.fail:
     msg: "This role is currently only compatible with Ubuntu"
-  when: >
-    ansible_distribution != 'Ubuntu'
+  when:
+    - ansible_facts['distribution'] != 'Ubuntu'
 
 - name: Include version-specific variables for Ubuntu.
-  ansible.builtin.include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
-  when: ansible_distribution == 'Ubuntu'
+  ansible.builtin.include_vars: "{{ ansible_facts['distribution'] }}-{{ ansible_facts['distribution_version'] }}.yml"
+  when: ansible_facts['distribution'] == 'Ubuntu'
 
 ## fails under lxd+systemd, https://github.com/ansible/ansible-modules-core/issues/5582
 - name: Set hostname
@@ -20,7 +20,7 @@
     name: "{{ sift_hostname }}"
   when: >
     sift_hostname is defined and
-    not (ansible_virtualization_type is defined and ansible_virtualization_type == "lxc")
+    not (ansible_facts['virtualization_type'] is defined and ansible_facts['virtualization_type'] == "lxc")
 
 - name: Add new hostname in /etc/hosts (local resolv)
   ansible.builtin.replace:
@@ -32,8 +32,8 @@
   when: sift_hostname is defined
 
 # - name: Include version-specific variables for Ubuntu.
-#   ansible.builtin.include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
-#   when: ansible_distribution == 'Ubuntu'
+#   ansible.builtin.include_vars: "{{ ansible_facts['distribution'] }}-{{ ansible_facts['distribution_version'] }}.yml"
+#   when: ansible_facts['distribution'] == 'Ubuntu'
 
 - name: Check if user ~/.gem/specs exists
   ansible.builtin.stat:
@@ -51,11 +51,11 @@
   ansible.builtin.command: dpkg --print-foreign-architectures
   register: archi
   changed_when: False
-  when: ansible_architecture == 'x86_64'
+  when: ansible_facts['architecture'] == 'x86_64'
 - name: Ensure both i386/x86_64 architecture support for packages
   ansible.builtin.command:  # noqa no-changed-when
     cmd: dpkg --add-architecture i386
-  when: ansible_architecture == 'x86_64' and archi.stdout.find('i386') == -1
+  when: ansible_facts['architecture'] == 'x86_64' and archi.stdout.find('i386') == -1
 
 ## https://github.com/sans-dfir/sift-bootstrap/
 - name: Include sift

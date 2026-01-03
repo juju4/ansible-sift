@@ -6,7 +6,7 @@
     state: present
   when:
     - sift_ppa != 'dev'
-    - (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int <= 20)
+    - (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version']|int <= 20)
 
 - name: Adding SIFT repository - dev
   ansible.builtin.apt_repository:
@@ -14,7 +14,7 @@
     state: present
   when:
     - sift_ppa == 'dev'
-    - (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int <= 20)
+    - (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version']|int <= 20)
 
 # Xenial, bionic: universe and multiverse already enabled by default
 - name: Enabling universe repository
@@ -51,7 +51,7 @@
   ansible.builtin.apt_repository:
     repo: 'ppa:malteworld/ppa'
     state: present
-  when: ansible_distribution_release == 'bionic' or ansible_distribution_release == 'cosmic'
+  when: ansible_facts['distribution_release'] == 'bionic' or ansible_facts['distribution_release'] == 'cosmic'
 
 - name: Bionic | adding noobslab/{themes,icons} repositories
   ansible.builtin.apt_repository:
@@ -60,4 +60,4 @@
   with_items:
     - noobslab/themes
     - noobslab/icons
-  when: ansible_distribution_release == 'bionic'
+  when: ansible_facts['distribution_release'] == 'bionic'

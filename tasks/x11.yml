@@ -24,7 +24,7 @@
       - lxde
       - lxdm
     state: present
-  when: sift_x11_env is defined and sift_x11_env and ansible_distribution_release == 'xenial'
+  when: sift_x11_env is defined and sift_x11_env and ansible_facts['distribution_release'] == 'xenial'
   ## mostly for travis to avoid stalling "No output has been received in the last 10m0s"...
   async: 600
   poll: 15

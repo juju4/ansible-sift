@@ -6,4 +6,4 @@
       - arc-icons
       # - arc-themes
     state: present
-  when: ansible_distribution_release == 'bionic'
+  when: ansible_facts['distribution_release'] == 'bionic'

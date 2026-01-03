@@ -11,26 +11,26 @@
       ansible.builtin.apt:
         update_cache: yes
         cache_valid_time: 3600
-      when: ansible_os_family == "Debian"
+      when: ansible_facts['os_family'] == "Debian"
     - name: Debug | var ansible_python*
       ansible.builtin.debug:
         var: "{{ item }}"
       loop:
         - ansible_python_interpreter
         - ansible_python
-        - ansible_env
+        - ansible_facts['env']
     - name: Ensure python-debian is present - geerlingguy.docker
       ansible.builtin.pip:
         name: python-debian
         state: present
         executable: "{{ ansible_python_interpreter | default(ansible_python['executable']) | replace('python', 'pip') }}"
       when: >
-        (ansible_env['GITHUB_ACTIONS'] is defined and ansible_env['GITHUB_ACTIONS'] == 'true') or
-        (ansible_env['RUNNER_ENVIRONMENT'] is defined and ansible_env['RUNNER_ENVIRONMENT'] == 'github-hosted') or
-        (ansible_env['RUNNER_TOOL_CACHE'] is defined)
-    - name: Debug | var ansible_virtualization_type
+        (ansible_facts['env']['GITHUB_ACTIONS'] is defined and ansible_facts['env']['GITHUB_ACTIONS'] == 'true') or
+        (ansible_facts['env']['RUNNER_ENVIRONMENT'] is defined and ansible_facts['env']['RUNNER_ENVIRONMENT'] == 'github-hosted') or
+        (ansible_facts['env']['RUNNER_TOOL_CACHE'] is defined)
+    - name: Debug | var ansible_facts['virtualization_type']
       ansible.builtin.debug:
-        var: ansible_virtualization_type
+        var: ansible_facts['virtualization_type']
   roles:
     - geerlingguy.docker
     - juju4.sift
