@@ -24,11 +24,11 @@ jobs:
       matrix:
         include:
           - distribution: ubuntu
-            version: '24.04'
-            experimental: false
+            version: '26.04'
+            experimental: true
             suite: default
           - distribution: ubuntu
-            version: '22.04'
+            version: '24.04'
             experimental: false
             suite: default
     env:
