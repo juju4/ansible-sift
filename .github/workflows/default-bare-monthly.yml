@@ -3,12 +3,12 @@ name: default-bare-monthly
 
 on:
   workflow_dispatch:
-  schedule:  # run on the 11th of the month
-    - cron: '40 1 11 * *'
+  schedule:  # run on the 11th of the month at 01:00 UTC
+    - cron: '0 1 11 * *'
   merge_group:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref }}
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
 permissions: {}
@@ -26,12 +26,16 @@ jobs:
         include:
           - distribution: ubuntu
             version: '26.04'
-            experimental: true
             suite: default
+            experimental: true
           - distribution: ubuntu
             version: '24.04'
-            experimental: false
             suite: default
+            experimental: false
+          - distribution: ubuntu
+            version: '24.04-arm'
+            suite: default
+            experimental: true
     env:
       ANSIBLE_CALLBACKS_ENABLED: profile_tasks
       ANSIBLE_EXTRA_VARS: ""
@@ -68,7 +72,7 @@ jobs:
           which ansible
           ansible --version
           cd $GITHUB_WORKSPACE/$ANSIBLE_ROLE
-          [ -f molecule/$ANSIBLE_SUITE/requirements.yml ] && ansible-galaxy install -r molecule/$ANSIBLE_SUITE/requirements.yml
+          [ -f molecule/${ANSIBLE_SUITE}/requirements.yml ] && ansible-galaxy install -r molecule/${ANSIBLE_SUITE}/requirements.yml
           [ -f get-dependencies.sh ] && sh -x get-dependencies.sh
           { echo '[defaults]'; echo 'callback_enabled = profile_tasks, timer'; echo 'roles_path = ../:/home/runner/.ansible/roles'; echo 'ansible_python_interpreter: /usr/bin/python3'; } >> ansible.cfg
       - name: Environment
@@ -80,16 +84,26 @@ jobs:
           ansible-galaxy role list || true
           pwd
           env
-          find -ls
+          find . -ls
+      - name: Galaxy dependencies
+        run: |
+          cd $GITHUB_WORKSPACE/$ANSIBLE_ROLE && ansible-galaxy install --timeout 120 --verbose -r molecule/$ANSIBLE_SUITE/requirements.yml
+        continue-on-error: true
       - name: run test
         run: |
-          cd $GITHUB_WORKSPACE/juju4.sift && ansible-playbook -i localhost, --connection=local --become -vvv test/integration/${{ matrix.suite }}/default.yml ${ANSIBLE_EXTRA_VARS}
+          cd $GITHUB_WORKSPACE/$ANSIBLE_ROLE && ansible-playbook -i localhost, --connection=local --become -vvv molecule/$ANSIBLE_SUITE/converge.yml ${ANSIBLE_EXTRA_VARS}
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
       - name: idempotency run
         run: |
-          cd $GITHUB_WORKSPACE/juju4.sift && ansible-playbook -i localhost, --connection=local --become -vvv test/integration/${{ matrix.suite }}/default.yml ${ANSIBLE_EXTRA_VARS} | tee /tmp/idempotency.log | grep -q 'changed=0.*failed=0'  && (echo 'Idempotence test: pass' && exit 0)  || (echo 'Idempotence test: fail' && cat /tmp/idempotency.log && exit 0)
+          cd $GITHUB_WORKSPACE/$ANSIBLE_ROLE && ansible-playbook -i localhost, --connection=local --become -vvv molecule/$ANSIBLE_SUITE/converge.yml ${ANSIBLE_EXTRA_VARS} | tee /tmp/idempotency.log | grep -q 'changed=0.*failed=0'  && (echo 'Idempotence test: pass' && exit 0)  || (echo 'Idempotence test: fail' && cat /tmp/idempotency.log && exit 0)
+      - name: verify
+        run: |
+          cd $GITHUB_WORKSPACE/$ANSIBLE_ROLE && ansible-playbook -i localhost, --connection=local --become -vvv molecule/$ANSIBLE_SUITE/verify.yml ${ANSIBLE_EXTRA_VARS}
+        env:
+          PY_COLORS: '1'
+          ANSIBLE_FORCE_COLOR: '1'
       - name: On failure
         run: |
           systemctl -l --no-pager status

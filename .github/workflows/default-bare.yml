@@ -9,6 +9,10 @@ on:
     - cron: '0 5 * * 3'
   merge_group:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 permissions: {}
 
 jobs:
@@ -16,7 +20,7 @@ jobs:
 
     permissions:
       contents: read
-    runs-on: ubuntu-${{ matrix.version }}
+    runs-on: ${{ matrix.distribution }}-${{ matrix.version }}
     continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
@@ -25,8 +29,8 @@ jobs:
         include:
           - distribution: ubuntu
             version: '24.04'
-            experimental: false
             suite: default
+            experimental: false
     env:
       ANSIBLE_CALLBACKS_ENABLED: profile_tasks
       ANSIBLE_EXTRA_VARS: ""
@@ -69,21 +73,34 @@ jobs:
       - name: Environment
         run: |
           set -x
+          ansible --version
+          ansible-config dump --only-changed -t all
+          ansible-galaxy collection list || true
+          ansible-galaxy role list || true
           pwd
           env
-          find -ls
+          find . -ls
+      - name: Galaxy dependencies
+        run: |
+          cd $GITHUB_WORKSPACE/$ANSIBLE_ROLE && ansible-galaxy install --timeout 120 --verbose -r molecule/$ANSIBLE_SUITE/requirements.yml
+        continue-on-error: true
       - name: run test
         run: |
-          cd $GITHUB_WORKSPACE/juju4.sift && ansible-playbook -i localhost, --connection=local --become -vvv test/integration/${{ matrix.suite }}/default.yml ${ANSIBLE_EXTRA_VARS}
+          cd $GITHUB_WORKSPACE/$ANSIBLE_ROLE && ansible-playbook -i localhost, --connection=local --become -vvv molecule/$ANSIBLE_SUITE/converge.yml ${ANSIBLE_EXTRA_VARS}
         env:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
       - name: idempotency run
         run: |
-          cd $GITHUB_WORKSPACE/juju4.sift && ansible-playbook -i localhost, --connection=local --become -vvv test/integration/${{ matrix.suite }}/default.yml ${ANSIBLE_EXTRA_VARS} | tee /tmp/idempotency.log | grep -q 'changed=0.*failed=0'  && (echo 'Idempotence test: pass' && exit 0)  || (echo 'Idempotence test: fail' && cat /tmp/idempotency.log && exit 0)
+          cd $GITHUB_WORKSPACE/$ANSIBLE_ROLE && ansible-playbook -i localhost, --connection=local --become -vvv molecule/$ANSIBLE_SUITE/converge.yml ${ANSIBLE_EXTRA_VARS} | tee /tmp/idempotency.log | grep -q 'changed=0.*failed=0'  && (echo 'Idempotence test: pass' && exit 0)  || (echo 'Idempotence test: fail' && cat /tmp/idempotency.log && exit 0)
+      - name: verify
+        run: |
+          cd $GITHUB_WORKSPACE/$ANSIBLE_ROLE && ansible-playbook -i localhost, --connection=local --become -vvv molecule/$ANSIBLE_SUITE/verify.yml ${ANSIBLE_EXTRA_VARS}
+        env:
+          PY_COLORS: '1'
+          ANSIBLE_FORCE_COLOR: '1'
       - name: On failure
         run: |
-          ansible -i inventory --connection=local -m setup localhost
           systemctl -l --no-pager status
           systemctl -l --no-pager --failed
           ls -l /usr/bin/ | egrep '(python|pip|ansible)'
@@ -94,7 +111,14 @@ jobs:
           host www.google.com
           ping -c 1 www.google.com || true
           ping -c 1 8.8.8.8 || true
+          ps axuw
+          netstat -anp
         if: ${{ failure() }}
+        continue-on-error: true
+      - name: After script - ansible setup
+        run: |
+          ansible -i inventory --connection=local -m setup localhost
+        if: ${{ always() }}
         continue-on-error: true
       - name: After script - systemd
         run: |
