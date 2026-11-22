@@ -319,8 +319,5 @@
     - sift-cheatsheet.pdf
     - windows-to-unix-cheatsheet.pdf
 
-- name: Include sift-cli
-  ansible.builtin.include_tasks: sift-cli.yml
-
 - name: Include cast
   ansible.builtin.include_tasks: cast.yml
