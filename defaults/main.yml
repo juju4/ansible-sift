@@ -40,4 +40,6 @@ sift_pgp_server: ''
 # sift_pgp_server: hkp://pgp.mit.edu:80
 sift_pgp_key: 0x15b9ad7122598a94
 
-sift_cast_version: 0.15.2
+# renovate: datasource=github-releases depName=ekristen/cast
+sift_cast_github_version: 'v1.0.44'
+# sift_cast_sha256:
