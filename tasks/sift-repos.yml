@@ -1,30 +1,47 @@
 ---
 
-- name: Adding SIFT repository - stable
-  ansible.builtin.apt_repository:
-    repo: 'ppa:sift/stable'
-    state: present
-  when:
-    - sift_ppa != 'dev'
-    - (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version']|int <= 20)
+# https://launchpad.net/~sift/+archive/ubuntu/stable
+- name: Adding SIFT repository
+  ansible.builtin.deb822_repository:
+    name: sift
+    types: deb
+    uris: https://ppa.launchpadcontent.net/sift/stable/ubuntu
+    suites: '{{ ansible_facts.distribution_release }}'
+    components: main
+    architectures: amd64
+    signed_by: |-
+      -----BEGIN PGP PUBLIC KEY BLOCK-----
+      Comment: Hostname:
+      Version: Hockeypuck 2.2
 
-- name: Adding SIFT repository - dev
-  ansible.builtin.apt_repository:
-    repo: 'ppa:sift/dev'
-    state: present
-  when:
-    - sift_ppa == 'dev'
-    - (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version']|int <= 20)
+      xsFNBGY0ls8BEACsyS/2V/qJ0XOYfA9vkfLwP+FWXJwbSvDk+sSZXwjk9a2Hq/Yo
+      6F10LFt3BsNwWaRA/7cEPW5ovuEV+z5VgjGDl6ZhNGZTRX7BhEwX53+IN90+v8Lq
+      6jGFMhKYZQ1aZbRQQsWkZ2g7k05O9pQOCP6gbX8nARE/Z3ZxcD0oM9skPv9IcV7/
+      /JBs5hwGcWgyMEtuzblH7P8oadfOS5ajuuI5Mn63FLs6Njlqb/0j6RTn4ecwe5ok
+      a06iQOyM7w6kZyw971XapXSA8Xozjc/QX6Xw3nnM4E+IYn3neuVPy1hC9BI0ZWa4
+      a702NLpe0ipBRz0S/fkieUEdb42z/JY5hhYpqN/K8nhPP7vXIg9k88+oVo+3fpD5
+      mWC5qWEQxNY0u/x9GqHABHiwQHCU2dw7weyYKkpPVXS2SBEWMlzvKRN1gGf968Mq
+      IvD8DxQ74JCblAW9q33Wfn4mBW1lfTSCkReQN7Vp3H99hHXadn9qRJpzEqgBFCEG
+      3mC5GBZF5Eu5pLF+ldjTtMzW/5mgq7Rw4sn/ypKoyF2IYMVjlyUa7X4yAtuJjOJ8
+      guqOUncgdgTNA23RFIe+Q0CY6s/RPuGMx1NXLSlPPEjSWE8eiXFv00L1xd1LnMx0
+      r+evec2jmSPpJvzZuv7vxUz39TA9jkNmmOlib2kVFFRlq5w8Y9hMpDRtOwARAQAB
+      zRZMYXVuY2hwYWQgUFBBIGZvciBTSUZUwsGOBBMBCgA4FiEEk0ZQAdxMij/LvP4m
+      OkMojuCrJvsFAmY0ls8CGwMFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AACgkQOkMo
+      juCrJvuxUQ/+JGSEG9hSBnzOTp7MC36u7F/2yLguRfP/51knBf0A+sWg/kl/lsYX
+      jD6/v3wRKUpEH9NKGbjniPFG1pwdp4gfKDvGVsLD2SXsLFAA8kg/d4XSwtY9RNs4
+      hhn7PwUv67SXYFPnVxgodlg1okFj2NIv9SiFVjhc/ZVvCQIi67h3airgURFvKD4Z
+      jqtRA/WI23HI4QL6lObj2zjcmHi+p4huWzd4ddvKL7tFUH9pjUb/JlDlhMXPzOKy
+      IG36CXTy0qRT59ElaSN53HoqPvzhE918eePmx7eCk7X1xd0zuAPsb/axh3/fzWKz
+      y3Rm7iZDMIETWO0V8+HwczaAH+lzX7ZnsXZ7WWwsd3T3axWzNE/W+yd9ZZG52Fd3
+      qb2r9TEptYEf4p3/fScEpcdji3hAHcV3XQxIGuWWVLVNsb+QZFfo/NKogINmphNp
+      WjdfmGurYB7u384k2cBX/ENPdCotZiOXWesCo0jz2wxiGMpCCZmwUfyOtZAXnLA8
+      Hs1asVVEpcc4uENTHNAfXKRu3Mr9GtOG6WqPKohHxhQT2pN9xQL/75pCqrwE+EPs
+      py4aX1oCEuD/X4nndprAW5aTtJRCCIOsE2fEdJjt7nNHgAhEorYwgdxRfxy+7nvz
+      vuDXq1Aav5U0plxWBDPSHd0YcnaynkUT51qz4L5wb9f6wJubJryeXZ0=
+      =x9yS
+      -----END PGP PUBLIC KEY BLOCK-----
 
 # Xenial, bionic: universe and multiverse already enabled by default
-- name: Enabling universe repository
-  ansible.builtin.replace:
-    dest: /etc/apt/sources.list
-    regexp: '^#(\.*)universe$'
-    replace: '\1universe'
-    mode: '0644'
-    backup: yes
-
 - name: Enabling multiverse repository
   ansible.builtin.replace:
     dest: /etc/apt/sources.list
@@ -45,19 +62,3 @@
 # - name: Ensure both i386/x86_64 architecture support for packages
 #   ansible.builtin.command: dpkg --add-architecture i386
 # - ansible.builtin.command: ldconfig
-
-# http://ppa.launchpad.net/malteworld/ppa/ubuntu/dists/
-- name: Adding malteworld/ppa repository
-  ansible.builtin.apt_repository:
-    repo: 'ppa:malteworld/ppa'
-    state: present
-  when: ansible_facts['distribution_release'] == 'bionic' or ansible_facts['distribution_release'] == 'cosmic'
-
-- name: Bionic | adding noobslab/{themes,icons} repositories
-  ansible.builtin.apt_repository:
-    repo: "ppa:{{ item }}"
-    state: present
-  with_items:
-    - noobslab/themes
-    - noobslab/icons
-  when: ansible_facts['distribution_release'] == 'bionic'
